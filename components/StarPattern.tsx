@@ -2,21 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import seedrandom from 'seedrandom';
 import MilestonePopup from './Milestone'; // Import the MilestonePopup component
-
-interface Milestone {
-    date: string;
-    event: string;
-    cuteDescription: string;
-}
+import milestones from '../utils/mileStones'
 
 const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
     const rng = seedrandom(seed);
     const [selectedStar, setSelectedStar] = useState<number | null>(null);
     const [shiningStars, setShiningStars] = useState<number[]>([]);
-    const milestones: Milestone[] = [
-        { date: '9th march', event: 'happy ending', cuteDescription: 'Milestone 1 Cute Description' },
-        { date: 'Milestone 2 Date', event: 'Milestone 2 Event', cuteDescription: 'Milestone 2 Cute Description' },
-    ];
+
 
     const generateRandomSize = () => {
         return Math.floor(rng() * 3) + 1; // Random size between 1 and 3

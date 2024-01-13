@@ -38,7 +38,7 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                     backgroundColor="#94FF4D" // Blue background color
                     backgroundDarker="#7AA72C" // Darker shade for background
                 >
-                    Memories
+                    Words
                 </AwesomeButton>
             </View>
             <StarsPattern seed={seed} />

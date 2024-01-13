@@ -13,13 +13,6 @@ import FallingWordsOfAffirmation from './components/FallingWordsOfAffirmation'; 
 import Affirmations from './components/Affirmations';
 
 const App = () => {
-  const affirmations = [
-    'You are amazing!',
-    'You are loved!',
-    'You are beautiful!',
-    // Add more affirmations as needed
-  ];
-
   const Stack = createStackNavigator();
 
   return (
