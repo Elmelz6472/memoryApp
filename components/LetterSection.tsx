@@ -1,28 +1,40 @@
 // LetterSections.tsx
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useNavigation } from '@react-navigation/native';
 
-const BookIcon = ({ date }: { date: string }) => (
-    <View style={styles.bookIcon}>
-        <FontAwesome5 name="book" size={30} color="#FFFFFF" />
-        <Text style={styles.bookDate}>{date}</Text>
-    </View>
-);
+const BookIcon = ({ date, content }: { date: string; content: string }) => {
+    const navigation = useNavigation();
+
+    const handleBookPress = () => {
+        // @ts-ignore
+        navigation.navigate('LetterContent', { content });
+    };
+
+    return (
+        <TouchableOpacity onPress={handleBookPress}>
+            <View style={styles.bookIcon}>
+                <FontAwesome5 name="book" size={30} color="#FFFFFF" />
+                <Text style={styles.bookDate}>{date}</Text>
+            </View>
+        </TouchableOpacity>
+    );
+};
 
 const LetterSections: React.FC = () => {
     const books = [
-        { date: '2022-01-01' },
-        { date: '2022-02-15' },
-        { date: '2022-02-15' },
-        { date: '2022-02-15' },
+        { date: '2022-01-01', content: 'Content for Letter A' },
+        { date: '2022-02-15', content: 'Content for Letter B' },
+        { date: '2022-02-15', content: 'Content for Letter C' },
+        { date: '2022-02-15', content: 'Content for Letter D' },
     ];
 
     return (
         <View style={styles.container}>
             <View style={styles.bookshelf}>
                 {books.map((book, index) => (
-                    <BookIcon key={index} date={book.date} />
+                    <BookIcon key={index} date={book.date} content={book.content} />
                 ))}
             </View>
         </View>
