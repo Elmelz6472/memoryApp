@@ -16,7 +16,6 @@ const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
     const milestones: Milestone[] = [
         { date: '9th march', event: 'happy ending', cuteDescription: 'Milestone 1 Cute Description' },
         { date: 'Milestone 2 Date', event: 'Milestone 2 Event', cuteDescription: 'Milestone 2 Cute Description' },
-        // Add more milestones as needed
     ];
 
     const generateRandomSize = () => {
@@ -39,7 +38,7 @@ const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
     };
 
     const renderStars = () => {
-        const numberOfStars = 50; // You can adjust the number of stars as needed
+        const numberOfStars = 100; // You can adjust the number of stars as needed
         const stars = [];
 
         for (let i = 0; i < numberOfStars; i++) {

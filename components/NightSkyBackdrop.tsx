@@ -14,7 +14,7 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
     };
 
     const onPressMemories = () => {
-        props.navigation.navigate('Memories');
+        props.navigation.navigate('Affirmations');
     };
 
     const seed = 'ssss';
