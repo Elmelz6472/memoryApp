@@ -13,22 +13,6 @@ const LetterContent = ({ route }: any) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.letterContainer}>
-                {/* Lines for the letter */}
-                {/* <View style={styles.lines}>
-                    <View style={styles.line}></View>
-                    <View style={styles.line}></View>
-                    <View style={styles.line}></View>
-                    <View style={styles.line}></View>
-                    <View style={styles.line}></View>
-                    <View style={styles.line}></View>
-                    <View style={styles.line}></View>
-                    <View style={styles.line}></View>
-                    <View style={styles.line}></View>
-                    <View style={styles.line}></View>
-                    <View style={styles.line}></View>
-
-                </View> */}
-
                 <Text style={styles.letter}>{content}</Text>
 
                 <View style={styles.letterFooter}>

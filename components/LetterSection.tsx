@@ -2,6 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import AwesomeButton from 'react-native-really-awesome-button';
 import { useNavigation } from '@react-navigation/native';
 
 const BookIcon = ({ date, content }: { date: string; content: string }) => {
@@ -23,6 +24,7 @@ const BookIcon = ({ date, content }: { date: string; content: string }) => {
 };
 
 const LetterSections: React.FC = () => {
+    const navigation = useNavigation();
     const books = [
         { date: '2022-01-01', content: 'Content for Letter A' },
         { date: '2022-02-15', content: 'Content for Letter B' },
@@ -37,21 +39,32 @@ const LetterSections: React.FC = () => {
                     <BookIcon key={index} date={book.date} content={book.content} />
                 ))}
             </View>
+            <View style={styles.buttonContainer}>
+                <AwesomeButton
+                    onPress={() => { navigation.goBack() }}
+                    backgroundColor="#4D94FF" // Blue background color
+                    backgroundDarker="#3366CC" // Darker shade for background
+                >
+                    Go back
+                </AwesomeButton>
+            </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        justifyContent: 'space-between', // Align items with space between
         padding: 20,
         backgroundColor: '#2C3E50', // Dark background color
-        flex: 1,
     },
     bookshelf: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-around',
         height: 500, // Adjust the height as needed
+        paddingTop: 60
     },
     bookIcon: {
         width: 80,
@@ -69,6 +82,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginTop: 5,
         color: '#FFFFFF', // Light text color
+    },
+    buttonContainer: {
+        alignSelf: 'center', // Center the button horizontally
+        marginBottom: 20, // Add margin at the bottom
     },
 });
 

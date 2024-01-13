@@ -39,7 +39,7 @@ const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
     };
 
     const renderStars = () => {
-        const numberOfStars = 2; // You can adjust the number of stars as needed
+        const numberOfStars = 50; // You can adjust the number of stars as needed
         const stars = [];
 
         for (let i = 0; i < numberOfStars; i++) {
