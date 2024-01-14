@@ -8,17 +8,27 @@ import milestones from '../utils/mileStones';
 const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
     const rng = seedrandom(seed);
     const [selectedStar, setSelectedStar] = useState<number | null>(null);
-    const [shiningStars, setShiningStars] = useState<number[]>([]);
+    const [shiningStars, setShiningStars] = useState<{ [key: number]: string }>({});
 
     const generateRandomSize = () => {
         return Math.floor(rng() * 3) + 1; // Random size between 1 and 3
     };
 
     const generateRandomPosition = () => {
+        const minPosition = 5; // Set your minimum position value here
+        const left = Math.max(minPosition, rng() * 100);
+        const top = Math.max(minPosition, rng() * 100);
+
         return {
-            left: rng() * 100 + '%',
-            top: rng() * 100 + '%',
+            left: left + '%',
+            top: top + '%',
         };
+    };
+
+
+    const generateRandomColor = () => {
+        const randomColor = `rgb(${Math.floor(rng() * 256)}, ${Math.floor(rng() * 256)}, ${Math.floor(rng() * 256)})`;
+        return randomColor;
     };
 
     const handleStarClick = (id: number) => {
@@ -30,13 +40,13 @@ const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
     };
 
     const renderStars = () => {
-        const numberOfStars = 150; // You can adjust the number of stars as needed
+        const numberOfStars = 130; // You can adjust the number of stars as needed
         const stars = [];
 
         for (let i = 0; i < numberOfStars; i++) {
             const size = generateRandomSize();
             const position = generateRandomPosition();
-            const isShining = shiningStars.includes(i);
+            const isShining = shiningStars.hasOwnProperty(i);
 
             stars.push(
                 <TouchableOpacity
@@ -48,18 +58,8 @@ const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
                     <Svg width={size * 10} height={size * 10}>
                         <Polygon
                             points="5,0 6,3 9,3 7,5 8,8 5,6 2,8 3,5 1,3 4,3"
-                            fill={isShining ? 'red' : 'white'}
+                            fill={isShining ? shiningStars[i] : 'white'}
                         />
-                        {/* <Text
-                            x="50%"
-                            y="50%"
-                            fontSize={size * 2}
-                            fontWeight="bold"
-                            fill="white"
-                            textAnchor="middle"
-                        >
-                            {i}
-                        </Text> */}
                     </Svg>
                 </TouchableOpacity>
             );
@@ -70,15 +70,15 @@ const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
 
     useEffect(() => {
         const shiningInterval = setInterval(() => {
-            const newShiningStars: number[] = [];
+            const newShiningStars: { [key: number]: string } = {};
             for (let i = 0; i < 5; i++) {
                 const randomStar = Math.floor(rng() * 100);
-                newShiningStars.push(randomStar);
+                newShiningStars[randomStar] = generateRandomColor();
             }
             setShiningStars(newShiningStars);
 
             setTimeout(() => {
-                setShiningStars([]);
+                setShiningStars({});
             }, 500);
         }, 1000);
 

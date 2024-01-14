@@ -16,16 +16,21 @@ const App = () => {
   const Stack = createStackNavigator();
 
   return (
-    <NavigationContainer>
-      <StatusBar hidden />
-      <Stack.Navigator>
-        <Stack.Screen name="homeScreen" component={NightSkyBackdrop} options={{ title: 'SkyMap', headerShown: false }} />
-        <Stack.Screen name="Letters" component={LetterSections} options={{ headerShown: false }} />
-        <Stack.Screen name="LetterContent" component={LetterContent} options={{ title: 'Letter Content', headerStyle: { backgroundColor: "#FDF5E6" } }} />
-        <Stack.Screen name="CountDown" component={CountDown} options={{ headerShown: false }} />
-        <Stack.Screen name="Affirmations" component={Affirmations} options={{ headerShown: false }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    // <NavigationContainer>
+    //   <StatusBar hidden />
+    //   <Stack.Navigator>
+    //     <Stack.Screen name="homeScreen" component={NightSkyBackdrop} options={{ title: 'SkyMap', headerShown: false }} />
+    //     <Stack.Screen name="Letters" component={LetterSections} options={{ headerShown: false }} />
+    //     <Stack.Screen name="LetterContent" component={LetterContent} options={{ title: 'Letter Content', headerStyle: { backgroundColor: "#FDF5E6" } }} />
+    //     <Stack.Screen name="CountDown" component={CountDown} options={{ headerShown: false }} />
+    //     <Stack.Screen name="Affirmations" component={Affirmations} options={{ headerShown: false }} />
+    //   </Stack.Navigator>
+    // </NavigationContainer>
+    <NightSkyBackdrop navigation={{
+      navigate: function (arg0: string): void {
+        throw new Error('Function not implemented.');
+      }
+    }}/>
   );
 };
 

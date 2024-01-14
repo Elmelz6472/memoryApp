@@ -17,7 +17,7 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
         props.navigation.navigate('Affirmations');
     };
 
-    const seed = 'lelzz';
+    const seed = 'kkkk';
 
     return (
         <View style={styles.backdrop}>
