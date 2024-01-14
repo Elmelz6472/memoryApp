@@ -17,12 +17,12 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
         props.navigation.navigate('Affirmations');
     };
 
-    const seed = 'ssss';
+    const seed = 'lelzz';
 
     return (
         <View style={styles.backdrop}>
             <View style={styles.centeredContainer}>
-                <AwesomeButton onPress={onPressLetters}
+                {/* <AwesomeButton onPress={onPressLetters}
                     backgroundColor="#4D94FF"
                     backgroundDarker="#3366CC"
                 >Letters</AwesomeButton>
@@ -39,7 +39,7 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                     backgroundDarker="#7AA72C" // Darker shade for background
                 >
                     Words
-                </AwesomeButton>
+                </AwesomeButton> */}
             </View>
             <StarsPattern seed={seed} />
         </View>
