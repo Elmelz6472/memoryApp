@@ -1,6 +1,7 @@
+// StarsPattern.tsx
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
-import { Svg, Polygon, Text } from 'react-native-svg';
+import { Svg, Circle } from 'react-native-svg';
 import seedrandom from 'seedrandom';
 import MilestonePopup from './Milestone';
 import milestones from '../utils/mileStones';
@@ -8,27 +9,37 @@ import milestones from '../utils/mileStones';
 const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
     const rng = seedrandom(seed);
     const [selectedStar, setSelectedStar] = useState<number | null>(null);
-    const [shiningStars, setShiningStars] = useState<{ [key: number]: string }>({});
+    const [starPositions, setStarPositions] = useState<{ [key: number]: { left: string; top: string } }>({});
+    const [shiningStars, setShiningStars] = useState<{ [key: number]: boolean }>({});
 
     const generateRandomSize = () => {
-        return Math.floor(rng() * 3) + 1; // Random size between 1 and 3
+        return (rng() * 2.9) + 0.01; // Random size between 0.1 and 4.0
     };
 
-    const generateRandomPosition = () => {
-        const minPosition = 5; // Set your minimum position value here
-        const left = Math.max(minPosition, rng() * 100);
-        const top = Math.max(minPosition, rng() * 100);
+    const generateRandomPositions = () => {
+        const positions: { [key: number]: { left: string; top: string } } = {};
+        const numberOfStars = 550; // You can adjust the number of stars as needed
 
-        return {
-            left: left + '%',
-            top: top + '%',
-        };
+        for (let i = 0; i < numberOfStars; i++) {
+            const left = rng() * 100 + '%';
+            const top = rng() * 100 + '%';
+
+            positions[i] = { left, top };
+        }
+
+        setStarPositions(positions);
     };
 
+    const generateRandomColor = (position: number, maxPosition: number) => {
+        // Generate a gradient-like color based on the position from left to right
+        const purple = { r: 138, g: 43, b: 226 }; // RGB values for purple
+        const pink = { r: 255, g: 105, b: 180 }; // RGB values for pink
 
-    const generateRandomColor = () => {
-        const randomColor = `rgb(${Math.floor(rng() * 256)}, ${Math.floor(rng() * 256)}, ${Math.floor(rng() * 256)})`;
-        return randomColor;
+        const r = Math.floor((position / maxPosition) * (pink.r - purple.r)) + purple.r;
+        const g = Math.floor((position / maxPosition) * (pink.g - purple.g)) + purple.g;
+        const b = Math.floor((position / maxPosition) * (pink.b - purple.b)) + purple.b;
+
+        return `rgb(${r}, ${g}, ${b})`;
     };
 
     const handleStarClick = (id: number) => {
@@ -39,13 +50,25 @@ const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
         setSelectedStar(null);
     };
 
+    const animateTwinkle = () => {
+        const newShiningStars: { [key: number]: boolean } = {};
+        for (let i = 0; i < 15; i++) {
+            const randomStar = Math.floor(rng() * 350);
+            newShiningStars[randomStar] = true;
+        }
+        setShiningStars(newShiningStars);
+
+        setTimeout(() => {
+            setShiningStars({});
+        }, 800);
+    };
+
     const renderStars = () => {
-        const numberOfStars = 130; // You can adjust the number of stars as needed
+        const maxLeftPosition = 100;
         const stars = [];
 
-        for (let i = 0; i < numberOfStars; i++) {
+        for (let i = 0; i < Object.keys(starPositions).length; i++) {
             const size = generateRandomSize();
-            const position = generateRandomPosition();
             const isShining = shiningStars.hasOwnProperty(i);
 
             stars.push(
@@ -53,12 +76,15 @@ const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
                     key={i}
                     onPress={() => handleStarClick(i)}
                     hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                    style={[styles.star, position as ViewStyle]}
+                    style={[styles.star, starPositions[i] as ViewStyle]}
                 >
                     <Svg width={size * 10} height={size * 10}>
-                        <Polygon
-                            points="5,0 6,3 9,3 7,5 8,8 5,6 2,8 3,5 1,3 4,3"
-                            fill={isShining ? shiningStars[i] : 'white'}
+                        <Circle
+                            cx="50%"
+                            cy="50%"
+                            r={size}
+                            fill={isShining ? 'white' : generateRandomColor(parseFloat(starPositions[i].left), maxLeftPosition)}
+                            opacity={isShining ? 0.7 : 1} // Adjust opacity for twinkling effect
                         />
                     </Svg>
                 </TouchableOpacity>
@@ -69,20 +95,8 @@ const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
     };
 
     useEffect(() => {
-        const shiningInterval = setInterval(() => {
-            const newShiningStars: { [key: number]: string } = {};
-            for (let i = 0; i < 5; i++) {
-                const randomStar = Math.floor(rng() * 100);
-                newShiningStars[randomStar] = generateRandomColor();
-            }
-            setShiningStars(newShiningStars);
-
-            setTimeout(() => {
-                setShiningStars({});
-            }, 500);
-        }, 1000);
-
-        return () => clearInterval(shiningInterval);
+        generateRandomPositions();
+        animateTwinkle();
     }, []);
 
     return (
@@ -103,10 +117,10 @@ const styles = StyleSheet.create({
     starsContainer: {
         ...StyleSheet.absoluteFillObject,
         zIndex: 1,
-    },
-    star: {
-        position: 'absolute',
-    },
+},
+star: {
+position: 'absolute',
+},
 });
 
 export default StarsPattern;

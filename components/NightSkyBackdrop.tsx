@@ -1,8 +1,7 @@
 // NightSkyBackdrop.tsx
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { View, StyleSheet, Animated, Easing, Text } from 'react-native';
 import StarsPattern from './StarPattern';
-import AwesomeButton from 'react-native-really-awesome-button';
 
 const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => void; }; }) => {
     const onPressLetters = () => {
@@ -17,29 +16,65 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
         props.navigation.navigate('Affirmations');
     };
 
-    const seed = 'kkkk';
+    const seed = 'abdkjndjknwsskkscb';
+
+    // Animation setup
+    const fadeInOut = useRef(new Animated.Value(0)).current;
+    const scaleAnim = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        Animated.loop(
+            Animated.sequence([
+                Animated.timing(fadeInOut, {
+                    toValue: 1,
+                    duration: 2000, // Adjust duration as needed
+                    useNativeDriver: true,
+                    easing: Easing.linear,
+                }),
+                Animated.timing(scaleAnim, {
+                    toValue: 1,
+                    duration: 1000, // Adjust duration as needed
+                    useNativeDriver: true,
+                    easing: Easing.elastic(2),
+                }),
+                Animated.timing(scaleAnim, {
+                    toValue: 0,
+                    duration: 1000, // Adjust duration as needed
+                    useNativeDriver: true,
+                    easing: Easing.elastic(2),
+                }),
+                Animated.timing(fadeInOut, {
+                    toValue: 0,
+                    duration: 2000, // Adjust duration as needed
+                    useNativeDriver: true,
+                    easing: Easing.linear,
+                }),
+            ]),
+            { iterations: -1 }
+        ).start();
+    }, [fadeInOut, scaleAnim]);
 
     return (
         <View style={styles.backdrop}>
             <View style={styles.centeredContainer}>
-                {/* <AwesomeButton onPress={onPressLetters}
-                    backgroundColor="#4D94FF"
-                    backgroundDarker="#3366CC"
-                >Letters</AwesomeButton>
-                <AwesomeButton
-                    onPress={onPressEvent}
-                    backgroundColor="#FF4D4D" // Red background color
-                    backgroundDarker="#CC3333" // Darker shade for background
+                <Animated.View
+                    style={{
+                        ...styles.heartContainer,
+                        opacity: fadeInOut,
+                        transform: [{ scale: scaleAnim }],
+                    }}
                 >
-                    Event
-                </AwesomeButton>
-                <AwesomeButton
-                    onPress={onPressMemories}
-                    backgroundColor="#94FF4D" // Blue background color
-                    backgroundDarker="#7AA72C" // Darker shade for background
+                    <Text style={styles.text}>Soul</Text>
+                </Animated.View>
+                <Animated.View
+                    style={{
+                        ...styles.heartContainer,
+                        opacity: fadeInOut,
+                        transform: [{ scale: scaleAnim }],
+                    }}
                 >
-                    Words
-                </AwesomeButton> */}
+                    <Text style={styles.textSync}>Sync</Text>
+                </Animated.View>
             </View>
             <StarsPattern seed={seed} />
         </View>
@@ -52,14 +87,27 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
     },
     centeredContainer: {
-        flexDirection: 'row', // Horizontal layout
-        justifyContent: 'space-between', // Space evenly between items
-        alignItems: 'center', // Center items vertically
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         position: 'absolute',
-        bottom: '10%', // Adjust as needed for iOS bottom spacing
+        bottom: '10%',
         width: '100%',
-        paddingHorizontal: 20, // Add horizontal padding for spacing
+        paddingHorizontal: 20,
         zIndex: 10,
+    },
+    text: {
+        fontSize: 24,
+        color: '#8a2be2', // Adjust the color to a cute and romantic color
+        fontWeight: 'bold',
+    },
+    textSync: {
+        fontSize: 24,
+        color: '#ff69b4', // Adjust the color to a cute and romantic color
+        fontWeight: 'bold',
+    },
+    heartContainer: {
+        marginRight: 10,
     },
 });
 
