@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import FallingWordsOfAffirmation from './FallingWordsOfAffirmation';
 import HeartIcon from '../heartIcon';
@@ -14,6 +14,10 @@ const Affirmations = () => {
     const handleShowAffirmations = () => {
         setShowAffirmations(!showAffirmations);
     };
+
+    useEffect(() => {
+        setShowAffirmations(!showAffirmations);
+    })
 
     return (
         <View style={styles.container}>
