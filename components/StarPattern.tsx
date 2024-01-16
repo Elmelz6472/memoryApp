@@ -7,6 +7,8 @@ import MilestonePopup from './Milestone';
 import milestones from '../utils/mileStones';
 
 const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
+    let intervalDuration = 2000; // Initial interval duration
+
     const rng = seedrandom(seed);
     const [selectedStar, setSelectedStar] = useState<number | null>(null);
     const [starPositions, setStarPositions] = useState<{ [key: number]: { left: string; top: string } }>({});
@@ -59,9 +61,9 @@ const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
         return 0.3 + 0.4 * Math.sin(2 * Math.PI * t);
     };
 
-    const animateTwinkle = () => {
+    const animateTwinkle = (numberOfStars: number) => {
         const newShiningStars: { [key: number]: boolean } = {};
-        for (let i = 0; i < 15; i++) {
+        for (let i = 0; i < numberOfStars; i++) {
             const randomStar = Math.floor(rng() * 350);
             newShiningStars[randomStar] = true;
         }
@@ -73,15 +75,20 @@ const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
     };
 
     const animateMorphing = () => {
+        let twinklingStarsCount = 1; // Initial number of twinkling stars
+
         const intervalId = setInterval(() => {
-            animateTwinkle();
-        }, 100); // Longer morphing animation interval (in milliseconds)
+            animateTwinkle(twinklingStarsCount);
+            twinklingStarsCount = Math.min(200, twinklingStarsCount + 2); // Increase the number of twinkling stars, but ensure it doesn't go above 50
+            intervalDuration = Math.max(100, intervalDuration - 100); // Decrement interval duration, but ensure it doesn't go below 50
+        }, intervalDuration);
 
         // Clear the interval after a certain time or when the component unmounts
         setTimeout(() => {
             clearInterval(intervalId);
-        }, 60000); // Longer total morphing animation time (in milliseconds)
+        }, 90000); // Total morphing animation time (in milliseconds)
     };
+
 
     const handleStarClick = (id: number) => {
         setSelectedStar(id);
