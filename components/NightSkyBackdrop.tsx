@@ -1,10 +1,11 @@
-// NightSkyBackdrop.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import StarsPattern from './StarPattern';
 import AwesomeButton from 'react-native-really-awesome-button';
 
 const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => void; }; }) => {
+    const [showButtons, setShowButtons] = useState(true);
+
     const onPressLetters = () => {
         props.navigation.navigate('Letters');
     };
@@ -17,28 +18,43 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
         props.navigation.navigate('Affirmations');
     };
 
+    const onPressZen = () => {
+        setShowButtons(!showButtons);
+    };
+
     const seed = 'ssss';
 
     return (
         <View style={styles.backdrop}>
             <View style={styles.centeredContainer}>
-                <AwesomeButton onPress={onPressLetters}
-                    backgroundColor="#4D94FF"
-                    backgroundDarker="#3366CC"
-                >Letters</AwesomeButton>
+                {showButtons && (
+                    <>
+                        <AwesomeButton onPress={onPressLetters}
+                            backgroundColor="#4D94FF"
+                            backgroundDarker="#3366CC"
+                        >Letters</AwesomeButton>
+                        <AwesomeButton
+                            onPress={onPressEvent}
+                            backgroundColor="#FF4D4D" // Red background color
+                            backgroundDarker="#CC3333" // Darker shade for background
+                        >
+                            Event
+                        </AwesomeButton>
+                        <AwesomeButton
+                            onPress={onPressMemories}
+                            backgroundColor="#94FF4D" // Blue background color
+                            backgroundDarker="#7AA72C" // Darker shade for background
+                        >
+                            Words
+                        </AwesomeButton>
+                    </>
+                )}
                 <AwesomeButton
-                    onPress={onPressEvent}
-                    backgroundColor="#FF4D4D" // Red background color
-                    backgroundDarker="#CC3333" // Darker shade for background
+                    onPress={onPressZen}
+                    backgroundColor="#D3D3D3" // Light gray background color
+                    backgroundDarker="#A9A9A9" // Darker shade for background
                 >
-                    Event
-                </AwesomeButton>
-                <AwesomeButton
-                    onPress={onPressMemories}
-                    backgroundColor="#94FF4D" // Blue background color
-                    backgroundDarker="#7AA72C" // Darker shade for background
-                >
-                    Words
+                    Zen
                 </AwesomeButton>
             </View>
             <StarsPattern seed={seed} />

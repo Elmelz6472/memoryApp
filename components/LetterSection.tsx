@@ -4,13 +4,19 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AwesomeButton from 'react-native-really-awesome-button';
 import { useNavigation } from '@react-navigation/native';
+import letter_1 from '../letter/letter_1'
+import letter_2 from '../letter/letter_2'
+import letter_3 from '../letter/letter_3'
+import letter_4 from '../letter/letter_4';
 
-const BookIcon = ({ date, content }: { date: string; content: string }) => {
+
+
+const BookIcon = ({ date, content, note }: { date: string; content: string; note: string }) => {
     const navigation = useNavigation();
 
     const handleBookPress = () => {
         // @ts-ignore
-        navigation.navigate('LetterContent', { content });
+        navigation.navigate('LetterContent', { content, note, date });
     };
 
     return (
@@ -23,20 +29,17 @@ const BookIcon = ({ date, content }: { date: string; content: string }) => {
     );
 };
 
+
 const LetterSections: React.FC = () => {
     const navigation = useNavigation();
-    const books = [
-        { date: '2022-01-01', content: 'Content for Letter A' },
-        { date: '2022-02-15', content: 'Content for Letter B' },
-        { date: '2022-02-15', content: 'Content for Letter C' },
-        { date: '2022-02-15', content: 'Content for Letter D' },
-    ];
+
+    const books = [letter_1, letter_2, letter_3, letter_4]
 
     return (
         <View style={styles.container}>
             <View style={styles.bookshelf}>
                 {books.map((book, index) => (
-                    <BookIcon key={index} date={book.date} content={book.content} />
+                    <BookIcon key={index} date={book.date} content={book.content} note={book.note} />
                 ))}
             </View>
             <View style={styles.buttonContainer}>
@@ -67,8 +70,8 @@ const styles = StyleSheet.create({
         paddingTop: 60
     },
     bookIcon: {
-        width: 80,
-        height: 120,
+        width: 100,
+        height: 150,
         backgroundColor: '#34495E', // Darker book color
         margin: 8,
         borderRadius: 10,

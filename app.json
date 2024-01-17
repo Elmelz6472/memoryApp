@@ -7,7 +7,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/soulSync.png.png",
+      "image": "./assets/soulSync.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
