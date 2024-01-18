@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         margin: 30,
         opacity: 0.9,
-        width: '90%', // Reduced container width
+        width: '85%', // Reduced container width
         padding: 20,
         backgroundColor: 'rgba(255, 218, 185, 0.9)',
         borderRadius: 12,
