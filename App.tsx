@@ -8,7 +8,7 @@ import NightSkyBackdrop from './components/NightSkyBackdrop';
 import LetterSections from './components/LetterSection';
 import LetterContent from './components/LetterContent';
 import CountDown from './components/CountDown';
-
+import Test from './components/Test';
 import FallingWordsOfAffirmation from './components/FallingWordsOfAffirmation'; // Import the FallingWordsOfAffirmation component
 import Affirmations from './components/Affirmations';
 
@@ -24,6 +24,7 @@ const App = () => {
         <Stack.Screen name="LetterContent" component={LetterContent} options={{ title: 'Letter Content', headerStyle: { backgroundColor: "#FDF5E6" } }} />
         <Stack.Screen name="CountDown" component={CountDown} options={{ headerShown: false }} />
         <Stack.Screen name="Affirmations" component={Affirmations} options={{ headerShown: false }} />
+        <Stack.Screen name="Tests" component={Test}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

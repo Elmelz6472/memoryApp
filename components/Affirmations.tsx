@@ -27,9 +27,9 @@ const Affirmations = () => {
                     <Text style={styles.buttonText}>Show Affirmations</Text>
                     <HeartIcon width={20} height={20} color="white" />
                 </AwesomeButton>
-                <AwesomeButton onPress={() => { navigation.goBack()}} style={styles.button}>
+                {/* <AwesomeButton onPress={() => { navigation.goBack() }} style={styles.button}>
                     <Text style={styles.buttonText}>Return back</Text>
-                </AwesomeButton>
+                </AwesomeButton> */}
             </View>
         </View>
     );
@@ -40,14 +40,17 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end', // Align content at the bottom
         alignItems: 'center',
-        marginBottom: 20, // Add margin to provide space for the button
+        // marginBottom: 20, // Add margin to provide space for the button
+        backgroundColor: '#ff00eb'
     },
     buttonContainer: {
+        position: "absolute",
+        bottom: '10%',
         flexDirection: 'column', // Stack buttons vertically
         marginTop: 10, // Add margin between buttons
     },
     button: {
-        padding: 15,
+        // padding: 15,
         borderRadius: 25,
         marginBottom: 10, // Add margin between buttons
         elevation: 5, // Add a subtle shadow for a cute effect

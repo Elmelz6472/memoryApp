@@ -1,24 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Animated } from 'react-native';
+import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
 
 const FallingWordsOfAffirmation = ({ affirmations }) => {
     const [currentAffirmationIndex, setCurrentAffirmationIndex] = useState(0);
     const translateY = new Animated.Value(50);
+    const opacity = new Animated.Value(1);
 
     useEffect(() => {
         if (currentAffirmationIndex < affirmations.length) {
-            Animated.timing(translateY, {
-                toValue: 850, // Adjust the final position based on your preference
-                duration: 8000, // Adjust the duration of the animation
-                useNativeDriver: true,
-            }).start(() => {
-                // Move to the next affirmation after the animation is complete
+            Animated.parallel([
+                Animated.timing(translateY, {
+                    toValue: 850,
+                    duration: 8000,
+                    useNativeDriver: true,
+                    easing: Easing.linear,
+                }),
+                Animated.sequence([
+                    Animated.timing(opacity, {
+                        toValue: 0.5,
+                        duration: 200,
+                        useNativeDriver: true,
+                    }),
+                    Animated.timing(opacity, {
+                        toValue: 1,
+                        duration: 200,
+                        useNativeDriver: true,
+                    }),
+                ]),
+            ]).start(() => {
                 setCurrentAffirmationIndex((prevIndex) => prevIndex + 1);
-                // Reset translateY for the next affirmation
                 translateY.setValue(-50);
             });
         }
-    }, [currentAffirmationIndex, affirmations, translateY]);
+    }, [currentAffirmationIndex, affirmations, translateY, opacity]);
 
     return (
         <View style={styles.container}>
@@ -29,7 +43,7 @@ const FallingWordsOfAffirmation = ({ affirmations }) => {
                         styles.text,
                         {
                             transform: [{ translateY }],
-                            opacity: index === currentAffirmationIndex ? 1 : 0, // Show only the current affirmation
+                            opacity: index === currentAffirmationIndex ? opacity : 0,
                         },
                     ]}
                 >
@@ -45,15 +59,23 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: '#FF69B4',
     },
     text: {
         fontSize: 20,
         fontWeight: 'bold',
         position: 'absolute',
-        top: -50, // Adjust the initial position based on your needs
+        top: -50,
+        color: '#FFFFFF',
+        textShadowColor: 'rgba(0, 0, 0, 0.3)',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 5,
+        letterSpacing: 1,
+        backgroundColor: 'rgba(255, 105, 180, 0.8)',
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderRadius: 10,
     },
 });
 
 export default FallingWordsOfAffirmation;
-
-
