@@ -1,8 +1,9 @@
 
 import React, { useState, useRef } from 'react';
 import { Camera, CameraType } from 'expo-camera';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Video } from 'expo-av';
+import * as MediaLibrary from 'expo-media-library';
 import { useNavigation } from '@react-navigation/native';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import { useEffect } from 'react';
@@ -24,6 +25,8 @@ const CameraVideo = () => {
     const [capturedVideo, setCapturedVideo] = useState<string | null>(null);
     const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
     const [timer, setTimer] = useState(0);
+    const [savingVideo, setSavingVideo] = useState(false); // New state for tracking saving video progress
+    const [videoSaved, setVideoSaved] = useState(false);
     const cameraRef = useRef<Camera | null>(null);
 
 
@@ -71,10 +74,20 @@ const CameraVideo = () => {
     };
 
     const saveVideoToGallery = async () => {
-        if (capturedVideo) {
-            // Handle saving the video to the gallery (you can use expo-media-library or other methods)
-            // For simplicity, let's just log the video URI here
-            console.log('Video saved to gallery:', capturedVideo);
+        if (capturedVideo && !videoSaved) {
+            try {
+                setSavingVideo(true); // Start saving video, show loading spinner
+
+                await MediaLibrary.saveToLibraryAsync(capturedVideo);
+
+                // Video saved successfully
+                console.log('Video saved to gallery:', capturedVideo);
+                setVideoSaved(true); // Set the state to indicate the video is saved
+            } catch (error) {
+                console.error('Error saving video to gallery:', error);
+            } finally {
+                setSavingVideo(false); // Stop saving video, hide loading spinner
+            }
         }
     };
 
@@ -97,12 +110,20 @@ const CameraVideo = () => {
                         isLooping
                         style={type === CameraType.front ? styles.capturedVideoFront : styles.capturedVideoBack}
                     />
-                    <View style={styles.buttonsContainer}>
+
+                    {/* Overlayed buttons container */}
+                    <View style={styles.overlayButtonsContainer}>
                         <TouchableOpacity style={styles.button} onPress={retakeVideo}>
                             <Text style={styles.buttonText}>Retake</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.button} onPress={saveVideoToGallery}>
-                            <Text style={styles.buttonText}>Save to Gallery</Text>
+                        <TouchableOpacity style={styles.button} onPress={saveVideoToGallery} disabled={videoSaved}>
+                            {savingVideo ? (
+                                <ActivityIndicator size="small" color="#ffffff" />
+                            ) : (
+                                <Text style={[styles.buttonText, { color: videoSaved ? '#999999' : 'white' }]}>
+                                    {videoSaved ? 'Saved!' : 'Save to Gallery'}
+                                </Text>
+                            )}
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.button}
@@ -164,6 +185,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'ecf0f1',
+    },
+    overlayButtonsContainer: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 20,
+        backgroundColor: 'rgba(0, 0, 0, 0)', // Adjust the opacity as needed
     },
     timerContainer: {
         position: 'absolute',

@@ -1,7 +1,6 @@
-// @ts-nocheck
 import React, { useState, useRef } from 'react';
 import { Camera, CameraType, CameraCapturedPicture } from 'expo-camera';
-import { StyleSheet, Text, TouchableOpacity, View, Image, Alert, Animated } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View, Image, Alert, Animated } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
 import { useNavigation } from '@react-navigation/native';
 import { PinchGestureHandler, TapGestureHandler, LongPressGestureHandler, State } from 'react-native-gesture-handler';
@@ -18,7 +17,10 @@ const CameraComponent = () => {
     const [isRecording, setRecording] = useState(false);
     const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
     const cameraRef = useRef<Camera | null>(null);
-    const longPressRef = useRef<LongPressGestureHandler>(null);
+    const [savingPhoto, setSavingPhoto] = useState(false);
+    const [photoSaved, setPhotoSaved] = useState(false);
+
+
 
 
     if (!permission) {
@@ -69,8 +71,9 @@ const CameraComponent = () => {
     };
 
     const saveToGallery = async () => {
-        if (capturedImage) {
+        if (capturedImage && !savingPhoto) {
             try {
+                setSavingPhoto(true);
                 let manipulatedImage = capturedImage;
                 if (type === CameraType.front) {
                     // Flip the image horizontally using expo-image-manipulator
@@ -79,12 +82,14 @@ const CameraComponent = () => {
                         [{ flip: FlipType.Horizontal }]
                     );
                     manipulatedImage = result.uri;
+                    setPhotoSaved(true)
                 }
 
                 await MediaLibrary.saveToLibraryAsync(manipulatedImage);
-                Alert.alert('Success', 'Image/Video saved to gallery!');
             } catch (error) {
                 console.error('Error saving image/video to gallery:', error);
+            } finally {
+                setSavingPhoto(false)
             }
         }
     };
@@ -97,23 +102,24 @@ const CameraComponent = () => {
         <View style={styles.container}>
             {capturedImage ? (
                 <>
-                    {isRecording && (
-                        <TouchableOpacity style={styles.stopRecordButton} onPress={stopRecording}>
-                            <Text style={styles.stopRecordButtonText}>Stop Recording</Text>
-                        </TouchableOpacity>
-                    )}
                     <Image
                         source={{ uri: capturedImage }}
                         style={type === CameraType.front ? styles.capturedImageFront : styles.capturedImage}
                     />
-                    <View style={styles.buttonsContainer}>
-                        {!isRecording && (
+                    <View style={styles.overlayButtonsContainer}>
+                        {(
                             <>
                                 <TouchableOpacity style={styles.button} onPress={retakePicture}>
                                     <Text style={styles.buttonText}>Retake</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.button} onPress={saveToGallery}>
-                                    <Text style={styles.buttonText}>Save to Gallery</Text>
+                                    {savingPhoto ? (
+                                        <ActivityIndicator size="small" color="#ffffff" />
+                                    ) : (
+                                        <Text style={[styles.buttonText, { color: photoSaved ? '#999999' : 'white' }]}>
+                                            {photoSaved ? 'Saved!' : 'Save to Gallery'}
+                                        </Text>
+                                    )}
                                 </TouchableOpacity>
                             </>
                         )}
@@ -159,6 +165,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ecf0f1',
+    },
+    overlayButtonsContainer: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 20,
+        backgroundColor: 'rgba(0, 0, 0, 0)', // Adjust the opacity as needed
     },
     goBackButton: {
         position: 'absolute',
