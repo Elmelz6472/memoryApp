@@ -12,6 +12,7 @@ import Affirmations from './components/Affirmation/Affirmations';
 import MemorySection from './components/Memory/MemorySection';
 import MemorySectionDate from './components/Memory/MemoryDateSection';
 import MemoryDateContent from './components/Memory/MemoryDateContent';
+import MemorySectionVlog from './components/Memory/MemoryVlogSection';
 
 
 const App = () => {
@@ -28,8 +29,9 @@ const App = () => {
         <Stack.Screen name="Affirmations" component={Affirmations} options={{ headerShown: false }} />
         <Stack.Screen name="Tests" component={MemorySection} options={{ headerShown: false }} />
         <Stack.Screen name="DateSection" component={MemorySectionDate} options={{ headerShown: false }} />
-
         <Stack.Screen name="DateContent" component={MemoryDateContent} options={{ title: 'Date memories', headerStyle: { backgroundColor: "#FDF5E6" } }} />
+        <Stack.Screen name="VlogSection" component={MemorySectionVlog} options={{ headerShown: false }} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

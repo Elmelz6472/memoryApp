@@ -3,40 +3,38 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AwesomeButton from 'react-native-really-awesome-button';
 import { useNavigation } from '@react-navigation/native';
-import videos from '../../videos/videosDate';
+import videosVlogs from '../../videos/videosVlogs';
 
-
-const MemoryIconDate = ({ title, date }: any) => {
+const MemoryIconVlog = ({ title, date}: any) => {
     return (
         <View>
             <View style={styles.memoryIcon}>
-                <FontAwesome5 name="heart" size={30} color="#FFF" />
+                <FontAwesome5 name="video" size={30} color="#FFF" />
                 <View style={styles.titleDateContainer}>
                     <Text style={styles.title}>{title}</Text>
                     <Text style={styles.date}>{date}</Text>
                 </View>
             </View>
-
         </View>
-    );
-};
+    )
+}
 
 
 
-const MemorySectionDate: React.FC = () => {
+const MemorySectionVlog: React.FC = () => {
     const navigation = useNavigation()
     return (
         <View style={styles.container}>
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.memoryShelf}>
-                    {videos.map((item, index) => (
+                    {videosVlogs.map((item, index) => (
                         <TouchableOpacity
                             key={index}
                             // @ts-ignore
                             onPress={() => navigation.navigate("DateContent", item)}
                             style={styles.memoryIconContainer}
                         >
-                            <MemoryIconDate {...item} />
+                            <MemoryIconVlog {...item} />
                         </TouchableOpacity>
                     ))}
                 </View>
@@ -109,4 +107,5 @@ const styles = StyleSheet.create({
 
 })
 
-export default MemorySectionDate;
+
+export default MemorySectionVlog;

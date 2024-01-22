@@ -30,11 +30,6 @@ const MemoryIcon = ({ title, type }: { title: string; type: string }) => {
 };
 
 
-const onPressVlogs = () => {
-
-}
-
-
 const onPressFun = () => {
 
 }
@@ -53,7 +48,9 @@ const MemorySections: React.FC = () => {
                         <MemoryIcon title="Dates" type="dates" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={onPressVlogs}>
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate("VlogSection" as never)
+                    }}>
                         <MemoryIcon title="Vlogs" type="vlogs" />
                     </TouchableOpacity>
 
