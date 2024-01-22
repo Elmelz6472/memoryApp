@@ -1,10 +1,21 @@
-// @ts-nocheck
+
 import React, { useState, useRef } from 'react';
 import { Camera, CameraType } from 'expo-camera';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Video } from 'expo-av';
 import { useNavigation } from '@react-navigation/native';
 import { TapGestureHandler } from 'react-native-gesture-handler';
+import { useEffect } from 'react';
+
+const formatTimer = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    const formattedTime = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+    return formattedTime;
+};
+
+
 
 const CameraVideo = () => {
     const navigation = useNavigation();
@@ -12,7 +23,23 @@ const CameraVideo = () => {
     const [isRecording, setRecording] = useState(false);
     const [capturedVideo, setCapturedVideo] = useState<string | null>(null);
     const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
+    const [timer, setTimer] = useState(0);
     const cameraRef = useRef<Camera | null>(null);
+
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+
+        if (isRecording) {
+            interval = setInterval(() => {
+                setTimer(prevTimer => prevTimer + 1);
+            }, 1000);
+        }
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [isRecording]);
 
     const startRecording = async () => {
         if (cameraRef. current) {
@@ -77,9 +104,12 @@ const CameraVideo = () => {
                         <TouchableOpacity style={styles.button} onPress={saveVideoToGallery}>
                             <Text style={styles.buttonText}>Save to Gallery</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.button} onPress={() => {
-                            navigation.navigate("homeScreen" as never);
-                        }}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => {
+                                navigation.navigate('homeScreen' as never);
+                            }}
+                        >
                             <Text style={styles.buttonText}>Go back</Text>
                         </TouchableOpacity>
                     </View>
@@ -87,37 +117,65 @@ const CameraVideo = () => {
             ) : (
                 <View style={styles.cameraContainer}>
                     <TapGestureHandler onActivated={handleDoubleTap} numberOfTaps={2}>
-                    <Camera style={styles.camera} type={type} ref={cameraRef}>
-                        <View style={styles.buttonContainer}>
-                                    <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.navigate("homeScreen" as never)}>
-                                        <Text style={styles.goBackButtonText}>Go Back</Text>
-                                    </TouchableOpacity>
+                        <Camera style={styles.camera} type={type} ref={cameraRef}>
+                            <View style={styles.buttonContainer}>
+                                <TouchableOpacity
+                                    style={styles.goBackButton}
+                                    onPress={() => navigation.navigate('homeScreen' as never)}
+                                >
+                                    <Text style={styles.goBackButtonText}>Go Back</Text>
+                                </TouchableOpacity>
 
                                 <TouchableOpacity style={styles.flashButton} onPress={toggleFlashMode}>
-                                    <Text style={styles.flashButtonText}>{flashMode === Camera.Constants.FlashMode.on ? 'Flash On' : 'Flash Off'}</Text>
+                                    <Text style={styles.flashButtonText}>
+                                        {flashMode === Camera.Constants.FlashMode.on ? 'Flash On' : 'Flash Off'}
+                                    </Text>
                                 </TouchableOpacity>
-                                    <TouchableOpacity style={styles.switchButton} onPress={() => { navigation.navigate("CameraPhoto" as never)}}>
-                                        <Text style={styles.switchButtonText}>Go to Photo</Text>
-                                    </TouchableOpacity>
-                            <TouchableOpacity
-                                style={isRecording ? styles.stopRecordButton : styles.recordButton}
-                                onPress={isRecording ? stopRecording : startRecording}
-                            >
+                                <TouchableOpacity
+                                    style={styles.switchButton}
+                                    onPress={() => {
+                                        navigation.navigate('CameraPhoto' as never);
+                                    }}
+                                >
+                                    <Text style={styles.switchButtonText}>Go to Photo</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={isRecording ? styles.stopRecordButton : styles.recordButton}
+                                    onPress={isRecording ? stopRecording : startRecording}
+                                >
                                     <View style={styles.captureInnerButton} />
-                            </TouchableOpacity>
-                        </View>
-                    </Camera>
-                        </TapGestureHandler>
+                                </TouchableOpacity>
+                                {isRecording && (
+                                    <View style={styles.timerContainer}>
+                                        <Text style={styles.timerText}>{formatTimer(timer)}</Text>
+                                    </View>
+                                )}
+                            </View>
+                        </Camera>
+                    </TapGestureHandler>
                 </View>
             )}
         </View>
     );
 };
 
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'ecf0f1',
+    },
+    timerContainer: {
+        position: 'absolute',
+        top: 20,
+        alignSelf: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        padding: 10,
+        borderRadius: 10,
+    },
+    timerText: {
+        color: '#FFFFFF',
+        fontSize: 16,
     },
     goBackButton: {
         position: 'absolute',
