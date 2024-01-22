@@ -50,76 +50,68 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
         <TouchableWithoutFeedback onPress={toggleButtons}>
             <View style={styles.backdrop}>
                 <StarPattern seed="jsjs" />
-
-
                 <Animated.View style={[styles.UpperContainer, { opacity: fadeAnim }]}>
-                {showButtons &&  <>
-                    <View style={styles.upperButtonsContainer}>
-                        <AwesomeButton
-                            onPress={() => {props.navigation.navigate("CameraVideo") }}
-                                backgroundColor="#27ae60"
-                                backgroundDarker="#219d54"
-                                style={styles.button}
-                        >
-                                <FontAwesome5 name="camera" size={30} color="#FFFFFF" />
-
-                        </AwesomeButton>
-                            <AwesomeButton
-                                onPress={() => { props.navigation.navigate("BucketList") }}
-                                backgroundColor="#3498db" // Dodger Blue
-                                backgroundDarker="#2980b9" // Darker Dodger Blue
-                            >
-                                <FontAwesome5 name="list" size={30} color={"#FFF"} />
-                            </AwesomeButton>
-                        <AwesomeButton
-                            onPress={() => { props.navigation.navigate("Convo")}}
-                            backgroundColor="#e74c3c"
-                            backgroundDarker="#c0392b"
-                        >
-                            <FontAwesome5 name="comments" size={30} color="#FFFFFF" />
-                        </AwesomeButton>
-                        </View>
-                </>
-
-            }
-            </Animated.View>
+                    {showButtons && (
+                        <>
+                            <View style={styles.upperButtonsContainer}>
+                                <AwesomeButton
+                                    onPress={() => { props.navigation.navigate("CameraVideo") }}
+                                    backgroundColor="#27ae60" // Green
+                                    backgroundDarker="#219d54"
+                                    style={styles.button}
+                                >
+                                    <FontAwesome5 name="camera" size={30} color="#FFFFFF" />
+                                </AwesomeButton>
+                                <AwesomeButton
+                                    onPress={() => { props.navigation.navigate("BucketList") }}
+                                    backgroundColor="#FF1493"
+                                    backgroundDarker="#C71585"
+                                >
+                                    <FontAwesome5 name="list" size={30} color={"#FFF"} />
+                                </AwesomeButton>
+                                <AwesomeButton
+                                    onPress={() => { props.navigation.navigate("Convo") }}
+                                    backgroundColor="#DAA520"
+                                    backgroundDarker="#B8860B"
+                                >
+                                    <FontAwesome5 name="comments" size={30} color="#FFFFFF" />
+                                </AwesomeButton>
+                            </View>
+                        </>
+                    )}
+                </Animated.View>
 
                 <Animated.View style={[styles.centeredContainer, { opacity: fadeAnim }]}>
                     {showButtons && (
                         <>
-
-                            {/* Bottom Buttons */}
                             <View style={styles.bottomButtonsContainer}>
                                 <AwesomeButton
                                     onPress={onPressLetters}
-                                    backgroundColor="#3498db"
+                                    backgroundColor="#3498db" // Blue
                                     backgroundDarker="#2980b9"
                                 >
                                     <FontAwesome5 name="envelope" size={30} color="#FFFFFF" />
                                 </AwesomeButton>
                                 <AwesomeButton
                                     onPress={onPressEvent}
-                                    backgroundColor="#e74c3c"
+                                    backgroundColor="#e74c3c" // Red
                                     backgroundDarker="#c0392b"
                                 >
                                     <FontAwesome5 name="calendar" size={30} color="#FFFFFF" />
-
                                 </AwesomeButton>
                                 <AwesomeButton
                                     onPress={onPressMemories}
-                                    backgroundColor="#9b59b6"
+                                    backgroundColor="#9b59b6" // Purple
                                     backgroundDarker="#8e44ad"
                                 >
                                     <FontAwesome5 name="heart" size={30} color="#FFFFFF" />
-
                                 </AwesomeButton>
                                 <AwesomeButton
                                     onPress={onPressTests}
-                                    backgroundColor="#e67e22"
+                                    backgroundColor="#e67e22" // Orange
                                     backgroundDarker="#d35400"
                                 >
                                     <FontAwesome5 name="star" size={30} color="#FFFFFF" />
-
                                 </AwesomeButton>
                             </View>
                         </>
