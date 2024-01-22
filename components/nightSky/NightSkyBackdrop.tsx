@@ -3,11 +3,14 @@ import { View, StyleSheet, Animated, TouchableWithoutFeedback } from 'react-nati
 import AwesomeButton from 'react-native-really-awesome-button';
 import StarPattern from './StarPattern';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useAppContext } from '../../AppContext';
 
 
 const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => void; }; }) => {
     const [showButtons, setShowButtons] = useState(true);
     const fadeAnim = useRef(new Animated.Value(1)).current;
+    const { seedValue } = useAppContext()
+
 
     useEffect(() => {
         animateButtons();
@@ -49,7 +52,7 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
     return (
         <TouchableWithoutFeedback onPress={toggleButtons}>
             <View style={styles.backdrop}>
-                <StarPattern seed="jsjs" />
+                <StarPattern seed={seedValue} />
                 <Animated.View style={[styles.UpperContainer, { opacity: fadeAnim }]}>
                     {showButtons && (
                         <>
@@ -75,6 +78,13 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                                     backgroundDarker="#B8860B"
                                 >
                                     <FontAwesome5 name="comments" size={30} color="#FFFFFF" />
+                                </AwesomeButton>
+                                <AwesomeButton
+                                    onPress={() => {props.navigation.navigate("Settings")}}
+                                    backgroundColor="#CCCCCC" // Orange
+                                    backgroundDarker="#999999"
+                                >
+                                    <FontAwesome5 name="cog" size={30} color="#FFFFFF" />
                                 </AwesomeButton>
                             </View>
                         </>
@@ -113,6 +123,7 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                                 >
                                     <FontAwesome5 name="star" size={30} color="#FFFFFF" />
                                 </AwesomeButton>
+
                             </View>
                         </>
                     )}

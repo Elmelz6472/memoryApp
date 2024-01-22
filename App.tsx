@@ -4,6 +4,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'react-native';
+import { AppProvider } from './AppContext';
 import NightSkyBackdrop from './components/nightSky/NightSkyBackdrop';
 import LetterSections from './components/Letter/LetterSection';
 import LetterContent from './components/Letter/LetterContent';
@@ -20,14 +21,17 @@ import CameraPhoto from './components/Camera/CameraPhoto';
 import CameraVideo from './components/Camera/CameraVideo';
 import ConvoComponent from './components/Convo/Convo';
 import BucketList from './components/BucketList/BucketList'
+import Settings from './components/Settings/Settings';
 
 const App = () => {
   const Stack = createStackNavigator();
 
   return (
+    <AppProvider>
     <NavigationContainer>
       <StatusBar hidden />
       <Stack.Navigator>
+
         <Stack.Screen name="homeScreen" component={NightSkyBackdrop} options={{ title: 'SkyMap', headerShown: false }} />
         <Stack.Screen name="Letters" component={LetterSections} options={{ headerShown: false }} />
         <Stack.Screen name="LetterContent" component={LetterContent} options={{ title: 'Letter Content', headerStyle: { backgroundColor: "#FDF5E6" } }} />
@@ -46,8 +50,12 @@ const App = () => {
         <Stack.Screen name="BucketList" component={BucketList}/>
         <Stack.Screen name="Convo" component={ConvoComponent} />
 
+        <Stack.Screen name="Settings" component={Settings} />
+
+
       </Stack.Navigator>
-    </NavigationContainer>
+         </NavigationContainer>
+    </AppProvider>
   );
 };
 
