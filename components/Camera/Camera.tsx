@@ -1,10 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { Camera, CameraType, CameraCapturedPicture } from 'expo-camera';
-import { StyleSheet, Text, TouchableOpacity, View, Image, Alert } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image, Alert, Animated } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
 import { useNavigation } from '@react-navigation/native';
-
-
+import { PinchGestureHandler, TapGestureHandler, LongPressGestureHandler, State } from 'react-native-gesture-handler';
 
 const CameraComponent = () => {
     const navigation = useNavigation();
@@ -12,7 +11,11 @@ const CameraComponent = () => {
     const [type, setType] = useState(CameraType.back);
     const [permission, requestPermission] = Camera.useCameraPermissions();
     const [capturedImage, setCapturedImage] = useState<string | null>(null);
+    const [isRecording, setRecording] = useState(false);
+    const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
     const cameraRef = useRef<Camera | null>(null);
+    const longPressRef = useRef<LongPressGestureHandler>(null);
+
 
     if (!permission) {
         // Camera permissions are still loading
@@ -42,6 +45,34 @@ const CameraComponent = () => {
         }
     };
 
+    const startRecording = async () => {
+        if (cameraRef.current) {
+            try {
+                setRecording(true);
+                const videoRecordPromise = cameraRef.current.recordAsync({});
+                const { uri } = await videoRecordPromise;
+                setCapturedImage(uri);
+            } catch (error) {
+                console.error('Error starting video recording:', error);
+            }
+        }
+    };
+
+    const stopRecording = () => {
+        if (cameraRef.current && isRecording) {
+            cameraRef.current.stopRecording();
+            setRecording(false);
+        }
+    };
+
+    const handleDoubleTap = () => {
+        setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
+    };
+
+    const toggleFlashMode = () => {
+        setFlashMode((current: any) => (current === Camera.Constants.FlashMode.off ? Camera.Constants.FlashMode.on : Camera.Constants.FlashMode.off));
+    };
+
     const retakePicture = () => {
         setCapturedImage(null);
     };
@@ -50,56 +81,109 @@ const CameraComponent = () => {
         if (capturedImage) {
             try {
                 await MediaLibrary.saveToLibraryAsync(capturedImage);
-                Alert.alert('Success', 'Image saved to gallery!');
+                Alert.alert('Success', 'Image/Video saved to gallery!');
             } catch (error) {
-                console.error('Error saving image to gallery:', error);
+                console.error('Error saving image/video to gallery:', error);
             }
         }
     };
 
-    function toggleCameraType() {
+    const toggleCameraType = () => {
         setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
-    }
+    };
 
     return (
         <View style={styles.container}>
             {capturedImage ? (
                 <>
+                    {isRecording && (
+                        <TouchableOpacity style={styles.stopRecordButton} onPress={stopRecording}>
+                            <Text style={styles.stopRecordButtonText}>Stop Recording</Text>
+                        </TouchableOpacity>
+                    )}
                     <Image source={{ uri: capturedImage }} style={styles.capturedImage} />
                     <View style={styles.buttonsContainer}>
-                        <TouchableOpacity style={styles.button} onPress={retakePicture}>
-                            <Text style={styles.buttonText}>Retake</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.button} onPress={saveToGallery}>
-                            <Text style={styles.buttonText}>Save to Gallery</Text>
-                        </TouchableOpacity>
+                        {!isRecording && (
+                            <>
+                                <TouchableOpacity style={styles.button} onPress={retakePicture}>
+                                    <Text style={styles.buttonText}>Retake</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.button} onPress={saveToGallery}>
+                                    <Text style={styles.buttonText}>Save to Gallery</Text>
+                                </TouchableOpacity>
+                            </>
+                        )}
                         <TouchableOpacity style={styles.button} onPress={() => {
-                            navigation.goBack()
+                            navigation.goBack();
                         }}>
                             <Text style={styles.buttonText}>Go back</Text>
                         </TouchableOpacity>
                     </View>
                 </>
             ) : (
-                    <Camera style={styles.camera} type={type} ref={cameraRef}>
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.flipButton} onPress={toggleCameraType}>
-                                <Text style={styles.flipButtonText}>↻ Flip Camera</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
-                                <View style={styles.captureInnerButton} />
-                            </TouchableOpacity>
-                        </View>
-                    </Camera>
+                <PinchGestureHandler>
+                    <LongPressGestureHandler
+                        ref={longPressRef}
+                        onHandlerStateChange={({ nativeEvent }) => {
+                            if (nativeEvent.state === State.ACTIVE) {
+                                startRecording();
+                            } else if (nativeEvent.state === State.END) {
+                                stopRecording();
+                            }
+                        }}
+                    >
+                        <TapGestureHandler onActivated={handleDoubleTap} numberOfTaps={2}>
+                            <Animated.View style={{ flex: 1 }}>
+                                <Camera style={styles.camera} type={type} ref={cameraRef} flashMode={flashMode}>
+                                    <View style={styles.buttonContainer}>
+                                        <TouchableOpacity style={styles.flashButton} onPress={toggleFlashMode}>
+                                            <Text style={styles.flashButtonText}>{flashMode === Camera.Constants.FlashMode.on ? 'Flash On' : 'Flash Off'}</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
+                                            <View style={styles.captureInnerButton} />
+                                        </TouchableOpacity>
+                                    </View>
+                                </Camera>
+                            </Animated.View>
+                        </TapGestureHandler>
+                    </LongPressGestureHandler>
+                </PinchGestureHandler>
             )}
         </View>
     );
 };
 
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ecf0f1',
+    },
+    stopRecordButton: {
+        backgroundColor: 'red', // Change the background color as needed
+        padding: 15,
+        borderRadius: 10,
+        marginVertical: 10,
+        alignItems: 'center',
+    },
+
+    stopRecordButtonText: {
+        color: 'white', // Change the text color as needed
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    flashButton: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        padding: 10,
+        borderRadius: 5,
+        position: 'absolute',
+        top: 20,
+        right: 20,
+    },
+    flashButtonText: {
+        color: 'white',
+        fontSize: 16,
     },
     permissionText: {
         textAlign: 'center',
@@ -138,26 +222,30 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     captureButton: {
+        position: "absolute",
+        bottom: "1%",
         backgroundColor: '#e74c3c',
-        padding: 25,
-        borderRadius: 50,
-        alignSelf: 'flex-end',
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
         borderWidth: 3,
-        borderColor: '#c0392b',
+        borderColor: 'white',
         shadowColor: '#c0392b',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.5,
         shadowRadius: 5,
         elevation: 5,
+        right: "10%"
+
     },
     captureInnerButton: {
         backgroundColor: 'white',
-        width: 70,
-        height: 70,
-        borderRadius: 35,
-        borderWidth: 3,
-        borderColor: '#e74c3c',
-        alignSelf: 'center',
+        width: 60,
+        height: 60,
+        borderRadius: 30,
     },
 
     capturedImage: {
