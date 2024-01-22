@@ -19,6 +19,7 @@ import MemoryFunContent from './components/Memory/MemoryFunContent';
 import CameraPhoto from './components/Camera/CameraPhoto';
 import CameraVideo from './components/Camera/CameraVideo';
 import ConvoComponent from './components/Convo/Convo';
+import BucketList from './components/BucketList/BucketList'
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -42,6 +43,7 @@ const App = () => {
         <Stack.Screen name="CameraPhoto" component={CameraPhoto} options={{ headerShown: false }} />
         <Stack.Screen name="CameraVideo" component={CameraVideo} options={{ headerShown: false }} />
 
+        <Stack.Screen name="BucketList" component={BucketList}/>
         <Stack.Screen name="Convo" component={ConvoComponent} />
 
       </Stack.Navigator>

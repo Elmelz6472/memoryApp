@@ -65,7 +65,7 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
 
                         </AwesomeButton>
                             <AwesomeButton
-                                onPress={() => { }}
+                                onPress={() => { props.navigation.navigate("BucketList") }}
                                 backgroundColor="#3498db" // Dodger Blue
                                 backgroundDarker="#2980b9" // Darker Dodger Blue
                             >
