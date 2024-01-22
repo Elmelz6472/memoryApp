@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useRef } from 'react';
 import { Camera, CameraType } from 'expo-camera';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -14,7 +15,7 @@ const CameraVideo = () => {
     const cameraRef = useRef<Camera | null>(null);
 
     const startRecording = async () => {
-        if (cameraRef.current) {
+        if (cameraRef. current) {
             try {
                 setRecording(true);
                 const videoRecordPromise = cameraRef.current.recordAsync({});
@@ -67,7 +68,7 @@ const CameraVideo = () => {
                         resizeMode="cover"
                         shouldPlay
                         isLooping
-                        style={styles.capturedVideo}
+                        style={type === CameraType.front ? styles.capturedVideoFront : styles.capturedVideoBack}
                     />
                     <View style={styles.buttonsContainer}>
                         <TouchableOpacity style={styles.button} onPress={retakeVideo}>
@@ -88,6 +89,10 @@ const CameraVideo = () => {
                     <TapGestureHandler onActivated={handleDoubleTap} numberOfTaps={2}>
                     <Camera style={styles.camera} type={type} ref={cameraRef}>
                         <View style={styles.buttonContainer}>
+                                    <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.navigate("homeScreen" as never)}>
+                                        <Text style={styles.goBackButtonText}>Go Back</Text>
+                                    </TouchableOpacity>
+
                                 <TouchableOpacity style={styles.flashButton} onPress={toggleFlashMode}>
                                     <Text style={styles.flashButtonText}>{flashMode === Camera.Constants.FlashMode.on ? 'Flash On' : 'Flash Off'}</Text>
                                 </TouchableOpacity>
@@ -112,7 +117,19 @@ const CameraVideo = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'black',
+        backgroundColor: 'ecf0f1',
+    },
+    goBackButton: {
+        position: 'absolute',
+        top: 20,
+        left: 20,
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        padding: 10,
+    },
+    goBackButtonText: {
+        color: 'black',
+        fontSize: 16,
     },
     switchButton: {
         position: 'absolute',
@@ -199,25 +216,32 @@ const styles = StyleSheet.create({
         borderRadius: 30,
     },
     buttonText: {
-        color: 'black',
+        color: 'white',
         fontSize: 16,
+        fontWeight: 'bold',
     },
-    capturedVideo: {
+    capturedVideoFront: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        transform: [
+            { scaleX: -1 }
+        ]
+    },
+    capturedVideoBack: {
         flex: 1,
         width: '100%',
         height: '100%',
     },
     buttonsContainer: {
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 20,
+        justifyContent: 'space-around',
+        padding: 20,
     },
     button: {
-        backgroundColor: '#fff',
-        borderRadius: 5,
-        padding: 10,
-        marginHorizontal: 10,
+        backgroundColor: '#3498db',
+        padding: 15,
+        borderRadius: 8,
     },
 });
 

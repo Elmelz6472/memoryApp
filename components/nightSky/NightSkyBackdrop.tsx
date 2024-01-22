@@ -59,10 +59,18 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                             onPress={() => {props.navigation.navigate("CameraVideo") }}
                                 backgroundColor="#27ae60"
                                 backgroundDarker="#219d54"
+                                style={styles.button}
                         >
                                 <FontAwesome5 name="camera" size={30} color="#FFFFFF" />
 
                         </AwesomeButton>
+                            <AwesomeButton
+                                onPress={() => { }}
+                                backgroundColor="#3498db" // Dodger Blue
+                                backgroundDarker="#2980b9" // Darker Dodger Blue
+                            >
+                                <FontAwesome5 name="list" size={30} color={"#FFF"} />
+                            </AwesomeButton>
                         <AwesomeButton
                             onPress={() => { props.navigation.navigate("Convo")}}
                             backgroundColor="#e74c3c"
@@ -127,6 +135,9 @@ const styles = StyleSheet.create({
     backdrop: {
         flex: 1,
         backgroundColor: 'black',
+    },
+    button: {
+
     },
     UpperContainer: {
         flexDirection: 'column', // Changed to column

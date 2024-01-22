@@ -5,10 +5,9 @@ import HeartIcon from '../../heartIcon';
 import AwesomeButton from 'react-native-really-awesome-button';
 import { useNavigation } from '@react-navigation/native';
 import affirmations from '../../utils/affirmations';
-import shuffleArray from '../../utils/shuffleArray'
+import shuffleArray from '../../utils/shuffleArray';
 
 const Affirmations = () => {
-    const navigation = useNavigation();
     const [showAffirmations, setShowAffirmations] = useState(false);
 
     const handleShowAffirmations = () => {
@@ -23,13 +22,13 @@ const Affirmations = () => {
                 />
             )}
             <View style={styles.buttonContainer}>
-                <AwesomeButton onPress={handleShowAffirmations} style={styles.button}>
+                <AwesomeButton onPress={handleShowAffirmations}
+                backgroundColor="#FFB6C1" // Light Pink
+                backgroundDarker="#FF69B4" // Darker Pink
+                 style={styles.button}>
                     <Text style={styles.buttonText}>Show Affirmations</Text>
-                    <HeartIcon width={20} height={20} color="white" />
+                    <HeartIcon width={20} height={20} color="red" />
                 </AwesomeButton>
-                {/* <AwesomeButton onPress={() => { navigation.goBack() }} style={styles.button}>
-                    <Text style={styles.buttonText}>Return back</Text>
-                </AwesomeButton> */}
             </View>
         </View>
     );
@@ -40,17 +39,17 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end', // Align content at the bottom
         alignItems: 'center',
-        // marginBottom: 20, // Add margin to provide space for the button
-        backgroundColor: '#ff00eb'
+        backgroundColor: '#FF3366', // Romantic Pink
     },
     buttonContainer: {
-        position: "absolute",
+        position: 'absolute',
         bottom: '10%',
         flexDirection: 'column', // Stack buttons vertically
         marginTop: 10, // Add margin between buttons
     },
     button: {
-        // padding: 15,
+        zIndex: 10,
+        backgroundColor: '#FF3366', // Romantic Pink
         borderRadius: 25,
         marginBottom: 10, // Add margin between buttons
         elevation: 5, // Add a subtle shadow for a cute effect
@@ -59,7 +58,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
         marginRight: 10,
-        textAlign: 'center'
+        textAlign: 'center',
     },
 });
 

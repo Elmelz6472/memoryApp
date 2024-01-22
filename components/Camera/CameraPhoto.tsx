@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useRef } from 'react';
 import { Camera, CameraType, CameraCapturedPicture } from 'expo-camera';
 import { StyleSheet, Text, TouchableOpacity, View, Image, Alert, Animated } from 'react-native';
@@ -129,6 +130,9 @@ const CameraComponent = () => {
                             <Animated.View style={{ flex: 1 }}>
                                 <Camera style={styles.camera} type={type} ref={cameraRef} flashMode={flashMode}>
                                     <View style={styles.buttonContainer}>
+                                        <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.navigate("homeScreen" as never)}>
+                                            <Text style={styles.goBackButtonText}>Go Back</Text>
+                                        </TouchableOpacity>
                                         <TouchableOpacity style={styles.flashButton} onPress={toggleFlashMode}>
                                             <Text style={styles.flashButtonText}>{flashMode === Camera.Constants.FlashMode.on ? 'Flash On' : 'Flash Off'}</Text>
                                         </TouchableOpacity>
@@ -155,6 +159,18 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ecf0f1',
+    },
+    goBackButton: {
+        position: 'absolute',
+        top: 20,
+        left: 20,
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        padding: 10,
+    },
+    goBackButtonText: {
+        color: 'black',
+        fontSize: 16,
     },
     switchButton: {
         position: 'absolute',

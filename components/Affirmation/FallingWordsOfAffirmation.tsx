@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
 
-const FallingWordsOfAffirmation = ({ affirmations }) => {
+const FallingWordsOfAffirmation = ({ affirmations }: any) => {
     const [currentAffirmationIndex, setCurrentAffirmationIndex] = useState(0);
     const translateY = new Animated.Value(50);
     const opacity = new Animated.Value(1);
@@ -36,7 +36,7 @@ const FallingWordsOfAffirmation = ({ affirmations }) => {
 
     return (
         <View style={styles.container}>
-            {affirmations.map((affirmation, index) => (
+            {affirmations.map((affirmation: string, index: number) => (
                 <Animated.Text
                     key={index}
                     style={[
