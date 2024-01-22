@@ -43,29 +43,78 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
         toggleButtons();
     };
 
-    const onPressZen = () => {
-        // Handle Zen button press
-        toggleButtons();
-    };
 
     return (
         <TouchableWithoutFeedback onPress={toggleButtons}>
             <View style={styles.backdrop}>
-                <StarPattern seed="jsjs"/>
+                <StarPattern seed="jsjs" />
+
+
+                <Animated.View>
+                {showButtons &&  <>
+                    <View style={styles.upperButtonsContainer}>
+                        <AwesomeButton
+                            onPress={() => { }}
+                                backgroundColor="#27ae60"
+                                backgroundDarker="#219d54"
+                        >
+                            Pics
+                        </AwesomeButton>
+                        <AwesomeButton
+                            onPress={() => { }}
+                            backgroundColor="#e74c3c"
+                            backgroundDarker="#c0392b"
+                        >
+                            Upper Button 2
+                        </AwesomeButton>
+                        </View>
+                </>
+
+            }
+</Animated.View>
+
                 <Animated.View style={[styles.centeredContainer, { opacity: fadeAnim }]}>
                     {showButtons && (
                         <>
-                            <AwesomeButton onPress={onPressLetters} backgroundColor="#3498db" backgroundDarker="#2980b9">Letters</AwesomeButton>
-                            <AwesomeButton onPress={onPressEvent} backgroundColor="#e74c3c" backgroundDarker="#c0392b">Event</AwesomeButton>
-                            <AwesomeButton onPress={onPressMemories} backgroundColor="#9b59b6" backgroundDarker="#8e44ad">Words</AwesomeButton>
-                            <AwesomeButton onPress={onPressTests} backgroundColor="#e67e22" backgroundDarker="#d35400">Memory</AwesomeButton>
 
+                            {/* Bottom Buttons */}
+                            <View style={styles.bottomButtonsContainer}>
+                                <AwesomeButton
+                                    onPress={onPressLetters}
+                                    backgroundColor="#3498db"
+                                    backgroundDarker="#2980b9"
+                                >
+                                    Letters
+                                </AwesomeButton>
+                                <AwesomeButton
+                                    onPress={onPressEvent}
+                                    backgroundColor="#e74c3c"
+                                    backgroundDarker="#c0392b"
+                                >
+                                    Event
+                                </AwesomeButton>
+                                <AwesomeButton
+                                    onPress={onPressMemories}
+                                    backgroundColor="#9b59b6"
+                                    backgroundDarker="#8e44ad"
+                                >
+                                    Words
+                                </AwesomeButton>
+                                <AwesomeButton
+                                    onPress={onPressTests}
+                                    backgroundColor="#e67e22"
+                                    backgroundDarker="#d35400"
+                                >
+                                    Memory
+                                </AwesomeButton>
+                            </View>
                         </>
                     )}
                 </Animated.View>
             </View>
         </TouchableWithoutFeedback>
     );
+
 };
 
 const styles = StyleSheet.create({
@@ -74,7 +123,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
     },
     centeredContainer: {
-        flexDirection: 'row',
+        flexDirection: 'column', // Changed to column
         justifyContent: 'space-between',
         alignItems: 'center',
         position: 'absolute',
@@ -83,6 +132,20 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         zIndex: 10,
     },
+    upperButtonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+        marginTop: 100, // Adjust the marginTop to bring the upper buttons closer to the top
+        marginBottom: 20, // Adjust the marginBottom to create space between the upper and bottom buttons
+    },
+    bottomButtonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+    },
 });
+
+
 
 export default NightSkyBackdrop;
