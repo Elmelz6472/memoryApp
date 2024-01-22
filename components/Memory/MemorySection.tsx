@@ -54,7 +54,9 @@ const MemorySections: React.FC = () => {
                         <MemoryIcon title="Vlogs" type="vlogs" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={onPressFun}>
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate("FunSection" as never)
+                    }}>
                         <MemoryIcon title="Fun" type="fun" />
                     </TouchableOpacity>
 

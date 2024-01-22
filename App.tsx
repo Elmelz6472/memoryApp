@@ -13,7 +13,9 @@ import MemorySection from './components/Memory/MemorySection';
 import MemorySectionDate from './components/Memory/MemoryDateSection';
 import MemoryDateContent from './components/Memory/MemoryDateContent';
 import MemorySectionVlog from './components/Memory/MemoryVlogSection';
-
+import MemoryVlogContent from './components/Memory/MemoryVlogContent'
+import MemorySectionFun from './components/Memory/MemoryFunSection'
+import MemoryFunContent from './components/Memory/MemoryFunContent';
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -31,7 +33,9 @@ const App = () => {
         <Stack.Screen name="DateSection" component={MemorySectionDate} options={{ headerShown: false }} />
         <Stack.Screen name="DateContent" component={MemoryDateContent} options={{ title: 'Date memories', headerStyle: { backgroundColor: "#FDF5E6" } }} />
         <Stack.Screen name="VlogSection" component={MemorySectionVlog} options={{ headerShown: false }} />
-
+        <Stack.Screen name="VlogContent" component={MemoryVlogContent} options={{ title: 'Vlog memories', headerStyle: { backgroundColor: "#FDF5E6" } }} />
+        <Stack.Screen name="FunSection" component={MemorySectionFun} options={{ headerShown: false }} />
+        <Stack.Screen name="FunContent" component={MemoryFunContent} options={{ title: 'Fun memories', headerStyle: { backgroundColor: "#FDF5E6" } }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
