@@ -27,6 +27,7 @@ const App = () => {
   const Stack = createStackNavigator();
 
   return (
+    // @ts-ignore
     <AppProvider>
     <NavigationContainer>
       <StatusBar hidden />
