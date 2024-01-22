@@ -4,13 +4,13 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'react-native';
-import NightSkyBackdrop from './components/NightSkyBackdrop';
-import LetterSections from './components/LetterSection';
-import LetterContent from './components/LetterContent';
+import NightSkyBackdrop from './components/nightSky/NightSkyBackdrop';
+import LetterSections from './components/Letter/LetterSection';
+import LetterContent from './components/Letter/LetterContent';
 import CountDown from './components/CountDown';
-import Test from './components/Test';
-import FallingWordsOfAffirmation from './components/FallingWordsOfAffirmation'; // Import the FallingWordsOfAffirmation component
-import Affirmations from './components/Affirmations';
+import Affirmations from './components/Affirmation/Affirmations';
+import MemorySection from './components/Memory/MemorySection';
+
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -24,7 +24,7 @@ const App = () => {
         <Stack.Screen name="LetterContent" component={LetterContent} options={{ title: 'Letter Content', headerStyle: { backgroundColor: "#FDF5E6" } }} />
         <Stack.Screen name="CountDown" component={CountDown} options={{ headerShown: false }} />
         <Stack.Screen name="Affirmations" component={Affirmations} options={{ headerShown: false }} />
-        <Stack.Screen name="Tests" component={Test}/>
+        <Stack.Screen name="Tests" component={MemorySection} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

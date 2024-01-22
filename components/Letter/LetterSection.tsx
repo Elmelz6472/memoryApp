@@ -4,17 +4,17 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AwesomeButton from 'react-native-really-awesome-button';
 import { useNavigation } from '@react-navigation/native';
-import letter_1 from '../letter/letter_1'
-import letter_2 from '../letter/letter_2'
-import letter_3 from '../letter/letter_3'
-import letter_4 from '../letter/letter_4';
-import letter_5 from '../letter/letter_5';
-import letter_6 from '../letter/letter_6';
-import letter_10 from '../letter/letter_10';
-import letter_11 from '../letter/letter_11';
-import letter_12 from '../letter/letter_12';
-import letter_13 from '../letter/letter_13';
-import letter_14 from '../letter/letter_14';
+import letter_1 from '../../letter/letter_1'
+import letter_2 from '../../letter/letter_2'
+import letter_3 from '../../letter/letter_3'
+import letter_4 from '../../letter/letter_4';
+import letter_5 from '../../letter/letter_5';
+import letter_6 from '../../letter/letter_6';
+import letter_10 from '../../letter/letter_10';
+import letter_11 from '../../letter/letter_11';
+import letter_12 from '../../letter/letter_12';
+import letter_13 from '../../letter/letter_13';
+import letter_14 from '../../letter/letter_14';
 
 
 const BookIcon = ({ date, content, note }: { date: string; content: string; note: string }) => {
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     fixedButtonContainer: {
         alignSelf: 'center',
         position: 'absolute',
-        bottom: 20, // Adjust the position as needed
+        bottom: '5%',
     },
 });
 

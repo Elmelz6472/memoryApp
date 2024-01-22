@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import FallingWordsOfAffirmation from './FallingWordsOfAffirmation';
-import HeartIcon from '../heartIcon';
+import HeartIcon from '../../heartIcon';
 import AwesomeButton from 'react-native-really-awesome-button';
 import { useNavigation } from '@react-navigation/native';
-import affirmations from '../utils/affirmations';
-import shuffleArray from '../utils/shuffleArray'
+import affirmations from '../../utils/affirmations';
+import shuffleArray from '../../utils/shuffleArray'
 
 const Affirmations = () => {
     const navigation = useNavigation();

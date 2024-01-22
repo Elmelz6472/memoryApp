@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import seedrandom from 'seedrandom';
 import MilestonePopup from './Milestone'; // Import the MilestonePopup component
-import milestones from '../utils/mileStones'
+import milestones from '../../utils/mileStones'
 
 const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
     const rng = seedrandom(seed);

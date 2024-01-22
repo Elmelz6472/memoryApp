@@ -55,13 +55,13 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                 <Animated.View style={[styles.centeredContainer, { opacity: fadeAnim }]}>
                     {showButtons && (
                         <>
-                            <AwesomeButton onPress={onPressLetters} backgroundColor="#4D94FF" backgroundDarker="#3366CC">Letters</AwesomeButton>
-                            <AwesomeButton onPress={onPressEvent} backgroundColor="#FF4D4D" backgroundDarker="#CC3333">Event</AwesomeButton>
-                            <AwesomeButton onPress={onPressMemories} backgroundColor="#ff00eb" backgroundDarker="#dd22bd">Words</AwesomeButton>
-                            <AwesomeButton onPress={onPressTests} backgroundColor="#de7121" backgroundDarker="#c68739">Random</AwesomeButton>
+                            <AwesomeButton onPress={onPressLetters} backgroundColor="#3498db" backgroundDarker="#2980b9">Letters</AwesomeButton>
+                            <AwesomeButton onPress={onPressEvent} backgroundColor="#e74c3c" backgroundDarker="#c0392b">Event</AwesomeButton>
+                            <AwesomeButton onPress={onPressMemories} backgroundColor="#9b59b6" backgroundDarker="#8e44ad">Words</AwesomeButton>
+                            <AwesomeButton onPress={onPressTests} backgroundColor="#e67e22" backgroundDarker="#d35400">Memory</AwesomeButton>
+
                         </>
                     )}
-                    {/* <AwesomeButton onPress={onPressZen} backgroundColor="#D3D3D3" backgroundDarker="#A9A9A9">Zen</AwesomeButton> */}
                 </Animated.View>
             </View>
         </TouchableWithoutFeedback>
