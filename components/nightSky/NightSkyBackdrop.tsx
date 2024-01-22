@@ -56,7 +56,7 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                 {showButtons &&  <>
                     <View style={styles.upperButtonsContainer}>
                         <AwesomeButton
-                            onPress={() => {props.navigation.navigate("Camera") }}
+                            onPress={() => {props.navigation.navigate("CameraVideo") }}
                                 backgroundColor="#27ae60"
                                 backgroundDarker="#219d54"
                         >

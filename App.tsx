@@ -16,7 +16,8 @@ import MemorySectionVlog from './components/Memory/MemoryVlogSection';
 import MemoryVlogContent from './components/Memory/MemoryVlogContent'
 import MemorySectionFun from './components/Memory/MemoryFunSection'
 import MemoryFunContent from './components/Memory/MemoryFunContent';
-import CameraComponent from './components/Camera/Camera';
+import CameraPhoto from './components/Camera/CameraPhoto';
+import CameraVideo from './components/Camera/CameraVideo';
 import ConvoComponent from './components/Convo/Convo';
 
 const App = () => {
@@ -38,7 +39,9 @@ const App = () => {
         <Stack.Screen name="VlogContent" component={MemoryVlogContent} options={{ title: 'Vlog memories', headerStyle: { backgroundColor: "#FDF5E6" } }} />
         <Stack.Screen name="FunSection" component={MemorySectionFun} options={{ headerShown: false }} />
         <Stack.Screen name="FunContent" component={MemoryFunContent} options={{ title: 'Fun memories', headerStyle: { backgroundColor: "#FDF5E6" } }} />
-        <Stack.Screen name="Camera" component={CameraComponent} options={{ headerShown: false }} />
+        <Stack.Screen name="CameraPhoto" component={CameraPhoto} options={{ headerShown: false }} />
+        <Stack.Screen name="CameraVideo" component={CameraVideo} options={{ headerShown: false }} />
+
         <Stack.Screen name="Convo" component={ConvoComponent} />
 
       </Stack.Navigator>

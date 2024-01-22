@@ -48,19 +48,6 @@ const CameraComponent = () => {
         }
     };
 
-    const startRecording = async () => {
-        if (cameraRef.current) {
-            try {
-                setRecording(true);
-                const videoRecordPromise = cameraRef.current.recordAsync({});
-                const { uri } = await videoRecordPromise;
-                setCapturedImage(uri);
-            } catch (error) {
-                console.error('Error starting video recording:', error);
-            }
-        }
-    };
-
     const stopRecording = () => {
         if (cameraRef.current && isRecording) {
             cameraRef.current.stopRecording();
@@ -130,7 +117,7 @@ const CameraComponent = () => {
                             </>
                         )}
                         <TouchableOpacity style={styles.button} onPress={() => {
-                            navigation.goBack();
+                            navigation.navigate("homeScreen" as never);
                         }}>
                             <Text style={styles.buttonText}>Go back</Text>
                         </TouchableOpacity>
@@ -138,22 +125,15 @@ const CameraComponent = () => {
                 </>
             ) : (
                 <PinchGestureHandler>
-                    <LongPressGestureHandler
-                        ref={longPressRef}
-                        onHandlerStateChange={({ nativeEvent }) => {
-                            if (nativeEvent.state === State.ACTIVE) {
-                                startRecording();
-                            } else if (nativeEvent.state === State.END) {
-                                stopRecording();
-                            }
-                        }}
-                    >
                         <TapGestureHandler onActivated={handleDoubleTap} numberOfTaps={2}>
                             <Animated.View style={{ flex: 1 }}>
                                 <Camera style={styles.camera} type={type} ref={cameraRef} flashMode={flashMode}>
                                     <View style={styles.buttonContainer}>
                                         <TouchableOpacity style={styles.flashButton} onPress={toggleFlashMode}>
                                             <Text style={styles.flashButtonText}>{flashMode === Camera.Constants.FlashMode.on ? 'Flash On' : 'Flash Off'}</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={styles.switchButton} onPress={() => { navigation.navigate("CameraVideo" as never) }}>
+                                            <Text style={styles.switchButtonText}>Go to Video</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
                                             <View style={styles.captureInnerButton} />
@@ -162,7 +142,7 @@ const CameraComponent = () => {
                                 </Camera>
                             </Animated.View>
                         </TapGestureHandler>
-                    </LongPressGestureHandler>
+
                 </PinchGestureHandler>
             )}
         </View>
@@ -175,6 +155,18 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ecf0f1',
+    },
+    switchButton: {
+        position: 'absolute',
+        bottom: 20,
+        left: 20,
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        padding: 10,
+    },
+    switchButtonText: {
+        color: 'black',
+        fontSize: 16,
     },
     capturedImage: {
         flex: 1,
