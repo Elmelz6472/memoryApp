@@ -48,7 +48,8 @@
     "react-native-swiper": "^1.6.0",
     "react-native-vector-icons": "^10.0.3",
     "react-native-web": "~0.19.6",
-    "seedrandom": "^3.0.5"
+    "seedrandom": "^3.0.5",
+    "expo-image-manipulator": "~11.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

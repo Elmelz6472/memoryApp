@@ -4,11 +4,14 @@ import { StyleSheet, Text, TouchableOpacity, View, Image, Alert, Animated } from
 import * as MediaLibrary from 'expo-media-library';
 import { useNavigation } from '@react-navigation/native';
 import { PinchGestureHandler, TapGestureHandler, LongPressGestureHandler, State } from 'react-native-gesture-handler';
+import { FlipType, manipulateAsync } from 'expo-image-manipulator';
+
+
 
 const CameraComponent = () => {
     const navigation = useNavigation();
 
-    const [type, setType] = useState(CameraType.back);
+    const [type, setType] = useState(CameraType.front);
     const [permission, requestPermission] = Camera.useCameraPermissions();
     const [capturedImage, setCapturedImage] = useState<string | null>(null);
     const [isRecording, setRecording] = useState(false);
@@ -80,7 +83,17 @@ const CameraComponent = () => {
     const saveToGallery = async () => {
         if (capturedImage) {
             try {
-                await MediaLibrary.saveToLibraryAsync(capturedImage);
+                let manipulatedImage = capturedImage;
+                if (type === CameraType.front) {
+                    // Flip the image horizontally using expo-image-manipulator
+                    const result = await manipulateAsync(
+                        capturedImage,
+                        [{ flip: FlipType.Horizontal }]
+                    );
+                    manipulatedImage = result.uri;
+                }
+
+                await MediaLibrary.saveToLibraryAsync(manipulatedImage);
                 Alert.alert('Success', 'Image/Video saved to gallery!');
             } catch (error) {
                 console.error('Error saving image/video to gallery:', error);
@@ -101,7 +114,10 @@ const CameraComponent = () => {
                             <Text style={styles.stopRecordButtonText}>Stop Recording</Text>
                         </TouchableOpacity>
                     )}
-                    <Image source={{ uri: capturedImage }} style={styles.capturedImage} />
+                    <Image
+                        source={{ uri: capturedImage }}
+                        style={type === CameraType.front ? styles.capturedImageFront : styles.capturedImage}
+                    />
                     <View style={styles.buttonsContainer}>
                         {!isRecording && (
                             <>
@@ -159,6 +175,18 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ecf0f1',
+    },
+    capturedImage: {
+        flex: 1,
+        resizeMode: 'cover',
+    },
+
+    capturedImageFront: {
+        flex: 1,
+        resizeMode: 'cover',
+       transform: [
+        {scaleX: -1}
+       ]
     },
     stopRecordButton: {
         backgroundColor: 'red', // Change the background color as needed
@@ -246,11 +274,6 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 30,
-    },
-
-    capturedImage: {
-        flex: 1,
-        resizeMode: 'cover',
     },
     buttonsContainer: {
         flexDirection: 'row',
