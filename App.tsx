@@ -16,6 +16,8 @@ import MemorySectionVlog from './components/Memory/MemoryVlogSection';
 import MemoryVlogContent from './components/Memory/MemoryVlogContent'
 import MemorySectionFun from './components/Memory/MemoryFunSection'
 import MemoryFunContent from './components/Memory/MemoryFunContent';
+import CameraComponent from './components/Camera/Camera';
+import ConvoComponent from './components/Convo/Convo';
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -36,6 +38,9 @@ const App = () => {
         <Stack.Screen name="VlogContent" component={MemoryVlogContent} options={{ title: 'Vlog memories', headerStyle: { backgroundColor: "#FDF5E6" } }} />
         <Stack.Screen name="FunSection" component={MemorySectionFun} options={{ headerShown: false }} />
         <Stack.Screen name="FunContent" component={MemoryFunContent} options={{ title: 'Fun memories', headerStyle: { backgroundColor: "#FDF5E6" } }} />
+        <Stack.Screen name="Camera" component={CameraComponent} options={{ headerShown: false }} />
+        <Stack.Screen name="Convo" component={ConvoComponent} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, StyleSheet, Animated, TouchableWithoutFeedback } from 'react-native';
 import AwesomeButton from 'react-native-really-awesome-button';
 import StarPattern from './StarPattern';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
 
 const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => void; }; }) => {
     const [showButtons, setShowButtons] = useState(true);
@@ -50,28 +52,29 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                 <StarPattern seed="jsjs" />
 
 
-                <Animated.View>
+                <Animated.View style={[styles.UpperContainer, { opacity: fadeAnim }]}>
                 {showButtons &&  <>
                     <View style={styles.upperButtonsContainer}>
                         <AwesomeButton
-                            onPress={() => { }}
+                            onPress={() => {props.navigation.navigate("Camera") }}
                                 backgroundColor="#27ae60"
                                 backgroundDarker="#219d54"
                         >
-                            Pics
+                                <FontAwesome5 name="camera" size={30} color="#FFFFFF" />
+
                         </AwesomeButton>
                         <AwesomeButton
-                            onPress={() => { }}
+                            onPress={() => { props.navigation.navigate("Convo")}}
                             backgroundColor="#e74c3c"
                             backgroundDarker="#c0392b"
                         >
-                            Upper Button 2
+                            <FontAwesome5 name="comments" size={30} color="#FFFFFF" />
                         </AwesomeButton>
                         </View>
                 </>
 
             }
-</Animated.View>
+            </Animated.View>
 
                 <Animated.View style={[styles.centeredContainer, { opacity: fadeAnim }]}>
                     {showButtons && (
@@ -84,28 +87,31 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                                     backgroundColor="#3498db"
                                     backgroundDarker="#2980b9"
                                 >
-                                    Letters
+                                    <FontAwesome5 name="envelope" size={30} color="#FFFFFF" />
                                 </AwesomeButton>
                                 <AwesomeButton
                                     onPress={onPressEvent}
                                     backgroundColor="#e74c3c"
                                     backgroundDarker="#c0392b"
                                 >
-                                    Event
+                                    <FontAwesome5 name="calendar" size={30} color="#FFFFFF" />
+
                                 </AwesomeButton>
                                 <AwesomeButton
                                     onPress={onPressMemories}
                                     backgroundColor="#9b59b6"
                                     backgroundDarker="#8e44ad"
                                 >
-                                    Words
+                                    <FontAwesome5 name="heart" size={30} color="#FFFFFF" />
+
                                 </AwesomeButton>
                                 <AwesomeButton
                                     onPress={onPressTests}
                                     backgroundColor="#e67e22"
                                     backgroundDarker="#d35400"
                                 >
-                                    Memory
+                                    <FontAwesome5 name="star" size={30} color="#FFFFFF" />
+
                                 </AwesomeButton>
                             </View>
                         </>
@@ -122,6 +128,17 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'black',
     },
+    UpperContainer: {
+        flexDirection: 'column', // Changed to column
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'absolute',
+        top: '5%',
+        width: '100%',
+        paddingHorizontal: 20,
+        zIndex: 10,
+    },
+
     centeredContainer: {
         flexDirection: 'column', // Changed to column
         justifyContent: 'space-between',
@@ -136,8 +153,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         width: '100%',
-        marginTop: 100, // Adjust the marginTop to bring the upper buttons closer to the top
         marginBottom: 20, // Adjust the marginBottom to create space between the upper and bottom buttons
+        zIndex: 10,
+
     },
     bottomButtonsContainer: {
         flexDirection: 'row',
