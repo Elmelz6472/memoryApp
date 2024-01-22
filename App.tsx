@@ -10,6 +10,8 @@ import LetterContent from './components/Letter/LetterContent';
 import CountDown from './components/CountDown';
 import Affirmations from './components/Affirmation/Affirmations';
 import MemorySection from './components/Memory/MemorySection';
+import MemorySectionDate from './components/Memory/MemoryDateSection';
+import MemoryDateContent from './components/Memory/MemoryDateContent';
 
 
 const App = () => {
@@ -25,6 +27,9 @@ const App = () => {
         <Stack.Screen name="CountDown" component={CountDown} options={{ headerShown: false }} />
         <Stack.Screen name="Affirmations" component={Affirmations} options={{ headerShown: false }} />
         <Stack.Screen name="Tests" component={MemorySection} options={{ headerShown: false }} />
+        <Stack.Screen name="DateSection" component={MemorySectionDate} options={{ headerShown: false }} />
+
+        <Stack.Screen name="DateContent" component={MemoryDateContent} options={{ title: 'Date memories', headerStyle: { backgroundColor: "#FDF5E6" } }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

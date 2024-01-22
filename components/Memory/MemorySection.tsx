@@ -7,8 +7,6 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const MemoryIcon = ({ title, type }: { title: string; type: string }) => {
-    const navigation = useNavigation();
-
     const getIconName = () => {
         switch (type) {
             case 'dates':
@@ -31,12 +29,6 @@ const MemoryIcon = ({ title, type }: { title: string; type: string }) => {
     );
 };
 
-const onPressDates = () => {
-    const navigation = useNavigation();
-
-    navigation.navigate("DateSection" as never)
-}
-
 
 const onPressVlogs = () => {
 
@@ -55,7 +47,9 @@ const MemorySections: React.FC = () => {
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.memoryShelf}>
 
-                    <TouchableOpacity onPress={onPressDates}>
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate("DateSection" as never)
+                    }}>
                         <MemoryIcon title="Dates" type="dates" />
                     </TouchableOpacity>
 
