@@ -1,127 +1,104 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
-import { Swipeable } from 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, FlatList, TouchableOpacity, Modal, Button } from 'react-native';
+import { getDatabase, ref, onValue, push, update, remove } from 'firebase/database';
 
-interface SwipeableItemProps {
-    item: string;
-    index: number;
-    onDelete: (index: number) => void;
+interface BucketListItem {
+    id: string;
+    text: string;
 }
 
-const SwipeableItem: React.FC<SwipeableItemProps> = ({ item, index, onDelete }) => {
-    const renderRightActions = (progress: any, dragX: any) => {
-        const trans = dragX.interpolate({
-            inputRange: [0, 50, 100, 101],
-            outputRange: [0, 0, 0, 1],
-        });
-
-        return (
-            <TouchableOpacity onPress={() => onDelete(index)}>
-                <View style={styles.deleteButton}>
-                    <Text style={styles.deleteButtonText}>Delete</Text>
-                </View>
-            </TouchableOpacity>
-        );
-    };
-
-    return (
-        <Swipeable renderRightActions={renderRightActions}>
-            <View style={styles.itemContainer}>
-                <Text style={styles.itemText}>{item}</Text>
-            </View>
-        </Swipeable>
-    );
-};
-
 const BucketList: React.FC = () => {
-    const [items, setItems] = useState<string[]>([]);
+    const [items, setItems] = useState<BucketListItem[]>([]);
     const [newItemText, setNewItemText] = useState<string>('');
+    const [editingItem, setEditingItem] = useState<BucketListItem | null>(null);
+    const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
 
-    const addItem = () => {
+    const database = getDatabase();
+
+    // Load items from Firebase on component mount
+    useEffect(() => {
+        const itemsRef = ref(database, 'bucketListItems');
+        onValue(itemsRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                const itemsArray = Object.entries(data).map(([key, value]) => ({ id: key, text: value.text }));
+                setItems(itemsArray);
+            }
+        });
+    }, []);
+
+    const handleAddItem = () => {
         if (newItemText.trim() !== '') {
-            setItems([...items, newItemText]);
+            const newItemRef = push(ref(database, 'bucketListItems'), { text: newItemText });
             setNewItemText('');
         }
     };
 
-    const removeItem = (index: number) => {
-        const updatedItems = [...items];
-        updatedItems.splice(index, 1);
-        setItems(updatedItems);
+    const handleUpdateItem = () => {
+        if (editingItem) {
+            update(ref(database, `bucketListItems/${editingItem.id}`), { text: newItemText });
+            setEditModalVisible(false);
+            setEditingItem(null);
+        }
     };
 
-    const renderItem = ({ item, index }: { item: string; index: number }) => (
-        <SwipeableItem item={item} index={index} onDelete={removeItem} />
+    const handleDeleteItem = (id: string) => {
+        remove(ref(database, `bucketListItems/${id}`));
+    };
+
+    const openEditModal = (item: BucketListItem) => {
+        setEditingItem(item);
+        setNewItemText(item.text);
+        setEditModalVisible(true);
+    };
+
+    const closeEditModal = () => {
+        setEditModalVisible(false);
+        setEditingItem(null);
+        setNewItemText('');
+    };
+
+    const renderItem = ({ item }: { item: BucketListItem }) => (
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
+            <Text>{item.text}</Text>
+            <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity onPress={() => openEditModal(item)}>
+                    <Text>Edit</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleDeleteItem(item.id)}>
+                    <Text>Delete</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
     );
 
     return (
-        <View style={styles.container}>
+        <View>
             <TextInput
-                style={styles.input}
-                placeholder="Add new item..."
+                placeholder="Add new item"
                 value={newItemText}
                 onChangeText={setNewItemText}
             />
-            <TouchableOpacity style={styles.addButton} onPress={addItem}>
-                <Text style={styles.addButtonText}>Add</Text>
-            </TouchableOpacity>
+            <Button title="Add" onPress={handleAddItem} />
             <FlatList
                 data={items}
                 renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item) => item.id}
             />
+
+            <Modal visible={editModalVisible} animationType="slide">
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <TextInput
+                        placeholder="Edit item"
+                        value={newItemText}
+                        onChangeText={setNewItemText}
+                    />
+                    <Button title="Update" onPress={handleUpdateItem} />
+                    <Button title="Cancel" onPress={closeEditModal} />
+                </View>
+            </Modal>
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 8,
-        paddingHorizontal: 8,
-    },
-    addButton: {
-        backgroundColor: 'blue',
-        padding: 10,
-        alignItems: 'center',
-        borderRadius: 5,
-        marginBottom: 16,
-    },
-    addButtonText: {
-        color: 'white',
-        fontWeight: 'bold',
-    },
-    itemContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 8,
-        padding: 10,
-        borderColor: 'lightgray',
-        borderWidth: 1,
-        borderRadius: 5,
-    },
-    itemText: {
-        flex: 1,
-    },
-    deleteButton: {
-        backgroundColor: 'red',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 80,
-        height: "80%",
-        borderRadius: 5,
-    },
-    deleteButtonText: {
-        color: 'white',
-        fontWeight: 'bold',
-    },
-});
 
 export default BucketList;
