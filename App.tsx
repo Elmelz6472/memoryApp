@@ -21,7 +21,7 @@ import CameraPhoto from './components/Camera/CameraPhoto';
 import CameraVideo from './components/Camera/CameraVideo';
 import ConvoComponent from './components/Convo/Convo';
 import BucketList from './components/BucketList/BucketList'
-import Settings from './Settings/Settings';
+import Settings from './components/Settings/Settings';
 
 const App = () => {
   const Stack = createStackNavigator();

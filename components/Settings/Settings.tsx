@@ -1,7 +1,7 @@
 // Settings.tsx
 import React, { useState } from 'react';
 import { View, Text, Switch, TextInput, StyleSheet } from 'react-native';
-import { useAppContext } from '../AppContext';
+import { useAppContext } from '../../AppContext';
 import { Picker as RNPicker } from '@react-native-picker/picker';
 
 // Import the Theme enum
