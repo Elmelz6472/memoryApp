@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, Animated, Easing } from 'react-native'
 
 const FallingWordsOfAffirmation = ({ affirmations }: any) => {
-    const [currentAffirmationIndex, setCurrentAffirmationIndex] = useState(0);
-    const translateY = new Animated.Value(50);
-    const opacity = new Animated.Value(1);
+    const [currentAffirmationIndex, setCurrentAffirmationIndex] = useState(0)
+    const translateY = new Animated.Value(50)
+    const opacity = new Animated.Value(1)
 
     useEffect(() => {
         if (currentAffirmationIndex < affirmations.length) {
@@ -28,11 +28,11 @@ const FallingWordsOfAffirmation = ({ affirmations }: any) => {
                     }),
                 ]),
             ]).start(() => {
-                setCurrentAffirmationIndex((prevIndex) => prevIndex + 1);
-                translateY.setValue(-50);
-            });
+                setCurrentAffirmationIndex((prevIndex) => prevIndex + 1)
+                translateY.setValue(-50)
+            })
         }
-    }, [currentAffirmationIndex, affirmations, translateY, opacity]);
+    }, [currentAffirmationIndex, affirmations, translateY, opacity])
 
     return (
         <View style={styles.container}>
@@ -51,8 +51,8 @@ const FallingWordsOfAffirmation = ({ affirmations }: any) => {
                 </Animated.Text>
             ))}
         </View>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -76,6 +76,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         borderRadius: 10,
     },
-});
+})
 
-export default FallingWordsOfAffirmation;
+export default FallingWordsOfAffirmation

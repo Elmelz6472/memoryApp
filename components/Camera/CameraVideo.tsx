@@ -1,100 +1,98 @@
-
-import React, { useState, useRef } from 'react';
-import { Camera, CameraType } from 'expo-camera';
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Video } from 'expo-av';
-import * as MediaLibrary from 'expo-media-library';
-import { useNavigation } from '@react-navigation/native';
-import { TapGestureHandler } from 'react-native-gesture-handler';
-import { useEffect } from 'react';
+import React, { useState, useRef } from 'react'
+import { Camera, CameraType } from 'expo-camera'
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Video } from 'expo-av'
+import * as MediaLibrary from 'expo-media-library'
+import { useNavigation } from '@react-navigation/native'
+import { TapGestureHandler } from 'react-native-gesture-handler'
+import { useEffect } from 'react'
 
 const formatTimer = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
+    const minutes = Math.floor(seconds / 60)
+    const remainingSeconds = seconds % 60
 
-    const formattedTime = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-    return formattedTime;
-};
-
-
+    const formattedTime = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`
+    return formattedTime
+}
 
 const CameraVideo = () => {
-    const navigation = useNavigation();
-    const [type, setType] = useState(CameraType.front);
-    const [isRecording, setRecording] = useState(false);
-    const [capturedVideo, setCapturedVideo] = useState<string | null>(null);
-    const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
-    const [timer, setTimer] = useState(0);
-    const [savingVideo, setSavingVideo] = useState(false); // New state for tracking saving video progress
-    const [videoSaved, setVideoSaved] = useState(false);
-    const cameraRef = useRef<Camera | null>(null);
-
+    const navigation = useNavigation()
+    const [type, setType] = useState(CameraType.front)
+    const [isRecording, setRecording] = useState(false)
+    const [capturedVideo, setCapturedVideo] = useState<string | null>(null)
+    const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off)
+    const [timer, setTimer] = useState(0)
+    const [savingVideo, setSavingVideo] = useState(false) // New state for tracking saving video progress
+    const [videoSaved, setVideoSaved] = useState(false)
+    const cameraRef = useRef<Camera | null>(null)
 
     useEffect(() => {
-        let interval: NodeJS.Timeout;
+        let interval: NodeJS.Timeout
 
         if (isRecording) {
             interval = setInterval(() => {
-                setTimer(prevTimer => prevTimer + 1);
-            }, 1000);
+                setTimer((prevTimer) => prevTimer + 1)
+            }, 1000)
         }
 
         return () => {
-            clearInterval(interval);
-        };
-    }, [isRecording]);
+            clearInterval(interval)
+        }
+    }, [isRecording])
 
     const startRecording = async () => {
-        if (cameraRef. current) {
+        if (cameraRef.current) {
             try {
-                setRecording(true);
-                const videoRecordPromise = cameraRef.current.recordAsync({});
-                const { uri } = await videoRecordPromise;
-                setCapturedVideo(uri);
+                setRecording(true)
+                const videoRecordPromise = cameraRef.current.recordAsync({})
+                const { uri } = await videoRecordPromise
+                setCapturedVideo(uri)
             } catch (error) {
-                console.error('Error starting video recording:', error);
+                console.error('Error starting video recording:', error)
             }
         }
-    };
+    }
 
     const handleDoubleTap = () => {
-        setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
-    };
-
+        setType((current) => (current === CameraType.back ? CameraType.front : CameraType.back))
+    }
 
     const stopRecording = () => {
         if (cameraRef.current && isRecording) {
-            cameraRef.current.stopRecording();
-            setRecording(false);
+            cameraRef.current.stopRecording()
+            setRecording(false)
         }
-    };
+    }
 
     const retakeVideo = () => {
-        setCapturedVideo(null);
-    };
+        setCapturedVideo(null)
+    }
 
     const saveVideoToGallery = async () => {
         if (capturedVideo && !videoSaved) {
             try {
-                setSavingVideo(true); // Start saving video, show loading spinner
+                setSavingVideo(true) // Start saving video, show loading spinner
 
-                await MediaLibrary.saveToLibraryAsync(capturedVideo);
+                await MediaLibrary.saveToLibraryAsync(capturedVideo)
 
                 // Video saved successfully
-                console.log('Video saved to gallery:', capturedVideo);
-                setVideoSaved(true); // Set the state to indicate the video is saved
+                console.log('Video saved to gallery:', capturedVideo)
+                setVideoSaved(true) // Set the state to indicate the video is saved
             } catch (error) {
-                console.error('Error saving video to gallery:', error);
+                console.error('Error saving video to gallery:', error)
             } finally {
-                setSavingVideo(false); // Stop saving video, hide loading spinner
+                setSavingVideo(false) // Stop saving video, hide loading spinner
             }
         }
-    };
+    }
 
     const toggleFlashMode = () => {
-        setFlashMode((current: any) => (current === Camera.Constants.FlashMode.off ? Camera.Constants.FlashMode.on : Camera.Constants.FlashMode.off));
-    };
-
+        setFlashMode((current: any) =>
+            current === Camera.Constants.FlashMode.off
+                ? Camera.Constants.FlashMode.on
+                : Camera.Constants.FlashMode.off,
+        )
+    }
 
     return (
         <View style={styles.container}>
@@ -105,10 +103,14 @@ const CameraVideo = () => {
                         rate={1.0}
                         volume={1.0}
                         isMuted={false}
-                        resizeMode="cover"
+                        resizeMode='cover'
                         shouldPlay
                         isLooping
-                        style={type === CameraType.front ? styles.capturedVideoFront : styles.capturedVideoBack}
+                        style={
+                            type === CameraType.front
+                                ? styles.capturedVideoFront
+                                : styles.capturedVideoBack
+                        }
                     />
 
                     {/* Overlayed buttons container */}
@@ -116,11 +118,20 @@ const CameraVideo = () => {
                         <TouchableOpacity style={styles.button} onPress={retakeVideo}>
                             <Text style={styles.buttonText}>Retake</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.button} onPress={saveVideoToGallery} disabled={videoSaved}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={saveVideoToGallery}
+                            disabled={videoSaved}
+                        >
                             {savingVideo ? (
-                                <ActivityIndicator size="small" color="#ffffff" />
+                                <ActivityIndicator size='small' color='#ffffff' />
                             ) : (
-                                <Text style={[styles.buttonText, { color: videoSaved ? '#999999' : 'white' }]}>
+                                <Text
+                                    style={[
+                                        styles.buttonText,
+                                        { color: videoSaved ? '#999999' : 'white' },
+                                    ]}
+                                >
                                     {videoSaved ? 'Saved!' : 'Save to Gallery'}
                                 </Text>
                             )}
@@ -128,7 +139,7 @@ const CameraVideo = () => {
                         <TouchableOpacity
                             style={styles.button}
                             onPress={() => {
-                                navigation.navigate('homeScreen' as never);
+                                navigation.navigate('homeScreen' as never)
                             }}
                         >
                             <Text style={styles.buttonText}>Go back</Text>
@@ -147,21 +158,28 @@ const CameraVideo = () => {
                                     <Text style={styles.goBackButtonText}>Go Back</Text>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity style={styles.flashButton} onPress={toggleFlashMode}>
+                                <TouchableOpacity
+                                    style={styles.flashButton}
+                                    onPress={toggleFlashMode}
+                                >
                                     <Text style={styles.flashButtonText}>
-                                        {flashMode === Camera.Constants.FlashMode.on ? 'Flash On' : 'Flash Off'}
+                                        {flashMode === Camera.Constants.FlashMode.on
+                                            ? 'Flash On'
+                                            : 'Flash Off'}
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={styles.switchButton}
                                     onPress={() => {
-                                        navigation.navigate('CameraPhoto' as never);
+                                        navigation.navigate('CameraPhoto' as never)
                                     }}
                                 >
                                     <Text style={styles.switchButtonText}>Go to Photo</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={isRecording ? styles.stopRecordButton : styles.recordButton}
+                                    style={
+                                        isRecording ? styles.stopRecordButton : styles.recordButton
+                                    }
                                     onPress={isRecording ? stopRecording : startRecording}
                                 >
                                     <View style={styles.captureInnerButton} />
@@ -177,9 +195,8 @@ const CameraVideo = () => {
                 </View>
             )}
         </View>
-    );
-};
-
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -261,8 +278,8 @@ const styles = StyleSheet.create({
         margin: 20,
     },
     recordButton: {
-        position: "absolute",
-        bottom: "1%",
+        position: 'absolute',
+        bottom: '1%',
         backgroundColor: '#e74c3c',
         width: 80,
         height: 80,
@@ -277,11 +294,11 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 5,
         elevation: 5,
-        right: "10%"
+        right: '10%',
     },
     stopRecordButton: {
-        position: "absolute",
-        bottom: "1%",
+        position: 'absolute',
+        bottom: '1%',
         backgroundColor: '#e74c3c',
         width: 80,
         height: 80,
@@ -296,7 +313,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 5,
         elevation: 5,
-        right: "10%"
+        right: '10%',
     },
     captureInnerButton: {
         backgroundColor: 'white',
@@ -313,9 +330,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '100%',
-        transform: [
-            { scaleX: -1 }
-        ]
+        transform: [{ scaleX: -1 }],
     },
     capturedVideoBack: {
         flex: 1,
@@ -332,6 +347,6 @@ const styles = StyleSheet.create({
         padding: 15,
         borderRadius: 8,
     },
-});
+})
 
-export default CameraVideo;
+export default CameraVideo

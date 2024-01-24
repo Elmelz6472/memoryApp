@@ -1,54 +1,50 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-
+import React from 'react'
+import { useForm } from 'react-hook-form'
 
 interface IFormInput {
-    name: string;
-    address: string;
-    city: string;
-    state: string;
-    phone: string;
-    zipcode: string;
+    name: string
+    address: string
+    city: string
+    state: string
+    phone: string
+    zipcode: string
 }
 
 const Form: React.FC = () => {
-    const {
-        register,
-        handleSubmit,
-    } = useForm<IFormInput>();
+    const { register, handleSubmit } = useForm<IFormInput>()
 
     const onSubmit = (data: IFormInput) => {
-        console.log(data);
-    };
+        console.log(data)
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <label>Name</label>
-            <input {...register("name")} />
+            <input {...register('name')} />
 
             <label>Address</label>
-            <input {...register("address")} />
+            <input {...register('address')} />
 
-            <div className="input-group">
-                <div className="input-field">
+            <div className='input-group'>
+                <div className='input-field'>
                     <label>City</label>
-                    <input {...register("city")} />
+                    <input {...register('city')} />
                 </div>
-                <div className="input-field">
+                <div className='input-field'>
                     <label>State</label>
-                    <input {...register("state")} />
+                    <input {...register('state')} />
                 </div>
-                <div className="input-field">
+                <div className='input-field'>
                     <label>ZIP Code</label>
-                    <input {...register("zipcode")} />
+                    <input {...register('zipcode')} />
                 </div>
             </div>
             <label>Phone</label>
-            <input {...register("phone")} />
+            <input {...register('phone')} />
 
-            <input type="submit" />
+            <input type='submit' />
         </form>
-    );
-};
+    )
+}
 
-export default Form;
+export default Form

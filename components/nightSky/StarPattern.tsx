@@ -1,42 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
-import seedrandom from 'seedrandom';
-import MilestonePopup from './Milestone'; // Import the MilestonePopup component
+import React, { useEffect, useState } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native'
+import seedrandom from 'seedrandom'
+import MilestonePopup from './Milestone' // Import the MilestonePopup component
 import milestones from '../../utils/mileStones'
 
 const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
-    const rng = seedrandom(seed);
-    const [selectedStar, setSelectedStar] = useState<number | null>(null);
-    const [shiningStars, setShiningStars] = useState<number[]>([]);
-
+    const rng = seedrandom(seed)
+    const [selectedStar, setSelectedStar] = useState<number | null>(null)
+    const [shiningStars, setShiningStars] = useState<number[]>([])
 
     const generateRandomSize = () => {
-        return Math.floor(rng() * 3) + 1; // Random size between 1 and 3
-    };
+        return Math.floor(rng() * 3) + 1 // Random size between 1 and 3
+    }
 
     const generateRandomPosition = () => {
         return {
             left: rng() * 100 + '%',
             top: rng() * 100 + '%',
-        };
-    };
+        }
+    }
 
     const handleStarClick = (id: number) => {
-        setSelectedStar(id);
-    };
+        setSelectedStar(id)
+    }
 
     const handleClosePopup = () => {
-        setSelectedStar(null);
-    };
+        setSelectedStar(null)
+    }
 
     const renderStars = () => {
-        const numberOfStars = 100; // You can adjust the number of stars as needed
-        const stars = [];
+        const numberOfStars = 100 // You can adjust the number of stars as needed
+        const stars = []
 
         for (let i = 0; i < numberOfStars; i++) {
-            const size = generateRandomSize();
-            const position = generateRandomPosition();
-            const isShining = shiningStars.includes(i);
+            const size = generateRandomSize()
+            const position = generateRandomPosition()
+            const isShining = shiningStars.includes(i)
 
             stars.push(
                 <TouchableOpacity
@@ -50,29 +49,29 @@ const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
                     ]}
                 >
                     <Text style={styles.starId}>{i}</Text>
-                </TouchableOpacity>
-            );
+                </TouchableOpacity>,
+            )
         }
 
-        return stars;
-    };
+        return stars
+    }
 
     useEffect(() => {
         const shiningInterval = setInterval(() => {
-            const newShiningStars: number[] = [];
+            const newShiningStars: number[] = []
             for (let i = 0; i < 5; i++) {
-                const randomStar = Math.floor(rng() * 50);
-                newShiningStars.push(randomStar);
+                const randomStar = Math.floor(rng() * 50)
+                newShiningStars.push(randomStar)
             }
-            setShiningStars(newShiningStars);
+            setShiningStars(newShiningStars)
 
             setTimeout(() => {
-                setShiningStars([]);
-            }, 1000);
-        }, 5000);
+                setShiningStars([])
+            }, 1000)
+        }, 5000)
 
-        return () => clearInterval(shiningInterval);
-    }, []);
+        return () => clearInterval(shiningInterval)
+    }, [])
 
     return (
         <View style={styles.starsContainer}>
@@ -85,8 +84,8 @@ const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
                 />
             )}
         </View>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     starsContainer: {
@@ -104,6 +103,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 20,
     },
-});
+})
 
-export default StarsPattern;
+export default StarsPattern

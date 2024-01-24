@@ -1,79 +1,81 @@
 // MemorySections.tsx
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import AwesomeButton from 'react-native-really-awesome-button';
-import { useNavigation } from '@react-navigation/native';
-
+import React from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import AwesomeButton from 'react-native-really-awesome-button'
+import { useNavigation } from '@react-navigation/native'
 
 const MemoryIcon = ({ title, type }: { title: string; type: string }) => {
     const getIconName = () => {
         switch (type) {
             case 'dates':
-                return 'heart';
+                return 'heart'
             case 'vlogs':
-                return 'video';
+                return 'video'
             case 'fun':
-                return 'smile';
+                return 'smile'
             default:
-                return 'heart';
+                return 'heart'
         }
-    };
+    }
     return (
         <View>
             <View style={styles.memoryIcon}>
-                <FontAwesome5 name={getIconName()} size={30} color="#FFFFFF" />
+                <FontAwesome5 name={getIconName()} size={30} color='#FFFFFF' />
                 <Text style={styles.memoryDate}>{title}</Text>
             </View>
         </View>
-    );
-};
-
-
-const onPressFun = () => {
-
+    )
 }
 
+const onPressFun = () => {}
+
 const MemorySections: React.FC = () => {
-    const navigation = useNavigation();
+    const navigation = useNavigation()
 
     return (
         <View style={styles.container}>
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.memoryShelf}>
-
-                    <TouchableOpacity onPress={() => {
-                        navigation.navigate("DateSection" as never)
-                    }}>
-                        <MemoryIcon title="Dates" type="dates" />
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate('DateSection' as never)
+                        }}
+                    >
+                        <MemoryIcon title='Dates' type='dates' />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => {
-                        navigation.navigate("VlogSection" as never)
-                    }}>
-                        <MemoryIcon title="Vlogs" type="vlogs" />
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate('VlogSection' as never)
+                        }}
+                    >
+                        <MemoryIcon title='Vlogs' type='vlogs' />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => {
-                        navigation.navigate("FunSection" as never)
-                    }}>
-                        <MemoryIcon title="Fun" type="fun" />
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate('FunSection' as never)
+                        }}
+                    >
+                        <MemoryIcon title='Fun' type='fun' />
                     </TouchableOpacity>
-
                 </View>
             </ScrollView>
             <View style={styles.fixedButtonContainer}>
                 <AwesomeButton
-                    onPress={() => { navigation.goBack() }}
-                    backgroundColor="#c0392b"
-                    backgroundDarker="#c0392b"
+                    onPress={() => {
+                        navigation.goBack()
+                    }}
+                    backgroundColor='#c0392b'
+                    backgroundDarker='#c0392b'
                 >
                     Go back
                 </AwesomeButton>
             </View>
         </View>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -88,8 +90,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'center',  // Center items horizontally
-        alignItems: 'center',  // Center items vertically
+        justifyContent: 'center', // Center items horizontally
+        alignItems: 'center', // Center items vertically
         paddingTop: 300,
     },
     memoryIcon: {
@@ -116,8 +118,8 @@ const styles = StyleSheet.create({
         bottom: '5%', // Adjust the position as needed
     },
     memoryDate: {
-        color: "white"
-    }
-});
+        color: 'white',
+    },
+})
 
-export default MemorySections;
+export default MemorySections

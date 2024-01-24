@@ -1,17 +1,23 @@
-import React from 'react';
-import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
+import React from 'react'
+import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
 
 interface MilestonePopupProps {
-    visible: boolean;
-    onClose: () => void;
-    date: string;
-    event: string;
-    cuteDescription: string;
+    visible: boolean
+    onClose: () => void
+    date: string
+    event: string
+    cuteDescription: string
 }
 
-const MilestonePopup: React.FC<MilestonePopupProps> = ({ visible, onClose, date, event, cuteDescription }) => {
+const MilestonePopup: React.FC<MilestonePopupProps> = ({
+    visible,
+    onClose,
+    date,
+    event,
+    cuteDescription,
+}) => {
     return (
-        <Modal transparent visible={visible} animationType="slide">
+        <Modal transparent visible={visible} animationType='slide'>
             <View style={styles.modalContainer}>
                 <View style={styles.popupContainer}>
                     <TouchableOpacity onPress={onClose} style={styles.closeButton}>
@@ -34,8 +40,8 @@ const MilestonePopup: React.FC<MilestonePopupProps> = ({ visible, onClose, date,
                 </View>
             </View>
         </Modal>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     modalContainer: {
@@ -89,6 +95,6 @@ const styles = StyleSheet.create({
     dateText: {
         fontWeight: 'bold',
     },
-});
+})
 
-export default MilestonePopup;
+export default MilestonePopup

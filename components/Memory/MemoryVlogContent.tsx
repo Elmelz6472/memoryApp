@@ -1,12 +1,12 @@
-import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
-import { Video, ResizeMode } from 'expo-av';
+import React from 'react'
+import { View, Text, StyleSheet, Button } from 'react-native'
+import { Video, ResizeMode } from 'expo-av'
 
 const MemoryVlogContent = ({ route }: any) => {
-    const { uri, title, date } = route.params;
+    const { uri, title, date } = route.params
 
-    const video = React.useRef(null);
-    const [status, setStatus] = React.useState({});
+    const video = React.useRef(null)
+    const [status, setStatus] = React.useState({})
 
     return (
         <View style={styles.container}>
@@ -19,7 +19,7 @@ const MemoryVlogContent = ({ route }: any) => {
                 useNativeControls
                 resizeMode={ResizeMode.CONTAIN}
                 isLooping
-                onPlaybackStatusUpdate={status => setStatus(() => status)}
+                onPlaybackStatusUpdate={(status) => setStatus(() => status)}
             />
             <View style={styles.infoContainer}>
                 <Text style={styles.title}>{title}</Text>
@@ -34,8 +34,8 @@ const MemoryVlogContent = ({ route }: any) => {
                 />
             </View>
         </View>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -69,6 +69,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-});
+})
 
-export default MemoryVlogContent;
+export default MemoryVlogContent

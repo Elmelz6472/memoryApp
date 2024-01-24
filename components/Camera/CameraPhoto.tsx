@@ -1,103 +1,117 @@
-import React, { useState, useRef } from 'react';
-import { Camera, CameraType, CameraCapturedPicture } from 'expo-camera';
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View, Image, Alert, Animated } from 'react-native';
-import * as MediaLibrary from 'expo-media-library';
-import { useNavigation } from '@react-navigation/native';
-import { PinchGestureHandler, TapGestureHandler, LongPressGestureHandler, State } from 'react-native-gesture-handler';
-import { FlipType, manipulateAsync } from 'expo-image-manipulator';
-import { Button } from 'react-native-paper'; // Importing Button from react-native-paper
-
-
+import React, { useState, useRef } from 'react'
+import { Camera, CameraType, CameraCapturedPicture } from 'expo-camera'
+import {
+    ActivityIndicator,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    Image,
+    Alert,
+    Animated,
+} from 'react-native'
+import * as MediaLibrary from 'expo-media-library'
+import { useNavigation } from '@react-navigation/native'
+import {
+    PinchGestureHandler,
+    TapGestureHandler,
+    LongPressGestureHandler,
+    State,
+} from 'react-native-gesture-handler'
+import { FlipType, manipulateAsync } from 'expo-image-manipulator'
+import { Button } from 'react-native-paper' // Importing Button from react-native-paper
 
 const CameraComponent = () => {
-    const navigation = useNavigation();
+    const navigation = useNavigation()
 
-    const [type, setType] = useState(CameraType.front);
-    const [permission, requestPermission] = Camera.useCameraPermissions();
-    const [capturedImage, setCapturedImage] = useState<string | null>(null);
-    const [isRecording, setRecording] = useState(false);
-    const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
-    const cameraRef = useRef<Camera | null>(null);
-    const [savingPhoto, setSavingPhoto] = useState(false);
-    const [photoSaved, setPhotoSaved] = useState(false);
-
-
-
+    const [type, setType] = useState(CameraType.front)
+    const [permission, requestPermission] = Camera.useCameraPermissions()
+    const [capturedImage, setCapturedImage] = useState<string | null>(null)
+    const [isRecording, setRecording] = useState(false)
+    const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off)
+    const cameraRef = useRef<Camera | null>(null)
+    const [savingPhoto, setSavingPhoto] = useState(false)
+    const [photoSaved, setPhotoSaved] = useState(false)
 
     if (!permission) {
         // Camera permissions are still loading
-        return <View />;
+        return <View />
     }
 
     if (!permission.granted) {
         // Camera permissions are not granted yet
         return (
             <View style={styles.container}>
-                <Text style={styles.permissionText}>We need your permission to show the camera</Text>
+                <Text style={styles.permissionText}>
+                    We need your permission to show the camera
+                </Text>
                 <TouchableOpacity onPress={requestPermission} style={styles.permissionButton}>
                     <Text style={styles.permissionButtonText}>Grant Permission</Text>
                 </TouchableOpacity>
             </View>
-        );
+        )
     }
 
     const takePicture = async () => {
         if (cameraRef.current) {
             try {
-                const photo: CameraCapturedPicture = await cameraRef.current.takePictureAsync({});
-                setCapturedImage(photo.uri);
+                const photo: CameraCapturedPicture = await cameraRef.current.takePictureAsync({})
+                setCapturedImage(photo.uri)
             } catch (error) {
-                console.error('Error taking picture:', error);
+                console.error('Error taking picture:', error)
             }
         }
-    };
+    }
 
     const stopRecording = () => {
         if (cameraRef.current && isRecording) {
-            cameraRef.current.stopRecording();
-            setRecording(false);
+            cameraRef.current.stopRecording()
+            setRecording(false)
         }
-    };
+    }
 
     const handleDoubleTap = () => {
-        setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
-    };
+        setType((current) => (current === CameraType.back ? CameraType.front : CameraType.back))
+    }
 
     const toggleFlashMode = () => {
-        setFlashMode((current: any) => (current === Camera.Constants.FlashMode.off ? Camera.Constants.FlashMode.on : Camera.Constants.FlashMode.off));
-    };
+        setFlashMode((current: any) =>
+            current === Camera.Constants.FlashMode.off
+                ? Camera.Constants.FlashMode.on
+                : Camera.Constants.FlashMode.off,
+        )
+    }
 
     const retakePicture = () => {
-        setCapturedImage(null);
-    };
+        setCapturedImage(null)
+    }
 
     const saveToGallery = async () => {
         if (capturedImage && !savingPhoto) {
             try {
-                setSavingPhoto(true);
-                let manipulatedImage = capturedImage;
+                setSavingPhoto(true)
+                let manipulatedImage = capturedImage
                 if (type === CameraType.front) {
                     // Flip the image horizontally using expo-image-manipulator
-                    const result = await manipulateAsync(
-                        capturedImage,
-                        [{ flip: FlipType.Horizontal }]
-                    );
-                    manipulatedImage = result.uri;
+                    const result = await manipulateAsync(capturedImage, [
+                        { flip: FlipType.Horizontal },
+                    ])
+                    manipulatedImage = result.uri
                     setPhotoSaved(true)
                 }
 
-                await MediaLibrary.saveToLibraryAsync(manipulatedImage);
+                await MediaLibrary.saveToLibraryAsync(manipulatedImage)
             } catch (error) {
-                console.error('Error saving image/video to gallery:', error);
+                console.error('Error saving image/video to gallery:', error)
             } finally {
                 setSavingPhoto(false)
             }
         }
-    };
+    }
 
     const toggleCameraType = () => {
-        setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
-    };
+        setType((current) => (current === CameraType.back ? CameraType.front : CameraType.back))
+    }
 
     return (
         <View style={styles.container}>
@@ -105,62 +119,94 @@ const CameraComponent = () => {
                 <>
                     <Image
                         source={{ uri: capturedImage }}
-                        style={type === CameraType.front ? styles.capturedImageFront : styles.capturedImage}
+                        style={
+                            type === CameraType.front
+                                ? styles.capturedImageFront
+                                : styles.capturedImage
+                        }
                     />
                     <View style={styles.overlayButtonsContainer}>
-                        {(
+                        {
                             <>
                                 <TouchableOpacity style={styles.button} onPress={retakePicture}>
                                     <Text style={styles.buttonText}>Retake</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.button} onPress={saveToGallery}>
                                     {savingPhoto ? (
-                                        <ActivityIndicator size="small" color="#ffffff" />
+                                        <ActivityIndicator size='small' color='#ffffff' />
                                     ) : (
-                                        <Text style={[styles.buttonText, { color: photoSaved ? '#999999' : 'white' }]}>
+                                        <Text
+                                            style={[
+                                                styles.buttonText,
+                                                { color: photoSaved ? '#999999' : 'white' },
+                                            ]}
+                                        >
                                             {photoSaved ? 'Saved!' : 'Save to Gallery'}
                                         </Text>
                                     )}
                                 </TouchableOpacity>
                             </>
-                        )}
-                        <TouchableOpacity style={styles.button} onPress={() => {
-                            navigation.navigate("homeScreen" as never);
-                        }}>
+                        }
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => {
+                                navigation.navigate('homeScreen' as never)
+                            }}
+                        >
                             <Text style={styles.buttonText}>Go back</Text>
                         </TouchableOpacity>
                     </View>
                 </>
             ) : (
                 <PinchGestureHandler>
-                        <TapGestureHandler onActivated={handleDoubleTap} numberOfTaps={2}>
-                            <Animated.View style={{ flex: 1 }}>
-                                <Camera style={styles.camera} type={type} ref={cameraRef} flashMode={flashMode}>
-                                    <View style={styles.buttonContainer}>
-                                        <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.navigate("homeScreen" as never)}>
-                                            <Text style={styles.goBackButtonText}>Go Back</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={styles.flashButton} onPress={toggleFlashMode}>
-                                            <Text style={styles.flashButtonText}>{flashMode === Camera.Constants.FlashMode.on ? 'Flash On' : 'Flash Off'}</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={styles.switchButton} onPress={() => { navigation.navigate("CameraVideo" as never) }}>
-                                            <Text style={styles.switchButtonText}>Go to Video</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
-                                            <View style={styles.captureInnerButton} />
-                                        </TouchableOpacity>
-                                    </View>
-                                </Camera>
-                            </Animated.View>
-                        </TapGestureHandler>
-
+                    <TapGestureHandler onActivated={handleDoubleTap} numberOfTaps={2}>
+                        <Animated.View style={{ flex: 1 }}>
+                            <Camera
+                                style={styles.camera}
+                                type={type}
+                                ref={cameraRef}
+                                flashMode={flashMode}
+                            >
+                                <View style={styles.buttonContainer}>
+                                    <TouchableOpacity
+                                        style={styles.goBackButton}
+                                        onPress={() => navigation.navigate('homeScreen' as never)}
+                                    >
+                                        <Text style={styles.goBackButtonText}>Go Back</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={styles.flashButton}
+                                        onPress={toggleFlashMode}
+                                    >
+                                        <Text style={styles.flashButtonText}>
+                                            {flashMode === Camera.Constants.FlashMode.on
+                                                ? 'Flash On'
+                                                : 'Flash Off'}
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={styles.switchButton}
+                                        onPress={() => {
+                                            navigation.navigate('CameraVideo' as never)
+                                        }}
+                                    >
+                                        <Text style={styles.switchButtonText}>Go to Video</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={styles.captureButton}
+                                        onPress={takePicture}
+                                    >
+                                        <View style={styles.captureInnerButton} />
+                                    </TouchableOpacity>
+                                </View>
+                            </Camera>
+                        </Animated.View>
+                    </TapGestureHandler>
                 </PinchGestureHandler>
             )}
         </View>
-    );
-};
-
-
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -209,9 +255,7 @@ const styles = StyleSheet.create({
     capturedImageFront: {
         flex: 1,
         resizeMode: 'cover',
-       transform: [
-        {scaleX: -1}
-       ]
+        transform: [{ scaleX: -1 }],
     },
     stopRecordButton: {
         backgroundColor: 'red', // Change the background color as needed
@@ -275,8 +319,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     captureButton: {
-        position: "absolute",
-        bottom: "1%",
+        position: 'absolute',
+        bottom: '1%',
         backgroundColor: '#e74c3c',
         width: 80,
         height: 80,
@@ -291,8 +335,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 5,
         elevation: 5,
-        right: "10%"
-
+        right: '10%',
     },
     captureInnerButton: {
         backgroundColor: 'white',
@@ -315,6 +358,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
-});
+})
 
-export default CameraComponent;
+export default CameraComponent

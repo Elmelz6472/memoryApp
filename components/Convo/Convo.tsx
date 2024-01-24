@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { GiftedChat, IMessage } from 'react-native-gifted-chat';
-import { View, StyleSheet } from 'react-native';
+import React, { useState } from 'react'
+import { GiftedChat, IMessage } from 'react-native-gifted-chat'
+import { View, StyleSheet } from 'react-native'
 
 const ConvoComponent = () => {
-    const [messages, setMessages] = useState<IMessage[]>([]);
+    const [messages, setMessages] = useState<IMessage[]>([])
 
     const onSend = (newMessages: IMessage[] = []) => {
-        setMessages((prevMessages) => GiftedChat.append(prevMessages, newMessages));
-    };
+        setMessages((prevMessages) => GiftedChat.append(prevMessages, newMessages))
+    }
 
     return (
         <View style={styles.container}>
@@ -19,13 +19,13 @@ const ConvoComponent = () => {
                 }}
             />
         </View>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-});
+})
 
-export default ConvoComponent;
+export default ConvoComponent

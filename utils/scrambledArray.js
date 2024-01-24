@@ -1,11 +1,11 @@
 function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
+    return Math.floor(Math.random() * max)
 }
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
-        const j = getRandomInt(i + 1);
-        [array[i], array[j]] = [array[j], array[i]];
+        const j = getRandomInt(i + 1)
+        ;[array[i], array[j]] = [array[j], array[i]]
     }
 }
 
@@ -14,10 +14,10 @@ function getScrambledArray(inputArray, m) {
         m = inputArray.length
     }
 
-    const newArray = [...inputArray];
-    shuffleArray(newArray);
+    const newArray = [...inputArray]
+    shuffleArray(newArray)
 
-    return newArray.slice(0, m);
+    return newArray.slice(0, m)
 }
 
-export default getScrambledArray;
+export default getScrambledArray
