@@ -13,6 +13,12 @@ enum Mode {
   Default = 'default',
 }
 
+
+interface App {
+  id: number,
+  name: string
+}
+
 interface AppContextType {
   seedValue: string;
   setSeedValue: React.Dispatch<React.SetStateAction<string>>;
@@ -22,6 +28,10 @@ interface AppContextType {
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
   numberOfElementDisplayed: number;
   setNumberOfElementDisplayed: React.Dispatch<React.SetStateAction<number>>;
+  availableApps: App[]
+  setAvailableApps: React.Dispatch<React.SetStateAction<App[]>>
+  selectedApps: App[]
+  setSelectedApps: React.Dispatch<React.SetStateAction<App[]>>
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -40,9 +50,21 @@ export const AppProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>(Theme.Light); // Default theme is 'light'
   const [numberOfElementDisplayed, setNumberOfElementDisplayed] = useState(25);
   const [mode, setMode] = useState<Mode>(Mode.Default)
+  const [availableApps, setAvailableApps] = useState<App[]>([
+    // { id: 1, name:"settings"},
+    { id: 2, name: "memories" },
+    { id: 3, name: "letters" },
+    { id: 4, name: "countdown" },
+    { id: 5, name: "affirmations" },
+    { id: 6, name: "camera" },
+    { id: 7, name: "bucketList" },
+    { id: 8, name: "chat" },
+
+  ])
+  const [selectedApps, setSelectedApps] = useState<App[]>([])
 
   return (
-    <AppContext.Provider value={{ seedValue, setSeedValue, theme, setTheme, numberOfElementDisplayed, setNumberOfElementDisplayed, mode, setMode }}>
+    <AppContext.Provider value={{ seedValue, setSeedValue, theme, setTheme, numberOfElementDisplayed, setNumberOfElementDisplayed, mode, setMode, availableApps, setAvailableApps, selectedApps, setSelectedApps }}>
       {children}
     </AppContext.Provider>
   );

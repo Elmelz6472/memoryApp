@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native';
 import { useAppContext } from '../../AppContext';
 import { Picker as RNPicker } from '@react-native-picker/picker';
 import { TextInput as PaperTextInput, Button as PaperButton } from 'react-native-paper'; // Importing components from react-native-paper
 import Slider from '@react-native-community/slider';
 import { useNavigation } from '@react-navigation/native';
+import { CheckBox } from 'react-native-elements';
 
-
-// Import the Theme enum
+interface App {
+  id: number,
+  name: string
+}
 enum Theme {
     Light = 'light',
     Dark = 'dark',
@@ -30,7 +33,11 @@ const Settings = () => {
         numberOfElementDisplayed,
         setNumberOfElementDisplayed,
         mode,
-        setMode, // Add mode state and setter
+        setMode,
+        availableApps,
+        setAvailableApps,
+        selectedApps,
+        setSelectedApps
     } = useAppContext();
     const [toggleValue, setToggleValue] = useState(false);
 
@@ -72,6 +79,19 @@ const Settings = () => {
         console.log('Settings canceled');
         navigation.navigate("homeScreen" as never);
     };
+
+    const handleAppToggle = (selectedApp: App) => {
+        // Check if the selected app is already in the selectedApps array
+        const isSelected = selectedApps.some(app => app.id === selectedApp.id);
+
+        // If it's selected, remove it; otherwise, add it to the selection
+        setSelectedApps(prevSelectedApps =>
+            isSelected
+                ? prevSelectedApps.filter(app => app.id !== selectedApp.id)
+                : [...prevSelectedApps, selectedApp]
+        );
+    };
+
 
     return (
         <View style={styles.container}>
@@ -123,6 +143,24 @@ const Settings = () => {
                     <RNPicker.Item label="Compact" value={Mode.Compact} />
                     <RNPicker.Item label="Default" value={Mode.Default} />
                 </RNPicker>
+            </View>
+
+            <View style={[styles.optionContainer, styles.separator]}>
+                <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false} // Hide horizontal scrollbar
+                    contentContainerStyle={styles.scrollContentContainer}
+                >
+                    {availableApps.map(appName => (
+                        <CheckBox
+                            key={appName.id}
+                            title={appName.name}
+                            checked={selectedApps.includes(appName)}
+                            onPress={() => handleAppToggle(appName)}
+                            containerStyle={styles.checkBoxContainer}
+                        />
+                    ))}
+                </ScrollView>
             </View>
 
             <View style={styles.buttonsContainer}>
@@ -197,6 +235,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#d9534f', // Red color for cancel button
         flex: 1,
         marginRight: 10,
+    },
+    scrollContentContainer: {
+        marginTop: 8,
+        paddingLeft: 4, // Add some padding on the left
+    },
+
+    checkBoxContainer: {
+        marginRight: 8, // Add spacing between CheckBox items
     },
     saveButton: {
         backgroundColor: '#5bc0de', // Blue color for save button

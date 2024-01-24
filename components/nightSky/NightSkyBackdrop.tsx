@@ -9,7 +9,7 @@ import { useAppContext } from '../../AppContext';
 const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => void; }; }) => {
     const [showButtons, setShowButtons] = useState(true);
     const fadeAnim = useRef(new Animated.Value(1)).current;
-    const { seedValue } = useAppContext()
+    const { seedValue, mode, availableApps, selectedApps } = useAppContext()
 
 
     useEffect(() => {
@@ -57,72 +57,101 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                     {showButtons && (
                         <>
                             <View style={styles.upperButtonsContainer}>
-                                <AwesomeButton
-                                    onPress={() => { props.navigation.navigate("CameraVideo") }}
-                                    backgroundColor="#27ae60" // Green
-                                    backgroundDarker="#219d54"
-                                    style={styles.button}
-                                >
-                                    <FontAwesome5 name="camera" size={30} color="#FFFFFF" />
-                                </AwesomeButton>
-                                <AwesomeButton
-                                    onPress={() => { props.navigation.navigate("BucketList") }}
-                                    backgroundColor="#FF1493"
-                                    backgroundDarker="#C71585"
-                                >
-                                    <FontAwesome5 name="list" size={30} color={"#FFF"} />
-                                </AwesomeButton>
-                                <AwesomeButton
-                                    onPress={() => { props.navigation.navigate("Convo") }}
-                                    backgroundColor="#DAA520"
-                                    backgroundDarker="#B8860B"
-                                >
-                                    <FontAwesome5 name="comments" size={30} color="#FFFFFF" />
-                                </AwesomeButton>
-                                <AwesomeButton
-                                    onPress={() => {props.navigation.navigate("Settings")}}
-                                    backgroundColor="#CCCCCC" // Orange
-                                    backgroundDarker="#999999"
-                                >
-                                    <FontAwesome5 name="cog" size={30} color="#FFFFFF" />
-                                </AwesomeButton>
+
+
+
+                               {mode === "default" && (
+                                <>
+                                        {selectedApps.some(app => app.name === "camera") && (<AwesomeButton
+                                            onPress={() => { props.navigation.navigate("CameraVideo"); }}
+                                            backgroundColor="#27ae60" // Green
+                                            backgroundDarker="#219d54"
+                                            style={styles.button}
+                                        >
+                                            <FontAwesome5 name="camera" size={30} color="#FFFFFF" />
+                                        </AwesomeButton>)}
+
+                                        {selectedApps.some(app => app.name === "bucketList") && (<AwesomeButton
+                                        onPress={() => { props.navigation.navigate("BucketList"); } }
+                                        backgroundColor="#FF1493"
+                                        backgroundDarker="#C71585"
+                                    >
+                                            <FontAwesome5 name="list" size={30} color={"#FFF"} />
+                                        </AwesomeButton>)}
+
+                                        {selectedApps.some(app => app.name === "chat") && (<AwesomeButton
+                                            onPress={() => { props.navigation.navigate("Convo"); } }
+                                            backgroundColor="#DAA520"
+                                            backgroundDarker="#B8860B"
+                                        >
+                                            <FontAwesome5 name="comments" size={30} color="#FFFFFF" />
+                                        </AwesomeButton>)}
+
+                                        <AwesomeButton
+                                            onPress={() => { props.navigation.navigate("Settings") }}
+                                            backgroundColor="#CCCCCC" // Orange
+                                            backgroundDarker="#999999"
+                                        >
+                                            <FontAwesome5 name="cog" size={30} color="#FFFFFF" />
+                                        </AwesomeButton>
+                                    </>
+
+                               )}
+
+
+                                {mode === "compact" && ( // Conditionally render cog button
+                                    <AwesomeButton
+                                        onPress={() => { props.navigation.navigate("Settings") }}
+                                        backgroundColor="#CCCCCC" // Orange
+                                        backgroundDarker="#999999"
+                                    >
+                                        <FontAwesome5 name="cog" size={30} color="#FFFFFF" />
+                                    </AwesomeButton>
+                                )}
                             </View>
                         </>
                     )}
                 </Animated.View>
 
+
                 <Animated.View style={[styles.centeredContainer, { opacity: fadeAnim }]}>
                     {showButtons && (
                         <>
                             <View style={styles.bottomButtonsContainer}>
-                                <AwesomeButton
+                                {selectedApps.some(app => app.name === "letters") && (<AwesomeButton
                                     onPress={onPressLetters}
-                                    backgroundColor="#3498db" // Blue
+                                    backgroundColor="#3498db"
                                     backgroundDarker="#2980b9"
                                 >
                                     <FontAwesome5 name="envelope" size={30} color="#FFFFFF" />
-                                </AwesomeButton>
-                                <AwesomeButton
+                                </AwesomeButton>)}
+
+                                {selectedApps.some(app => app.name === "countdown") && ( <AwesomeButton
                                     onPress={onPressEvent}
-                                    backgroundColor="#e74c3c" // Red
+                                    backgroundColor="#e74c3c"
                                     backgroundDarker="#c0392b"
                                 >
                                     <FontAwesome5 name="calendar" size={30} color="#FFFFFF" />
-                                </AwesomeButton>
-                                <AwesomeButton
+                                </AwesomeButton>)}
+
+
+                                {selectedApps.some(app => app.name === "affirmations") && (   <AwesomeButton
                                     onPress={onPressMemories}
-                                    backgroundColor="#9b59b6" // Purple
+                                    backgroundColor="#9b59b6"
                                     backgroundDarker="#8e44ad"
                                 >
                                     <FontAwesome5 name="heart" size={30} color="#FFFFFF" />
-                                </AwesomeButton>
-                                <AwesomeButton
+                                </AwesomeButton>)}
+
+
+
+                                {selectedApps.some(app => app.name === "memories") && ( <AwesomeButton
                                     onPress={onPressTests}
-                                    backgroundColor="#e67e22" // Orange
+                                    backgroundColor="#e67e22"
                                     backgroundDarker="#d35400"
                                 >
                                     <FontAwesome5 name="star" size={30} color="#FFFFFF" />
-                                </AwesomeButton>
+                                </AwesomeButton>)}
 
                             </View>
                         </>
