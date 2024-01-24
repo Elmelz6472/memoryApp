@@ -35,9 +35,9 @@ yarn-error.*
 *.tsbuildinfo
 
 # config for firebase
-firebase-config
+firebase-config.js
 
 # personalised message
 affirmations/
-videos/videoDate.*
-letter/
+videos
+letter
