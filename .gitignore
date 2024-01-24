@@ -33,3 +33,11 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# config for firebase
+firebase-config
+
+# personalised message
+affirmations/
+videos/videoDate.*
+letter/
