@@ -22,7 +22,7 @@ import CameraVideo from './components/Camera/CameraVideo';
 import ConvoComponent from './components/Convo/Convo';
 import BucketList from './components/BucketList/BucketList'
 import Settings from './components/Settings/Settings';
-
+import Form from './components/RDV/RDV'
 const App = () => {
   const Stack = createStackNavigator();
 
@@ -50,6 +50,9 @@ const App = () => {
 
         <Stack.Screen name="BucketList" component={BucketList}/>
         <Stack.Screen name="Convo" component={ConvoComponent} />
+
+
+        <Stack.Screen name="RDV" component={Form}/>
 
         <Stack.Screen name="Settings" component={Settings} />
 

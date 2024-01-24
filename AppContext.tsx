@@ -48,7 +48,7 @@ export const useAppContext = () => {
 export const AppProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [seedValue, setSeedValue] = useState('12345');
   const [theme, setTheme] = useState<Theme>(Theme.Light); // Default theme is 'light'
-  const [numberOfElementDisplayed, setNumberOfElementDisplayed] = useState(25);
+  const [numberOfElementDisplayed, setNumberOfElementDisplayed] = useState(10);
   const [mode, setMode] = useState<Mode>(Mode.Default)
   const [availableApps, setAvailableApps] = useState<App[]>([
     // { id: 1, name:"settings"},
@@ -59,9 +59,14 @@ export const AppProvider: React.FC<React.ReactNode> = ({ children }) => {
     { id: 6, name: "camera" },
     { id: 7, name: "bucketList" },
     { id: 8, name: "chat" },
+    { id: 9, name: "RDV" },
+
 
   ])
-  const [selectedApps, setSelectedApps] = useState<App[]>([])
+  const [selectedApps, setSelectedApps] = useState<App[]>([
+    { id: 9, name: "RDV" },
+
+  ])
 
   return (
     <AppContext.Provider value={{ seedValue, setSeedValue, theme, setTheme, numberOfElementDisplayed, setNumberOfElementDisplayed, mode, setMode, availableApps, setAvailableApps, selectedApps, setSelectedApps }}>

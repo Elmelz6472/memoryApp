@@ -16,6 +16,11 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
         animateButtons();
     }, [showButtons]);
 
+    useEffect(() => {
+        console.log("selectedApps ", JSON.stringify(selectedApps, null, 2));
+    }, [selectedApps]);
+
+
     const animateButtons = () => {
         Animated.timing(fadeAnim, {
             toValue: showButtons ? 1 : 0,
@@ -93,6 +98,14 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                                             backgroundDarker="#999999"
                                         >
                                             <FontAwesome5 name="cog" size={30} color="#FFFFFF" />
+                                        </AwesomeButton>
+
+                                        <AwesomeButton
+                                            onPress={() => { props.navigation.navigate("RDV") }}
+                                            backgroundColor="#FF69B4" // Pink
+                                            backgroundDarker="#D450A4"
+                                        >
+                                            <FontAwesome5 name="calendar-check" size={30} color="#FFFFFF" />
                                         </AwesomeButton>
                                     </>
 
