@@ -5,6 +5,7 @@ import * as MediaLibrary from 'expo-media-library';
 import { useNavigation } from '@react-navigation/native';
 import { PinchGestureHandler, TapGestureHandler, LongPressGestureHandler, State } from 'react-native-gesture-handler';
 import { FlipType, manipulateAsync } from 'expo-image-manipulator';
+import { Button } from 'react-native-paper'; // Importing Button from react-native-paper
 
 
 

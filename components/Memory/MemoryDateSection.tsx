@@ -4,6 +4,8 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AwesomeButton from 'react-native-really-awesome-button';
 import { useNavigation } from '@react-navigation/native';
 import videos from '../../videos/videosDate';
+import getScrambledArray from '../../utils/scrambledArray';
+import { useAppContext } from '../../AppContext';
 
 
 const MemoryIconDate = ({ title, date }: any) => {
@@ -24,16 +26,18 @@ const MemoryIconDate = ({ title, date }: any) => {
 
 
 const MemorySectionDate: React.FC = () => {
+    const { numberOfElementDisplayed } = useAppContext();
     const navigation = useNavigation()
+    const new_videos = getScrambledArray(videos, numberOfElementDisplayed)
     return (
         <View style={styles.container}>
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.memoryShelf}>
-                    {videos.map((item, index) => (
+                    {new_videos.map((item, index) => (
                         <TouchableOpacity
                             key={index}
                             // @ts-ignore
-                            onPress={() => navigation.navigate("DateContent", item)}
+                            onPress={() => navigation.navigate("DateContent", numberOfElementDisplayed)}
                             style={styles.memoryIconContainer}
                         >
                             <MemoryIconDate {...item} />

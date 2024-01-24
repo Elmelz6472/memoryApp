@@ -1,8 +1,11 @@
-// Settings.tsx
 import React, { useState } from 'react';
-import { View, Text, Switch, TextInput, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useAppContext } from '../../AppContext';
 import { Picker as RNPicker } from '@react-native-picker/picker';
+import { TextInput as PaperTextInput, Button as PaperButton } from 'react-native-paper'; // Importing components from react-native-paper
+import Slider from '@react-native-community/slider';
+import { useNavigation } from '@react-navigation/native';
+
 
 // Import the Theme enum
 enum Theme {
@@ -11,7 +14,14 @@ enum Theme {
     Bright = 'bright',
 }
 
+enum Mode {
+    Compact = 'compact',
+    Default = 'default',
+}
+
+
 const Settings = () => {
+    const navigation = useNavigation()
     const {
         seedValue,
         setSeedValue,
@@ -19,6 +29,8 @@ const Settings = () => {
         setTheme,
         numberOfElementDisplayed,
         setNumberOfElementDisplayed,
+        mode,
+        setMode, // Add mode state and setter
     } = useAppContext();
     const [toggleValue, setToggleValue] = useState(false);
 
@@ -34,21 +46,39 @@ const Settings = () => {
         setTheme(selectedTheme);
     };
 
-    const handleNumberOfElementChange = (value: string) => {
+    const handleNumberOfElementChange = (value: number) => {
         // Ensure the input value is a valid number
-        const parsedValue = parseInt(value, 10);
-        if (!isNaN(parsedValue) || value === "") {
-            setNumberOfElementDisplayed(isNaN(parsedValue) ? 0 : parsedValue);
-        }
+        setNumberOfElementDisplayed(value)
+    };
+
+    const handleModeChange = (selectedMode: Mode) => {
+        setMode(selectedMode);
+    };
+
+    const handleSave = () => {
+        // Implement logic to save settings
+        // You can use the values from the state (seedValue, theme, numberOfElementDisplayed, mode)
+        // and perform any save operation here
+        // For demonstration, let's just log the values
+        console.log('Settings saved:', { seedValue, theme, numberOfElementDisplayed, mode });
+        setSeedValue(seedValue);
+        setTheme(theme);
+        setNumberOfElementDisplayed(numberOfElementDisplayed);
+        setMode(mode);
+        navigation.navigate("homeScreen" as never);
+    };
+
+    const handleCancel = () => {
+        console.log('Settings canceled');
+        navigation.navigate("homeScreen" as never);
     };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>Settings</Text>
 
-            <View style={styles.optionContainer}>
+            <View style={[styles.optionContainer, styles.separator]}>
                 <Text style={styles.optionText}>Seed Value</Text>
-                <TextInput
+                <PaperTextInput
                     style={styles.input}
                     value={seedValue}
                     onChangeText={handleSeedChange}
@@ -56,7 +86,7 @@ const Settings = () => {
                 />
             </View>
 
-            <View style={styles.optionContainer}>
+            <View style={[styles.optionContainer, styles.separator]}>
                 <Text style={styles.optionText}>Theme</Text>
                 <RNPicker
                     selectedValue={theme}
@@ -69,29 +99,45 @@ const Settings = () => {
                 </RNPicker>
             </View>
 
-            <View style={styles.optionContainer}>
-                <Text style={styles.optionText}>Number of Elements Displayed</Text>
-                <TextInput
-                    style={styles.input}
-                    value={numberOfElementDisplayed.toString()}
-                    onChangeText={handleNumberOfElementChange}
-                    keyboardType="numeric" // Numeric keypad
-                    onFocus={() => setNumberOfElementDisplayed(0)} // Clear the text when focused
-                    onBlur={() => {
-                        // Update the state when the input loses focus
-                        // This usually happens when the keyboard is dismissed
-                        setNumberOfElementDisplayed(prevValue => {
-                            if (isNaN(prevValue)) {
-                                return 0;
-                            }
-                            return prevValue;
-                        });
-                    }}
+            <View style={[styles.optionContainer, styles.separator]}>
+                <Text style={styles.optionText}>#Display elements: </Text>
+                <Text style={styles.sliderValue}>{numberOfElementDisplayed}</Text>
+                <Slider
+                    style={styles.slider}
+                    value={numberOfElementDisplayed}
+                    onSlidingComplete={handleNumberOfElementChange}
+                    minimumValue={5}
+                    maximumValue={30}
+                    tapToSeek={true}
+                    step={1}
                 />
+            </View>
+
+            <View style={[styles.optionContainer, styles.separator]}>
+                <Text style={styles.optionText}>Mode</Text>
+                <RNPicker
+                    selectedValue={mode}
+                    style={styles.picker}
+                    onValueChange={(itemValue: Mode) => handleModeChange(itemValue as Mode)}
+                >
+                    <RNPicker.Item label="Compact" value={Mode.Compact} />
+                    <RNPicker.Item label="Default" value={Mode.Default} />
+                </RNPicker>
+            </View>
+
+            <View style={styles.buttonsContainer}>
+                <PaperButton mode="contained" style={styles.cancelButton} onPress={handleCancel}>
+                    Cancel
+                </PaperButton>
+                <PaperButton mode="contained" style={styles.saveButton} onPress={handleSave}>
+                    Save
+                </PaperButton>
             </View>
         </View>
     );
+
 };
+
 
 const styles = StyleSheet.create({
     container: {
@@ -99,17 +145,30 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: '#fff',
     },
-    header: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 16,
-        color: '#333',
+    separator: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc', // You can adjust the color to your preference
+        paddingBottom: 8, // Adjust the spacing below the separator
+        marginBottom: 16, // Adjust the total margin/bottom spacing
     },
     optionContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: 16,
+    },
+
+    sliderContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    sliderValue: {
+        fontSize: 16,
+        color: '#333',
+    },
+    slider: {
+        flex: 1,
     },
     optionText: {
         fontSize: 16,
@@ -127,6 +186,21 @@ const styles = StyleSheet.create({
     picker: {
         width: '50%',
         color: '#333',
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 20,
+        bottom: "5%"
+    },
+    cancelButton: {
+        backgroundColor: '#d9534f', // Red color for cancel button
+        flex: 1,
+        marginRight: 10,
+    },
+    saveButton: {
+        backgroundColor: '#5bc0de', // Blue color for save button
+        flex: 1,
     },
 });
 
