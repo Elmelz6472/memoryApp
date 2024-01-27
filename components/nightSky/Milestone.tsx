@@ -1,12 +1,14 @@
-import React from 'react'
-import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
+import React from 'react';
+import { View, Text, StyleSheet, Modal, TouchableOpacity, Image } from 'react-native';
+import { Video } from 'expo-av'
 
 interface MilestonePopupProps {
-    visible: boolean
-    onClose: () => void
-    date: string
-    event: string
-    cuteDescription: string
+    visible: boolean;
+    onClose: () => void;
+    date: string;
+    event: string;
+    cuteDescription: string;
+    mediaUri?: string; // Optional picture or video URI
 }
 
 const MilestonePopup: React.FC<MilestonePopupProps> = ({
@@ -15,6 +17,7 @@ const MilestonePopup: React.FC<MilestonePopupProps> = ({
     date,
     event,
     cuteDescription,
+    mediaUri,
 }) => {
     return (
         <Modal transparent visible={visible} animationType='slide'>
@@ -23,7 +26,21 @@ const MilestonePopup: React.FC<MilestonePopupProps> = ({
                     <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                         <Text style={styles.closeButtonText}>✕</Text>
                     </TouchableOpacity>
-                    <Text style={styles.title}>Sweet Moment</Text>
+                    <Text style={styles.title}>Cherished Moment 💖</Text>
+                    {mediaUri && (
+                        <View style={styles.mediaContainer}>
+                            {mediaUri.includes('.mp4') ? (
+                                <Video
+                                    source={{ uri: mediaUri }}
+                                    style={styles.media}
+                                    resizeMode='cover'
+                                    controls
+                                />
+                            ) : (
+                                <Image source={{ uri: mediaUri }} style={styles.media} resizeMode='cover' />
+                            )}
+                        </View>
+                    )}
                     <View style={styles.detailsContainer}>
                         <View style={styles.detailItem}>
                             <Text style={[styles.detailText, styles.dateText]}>{date}</Text>
@@ -40,18 +57,18 @@ const MilestonePopup: React.FC<MilestonePopupProps> = ({
                 </View>
             </View>
         </Modal>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(255, 228, 230, 0.8)', // Light pink background
+        backgroundColor: 'rgba(255, 218, 229, 0.9)', // Soft pink background
     },
     popupContainer: {
-        backgroundColor: 'white',
+        backgroundColor: '#FFF5F8', // Creamy pink background
         borderRadius: 20,
         width: '80%',
         paddingHorizontal: 20,
@@ -69,32 +86,42 @@ const styles = StyleSheet.create({
         color: '#FF69B4', // Hot pink text color
     },
     title: {
-        fontSize: 24,
+        fontSize: 26,
         fontWeight: 'bold',
         marginBottom: 10,
         color: '#FF69B4', // Hot pink title color
     },
+    mediaContainer: {
+        width: '100%',
+        aspectRatio: 16 / 9, // Adjust as needed for your media aspect ratio
+        borderRadius: 15,
+        overflow: 'hidden',
+        marginVertical: 10,
+    },
+    media: {
+        flex: 1,
+    },
     detailsContainer: {
-        marginTop: 10,
         width: '100%',
         alignItems: 'center',
     },
     detailItem: {
-        marginBottom: 10,
+        marginBottom: 15,
     },
     separator: {
         height: 1,
-        backgroundColor: '#CCC', // Light gray separator color
+        backgroundColor: '#FFB6C1', // Light pink separator color
         width: '100%',
         marginVertical: 5,
     },
     detailText: {
-        fontSize: 16,
-        color: '#666', // Medium gray text color
+        fontSize: 18,
+        color: '#7C6A70', // Soft rose text color
+        textAlign: 'center',
     },
     dateText: {
         fontWeight: 'bold',
     },
-})
+});
 
-export default MilestonePopup
+export default MilestonePopup;

@@ -60,7 +60,16 @@ export const AppProvider: React.FC<React.ReactNode> = ({ children }) => {
         { id: 8, name: 'chat' },
         { id: 9, name: 'RDV' },
     ])
-    const [selectedApps, setSelectedApps] = useState<App[]>([{ id: 9, name: 'RDV' }])
+    const [selectedApps, setSelectedApps] = useState<App[]>([
+        { id: 2, name: 'memories' },
+        { id: 3, name: 'letters' },
+        { id: 4, name: 'countdown' },
+        { id: 5, name: 'affirmations' },
+        { id: 6, name: 'camera' },
+        { id: 7, name: 'bucketList' },
+        { id: 8, name: 'chat' },
+        { id: 9, name: 'RDV' },
+    ])
 
     return (
         <AppContext.Provider
