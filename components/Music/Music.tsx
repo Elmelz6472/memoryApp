@@ -1,56 +1,28 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { AVPlaybackStatus, Audio } from 'expo-av';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Image, FlatList, Dimensions, TextInput } from 'react-native';
+import { Audio } from 'expo-av';
 import { FontAwesome } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
+import { AudioFile, audioFiles } from '../../assets/sound/AudioObject'
+const { width } = Dimensions.get('window');
 
-interface AudioFile {
-    id: number;
-    uri: string;
-    artist: string;
-    title: string;
-    durationSecond: number;
-    coverArt: string;
-}
-
-const audioFiles: AudioFile[] = [
-    {
-        id: 1,
-        uri: 'https://firebasestorage.googleapis.com/v0/b/memoryapp-fc002.appspot.com/o/affirmation_music.mp3?alt=media&token=27f313cb-aa3f-43d3-8216-e1e46caf4e59',
-        artist: 'Artist 1',
-        title: 'Affirmation Music',
-        durationSecond: 399,
-        coverArt: 'https://firebasestorage.googleapis.com/v0/b/memoryapp-fc002.appspot.com/o/Screenshot%202024-02-01%20at%2012.12.53%E2%80%AFPM.png?alt=media&token=ddbab5e9-adea-4128-ba09-169265e77142',
-    },
-    {
-        id: 2,
-        uri: 'https://firebasestorage.googleapis.com/v0/b/memoryapp-fc002.appspot.com/o/lol.mp3?alt=media&token=eb022955-6e66-44b1-8aba-31d05be20e5a',
-        artist: 'Artist 2',
-        title: 'barcaaaa',
-        durationSecond: 42,
-        coverArt: 'https://firebasestorage.googleapis.com/v0/b/memoryapp-fc002.appspot.com/o/Screenshot%202024-02-01%20at%2012.12.53%E2%80%AFPM.png?alt=media&token=ddbab5e9-adea-4128-ba09-169265e77142'
-
-    },
-];
 
 const BasicAudioPlayer = () => {
     const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentPosition, setCurrentPosition] = useState(0);
+    const [searchQuery, setSearchQuery] = useState('');
     const soundObject = useRef(new Audio.Sound());
-    const isReady = useRef(false);
 
     useEffect(() => {
-        return soundObject.current
-            ? () => {
-                soundObject.current.unloadAsync();
-            }
-            : undefined;
+        return () => {
+            soundObject.current.unloadAsync();
+        };
     }, []);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (isPlaying && isReady.current) {
+            if (isPlaying) {
                 soundObject.current.getStatusAsync().then((status) => {
                     if (status.isLoaded) {
                         setCurrentPosition(status.positionMillis / 1000);
@@ -62,116 +34,131 @@ const BasicAudioPlayer = () => {
     }, [isPlaying]);
 
     const loadAudio = async (index: number) => {
-        const playbackInstance = soundObject.current;
-        await playbackInstance.unloadAsync();
-        await playbackInstance.loadAsync({ uri: audioFiles[index].uri });
-        playbackInstance.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
-        isReady.current = true;
-        setCurrentPosition(0);
-    };
-
-    const onPlaybackStatusUpdate = async (status: AVPlaybackStatus) => {
-        if (status.isLoaded && status.durationMillis !== undefined) {
-            const { positionMillis, durationMillis } = status;
-            const isFinished = positionMillis >= (durationMillis - 1000); // Within 1 second of end
-            if (isFinished && !status.isLooping) {
-                await onNextPress();
-            }
-        }
+        setIsPlaying(false);
+        await soundObject.current.unloadAsync();
+        await soundObject.current.loadAsync({ uri: audioFiles[index].uri });
+        setIsPlaying(true);
+        await soundObject.current.playAsync();
     };
 
     const playPauseAudio = async () => {
         if (isPlaying) {
             await soundObject.current.pauseAsync();
+            setIsPlaying(false);
         } else {
-            if (!isReady.current) {
-                await loadAudio(currentTrackIndex);
-            }
             await soundObject.current.playAsync();
+            setIsPlaying(true);
         }
-        setIsPlaying(!isPlaying);
     };
 
     const onNextPress = async () => {
-        if (currentTrackIndex < audioFiles.length - 1) {
-            setCurrentTrackIndex(currentTrackIndex + 1);
-        } else {
-            setCurrentTrackIndex(0);
+        let nextIndex = currentTrackIndex + 1;
+        if (nextIndex >= audioFiles.length) {
+            nextIndex = 0;
         }
-        if (isPlaying) {
-            await loadAudio(currentTrackIndex + 1);
-            await soundObject.current.playAsync();
-        }
+        setCurrentTrackIndex(nextIndex);
+        await loadAudio(nextIndex);
     };
 
     const onPreviousPress = async () => {
-        if (currentTrackIndex > 0) {
-            setCurrentTrackIndex(currentTrackIndex - 1);
-        } else {
-            setCurrentTrackIndex(audioFiles.length - 1);
+        let prevIndex = currentTrackIndex - 1;
+        if (prevIndex < 0) {
+            prevIndex = audioFiles.length - 1;
         }
-        if (isPlaying) {
-            await loadAudio(currentTrackIndex - 1);
-            await soundObject.current.playAsync();
-        }
+        setCurrentTrackIndex(prevIndex);
+        await loadAudio(prevIndex);
     };
 
     const onShufflePress = async () => {
-        let newIndex = Math.floor(Math.random() * audioFiles.length);
-        while (newIndex === currentTrackIndex) {
+        let newIndex;
+        do {
             newIndex = Math.floor(Math.random() * audioFiles.length);
-        }
+        } while (newIndex === currentTrackIndex);
         setCurrentTrackIndex(newIndex);
-        if (isPlaying) {
-            await loadAudio(newIndex);
-            await soundObject.current.playAsync();
-        }
+        await loadAudio(newIndex);
     };
 
     const onSliderValueChange = async (value: number) => {
-        if (isReady.current) {
-            await soundObject.current.setPositionAsync(value * 1000);
-            setCurrentPosition(value);
-            if (!isPlaying) {
-                setIsPlaying(true);
-                await soundObject.current.playAsync();
-            }
-        }
+        await soundObject.current.setPositionAsync(value * 1000);
+        setCurrentPosition(value);
     };
+
+    const selectTrack = async (index: number) => {
+        setCurrentTrackIndex(index);
+        await loadAudio(index);
+    };
+
+    const renderItem = useCallback(({ item, index }: any) => (
+        <TouchableOpacity
+            style={index === currentTrackIndex ? styles.listItemActive : styles.listItem}
+            onPress={() => selectTrack(index)}
+        >
+            <Image source={{ uri: item.coverArt }} style={styles.coverArt} />
+            <View style={styles.listItemInfo}>
+                <Text style={styles.listItemTitle}>{item.title}</Text>
+                <Text style={styles.listItemArtist}>{item.artist}</Text>
+            </View>
+        </TouchableOpacity>
+    ), [currentTrackIndex]);
 
     const currentAudioFile = audioFiles[currentTrackIndex];
 
+    // Function to filter audio files based on search query
+    const filteredAudioFiles = audioFiles.filter(
+        (file) =>
+            file.artist.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            file.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <View style={styles.container}>
-            <Image source={{ uri: currentAudioFile.coverArt }} style={styles.coverArt} />
-            <Text style={styles.title}>{currentAudioFile.title}</Text>
-            <Text style={styles.artist}>{currentAudioFile.artist}</Text>
-            <Slider
-                style={styles.progressContainer}
-                value={currentPosition}
-                minimumValue={0}
-                maximumValue={currentAudioFile.durationSecond}
-                thumbTintColor="#007bff"
-                minimumTrackTintColor="#007bff"
-                onSlidingComplete={onSliderValueChange}
+            {/* Search input */}
+            <TextInput
+                style={styles.searchInput}
+                placeholder="Search for artist or title"
+                onChangeText={(text) => setSearchQuery(text)}
+                value={searchQuery}
             />
-            <View style={styles.buttonsContainer}>
-                <TouchableOpacity style={styles.controlButton} onPress={onPreviousPress}>
-                    <FontAwesome name="backward" size={24} color="#007bff" />
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.controlButton, styles.playPauseButton]} onPress={playPauseAudio}>
-                    <FontAwesome name={isPlaying ? 'pause-circle' : 'play-circle'} size={48} color="#007bff" />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.controlButton} onPress={onNextPress}>
-                    <FontAwesome name="forward" size={24} color="#007bff" />
-                </TouchableOpacity>
+
+            {/* Player section */}
+            <View style={styles.playerContainer}>
+                <Image source={{ uri: currentAudioFile.coverArt }} style={styles.coverArtPlayer} />
+                <Text style={styles.title}>{currentAudioFile.title}</Text>
+                <Text style={styles.artist}>{currentAudioFile.artist}</Text>
+                <Slider
+                    style={styles.progressContainer}
+                    value={currentPosition}
+                    minimumValue={0}
+                    maximumValue={currentAudioFile.durationSecond}
+                    thumbTintColor="#007bff"
+                    minimumTrackTintColor="#007bff"
+                    onSlidingComplete={onSliderValueChange}
+                />
+                <View style={styles.buttonsContainer}>
+                    <TouchableOpacity style={styles.controlButton} onPress={onPreviousPress}>
+                        <FontAwesome name="backward" size={24} color="#007bff" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.controlButton, styles.playPauseButton]} onPress={playPauseAudio}>
+                        <FontAwesome name={isPlaying ? 'pause-circle' : 'play-circle'} size={48} color="#007bff" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.controlButton} onPress={onNextPress}>
+                        <FontAwesome name="forward" size={24} color="#007bff" />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.shufflerContainer}>
+                    <TouchableOpacity style={styles.shufflerButton} onPress={onShufflePress}>
+                        <FontAwesome name="random" size={20} color="#007bff" />
+                        <Text style={styles.shufflerText}>Shuffle</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-            <View style={styles.shufflerContainer}>
-                <TouchableOpacity style={styles.shufflerButton} onPress={onShufflePress}>
-                    <FontAwesome name="random" size={20} color="#007bff" />
-                    <Text style={styles.shufflerText}>Shuffle</Text>
-                </TouchableOpacity>
-            </View>
+
+            {/* FlatList for filtered audio files */}
+            <FlatList
+                data={filteredAudioFiles}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id.toString()}
+            />
         </View>
     );
 };
@@ -181,22 +168,28 @@ const styles = StyleSheet.create({
 
     },
     container: {
-        alignItems: 'center',
-        borderRadius: 10,
-        backgroundColor: '#fff',
-        elevation: 5,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 5 },
-        shadowOpacity: 0.15,
-        shadowRadius: 8,
-        padding: 20,
-        top: 100
+        flex: 1,
+        paddingVertical: 20,
     },
-    coverArt: {
-        width: 200,
-        height: 200,
+    playerContainer: {
+        paddingTop: 25,
+        alignItems: 'center',
+        marginBottom: 0,
+        paddingHorizontal: 20,
+    },
+    searchInput: {
+        paddingHorizontal: 20,
+        paddingVertical: 30,
+        backgroundColor: '#f0f0f0',
         borderRadius: 10,
-        marginBottom: 16,
+        marginHorizontal: 20,
+        marginBottom: 20,
+    },
+    coverArtPlayer: {
+        width: width - 40,
+        height: width - 40,
+        marginBottom: 10,
+        borderRadius: 10,
     },
     title: {
         fontSize: 20,
@@ -239,6 +232,35 @@ const styles = StyleSheet.create({
         color: '#007bff',
         fontSize: 16,
         paddingLeft: 8,
+    },
+    listItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        marginHorizontal: 10,
+        marginVertical: 5,
+    },
+    listItemActive: {
+        backgroundColor: '#e0f7ff',
+    },
+    coverArt: {
+        left: 10,
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+    },
+    listItemInfo: {
+        marginLeft: 10,
+        flex: 1,
+    },
+    listItemTitle: {
+        fontWeight: 'bold',
+        color: '#000',
+    },
+    listItemArtist: {
+        color: '#666',
     },
 });
 

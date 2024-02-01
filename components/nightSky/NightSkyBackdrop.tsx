@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
+
 const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => void } }) => {
     const [showButtons, setShowButtons] = useState(true)
     const fadeAnim = useRef(new Animated.Value(1)).current
