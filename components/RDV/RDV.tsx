@@ -22,16 +22,23 @@ const FORM_WIDTH = width * 0.8; // Adjust the width as desired
 const AppointmentForm = () => {
     const navigation = useNavigation();
     const [popupVisible, setPopupVisible] = useState(false);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+
+
+    const [clothes, setClothes] = useState('');
+    const [food, setFood] = useState('');
+    const [grooming, setGrooming] = useState('');
+    const [specialRequest, setSpecialRequest] = useState('');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
+
 
     const database = getDatabase(app);
 
     const inputFields = [
-        { key: 'name', placeholder: 'Your Name', value: name, onChangeText: setName },
-        { key: 'email', placeholder: 'Your Email', value: email, onChangeText: setEmail },
+        { key: 'clothes', placeholder: 'Clothes to bring', value: clothes, onChangeText: setClothes },
+        { key: 'food', placeholder: 'Food to bring', value: food, onChangeText: setFood },
+        { key: 'grooming', placeholder: "Hair cut/General Grooming", value: grooming, onChangeText: setGrooming },
+        { key: 'specialRequest', placeholder: "Special Request:", value: specialRequest, onChangeText: setSpecialRequest },
         { key: 'date', placeholder: 'Date (MM/DD/YYYY)', value: date, onChangeText: setDate },
         { key: 'time', placeholder: 'Time', value: time, onChangeText: setTime },
     ];
@@ -42,8 +49,10 @@ const AppointmentForm = () => {
         const rdvRef = ref(database, 'RDV');
 
         push(rdvRef, {
-            name: name,
-            email: email,
+            clothes: clothes,
+            food: food,
+            grooming: grooming,
+            specialRequest: specialRequest,
             date: date,
             time: time,
             timestamp: serverTimestamp() // Add server timestamp
@@ -103,7 +112,7 @@ const AppointmentForm = () => {
     const progressBarWidth = `${progress}%`;
 
     const areAllFieldsFilled = () => {
-        return name && email && date && time;
+        return clothes && food && specialRequest && grooming && date && time;
     };
 
     return (
