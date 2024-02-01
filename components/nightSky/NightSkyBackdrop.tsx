@@ -14,9 +14,9 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
         animateButtons()
     }, [showButtons])
 
-    useEffect(() => {
-        console.log('selectedApps ', JSON.stringify(selectedApps, null, 2))
-    }, [selectedApps])
+    // useEffect(() => {
+    //     console.log('selectedApps ', JSON.stringify(selectedApps, null, 2))
+    // }, [selectedApps])
 
     const animateButtons = () => {
         Animated.timing(fadeAnim, {

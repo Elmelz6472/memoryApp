@@ -12,11 +12,9 @@ import {
     DimensionValue,
 } from 'react-native';
 import AwesomeButton from 'react-native-really-awesome-button';
-import app from '../../firebase-config'
+import app from '../../firebase-config';
 import PopupScreen from './Popup';
-import { getDatabase, ref, onValue, push, update, remove, serverTimestamp } from 'firebase/database'
-
-
+import { getDatabase, ref, push, serverTimestamp } from 'firebase/database';
 
 const { width } = Dimensions.get('window');
 const FORM_WIDTH = width * 0.8; // Adjust the width as desired
@@ -29,9 +27,7 @@ const AppointmentForm = () => {
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
 
-
-    const database = getDatabase(app)
-
+    const database = getDatabase(app);
 
     const inputFields = [
         { key: 'name', placeholder: 'Your Name', value: name, onChangeText: setName },
@@ -43,11 +39,6 @@ const AppointmentForm = () => {
     const [activeIndex, setActiveIndex] = useState(0);
 
     const handleSubmit = () => {
-        console.log('Name:', name);
-        console.log('Email:', email);
-        console.log('Date:', date);
-        console.log('Time:', time);
-
         const rdvRef = ref(database, 'RDV');
 
         push(rdvRef, {
@@ -61,11 +52,9 @@ const AppointmentForm = () => {
         }).catch((error) => {
             console.error('Error adding data to Firebase Realtime Database:', error);
         }).finally(() => {
-            setPopupVisible(true)
+            setPopupVisible(true);
         });
     };
-
-
 
     // Heart animation
     const animatedValue = new Animated.Value(0);
@@ -113,7 +102,6 @@ const AppointmentForm = () => {
     // Dynamically adjust width of progress bar
     const progressBarWidth = `${progress}%`;
 
-
     const areAllFieldsFilled = () => {
         return name && email && date && time;
     };
@@ -125,10 +113,7 @@ const AppointmentForm = () => {
             </Animated.View>
             <View style={styles.formContainer}>
                 <View style={styles.progressBarContainer}>
-
-                    <View style={[styles.progressBar, {
-                        width: progressBarWidth as DimensionValue | undefined
-                    }]} />
+                    <View style={[styles.progressBar, { width: progressBarWidth as DimensionValue | undefined }]} />
                 </View>
                 <Animated.View
                     style={[
@@ -146,21 +131,22 @@ const AppointmentForm = () => {
                         onChangeText={inputFields[activeIndex].onChangeText}
                     />
                     <View style={styles.buttonGroup}>
-                        <TouchableOpacity onPress={handlePrev} disabled={activeIndex === 0} style={
-                            [
-                                { opacity: activeIndex === 0 || !areAllFieldsFilled() ? 0.5 : 1 },
-                            ]
-                        }>
+                        <TouchableOpacity
+                            onPress={handlePrev}
+                            disabled={activeIndex === 0}
+                            style={[styles.buttonContainer, { opacity: activeIndex === 0 ? 0.5 : 1 }]}
+                        >
                             <Text style={[styles.button, styles.prevButton]}>Previous</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={handleNext}
-                            disabled={activeIndex === inputFields.length - 1 || !areAllFieldsFilled()}
+                            disabled={activeIndex === inputFields.length - 1}
                             style={[
-                                { opacity: activeIndex === inputFields.length - 1 || !areAllFieldsFilled() ? 0.5 : 1 },
+                                styles.buttonContainer,
+                                { opacity: activeIndex === inputFields.length - 1 ? 0.5 : 1 },
                             ]}
                         >
-                            <Text style={[styles.button, styles.prevButton]}>Next</Text>
+                            <Text style={[styles.button, styles.nextButton]}>Next</Text>
                         </TouchableOpacity>
                     </View>
                     {activeIndex === inputFields.length - 1 && areAllFieldsFilled() && (
@@ -184,10 +170,13 @@ const AppointmentForm = () => {
                 >
                     Go Back
                 </AwesomeButton>
-                <PopupScreen visible={popupVisible} onClose={() => {
-                    setPopupVisible(false)
-                    navigation.goBack();
-                }} />
+                <PopupScreen
+                    visible={popupVisible}
+                    onClose={() => {
+                        setPopupVisible(false);
+                        navigation.goBack();
+                    }}
+                />
             </View>
         </View>
     );
@@ -261,6 +250,9 @@ const styles = StyleSheet.create({
         width: '100%',
         marginBottom: 20,
     },
+    buttonContainer: {
+        flex: 1,
+    },
     button: {
         fontSize: 18,
         fontWeight: 'bold',
@@ -272,6 +264,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.4,
         shadowRadius: 2,
+        textAlign: 'center',
     },
     prevButton: {
         backgroundColor: '#ff1493', // Deep Pink button
