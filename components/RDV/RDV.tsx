@@ -18,8 +18,6 @@ import { getDatabase, ref, onValue, push, update, remove, serverTimestamp } from
 
 
 
-
-
 const { width } = Dimensions.get('window');
 const FORM_WIDTH = width * 0.8; // Adjust the width as desired
 
@@ -115,6 +113,11 @@ const AppointmentForm = () => {
     // Dynamically adjust width of progress bar
     const progressBarWidth = `${progress}%`;
 
+
+    const areAllFieldsFilled = () => {
+        return name && email && date && time;
+    };
+
     return (
         <View style={styles.container}>
             <Animated.View style={[styles.heartContainer, { transform: [{ scale: heartScale }] }]}>
@@ -143,14 +146,24 @@ const AppointmentForm = () => {
                         onChangeText={inputFields[activeIndex].onChangeText}
                     />
                     <View style={styles.buttonGroup}>
-                        <TouchableOpacity onPress={handlePrev} disabled={activeIndex === 0}>
+                        <TouchableOpacity onPress={handlePrev} disabled={activeIndex === 0} style={
+                            [
+                                { opacity: activeIndex === 0 || !areAllFieldsFilled() ? 0.5 : 1 },
+                            ]
+                        }>
                             <Text style={[styles.button, styles.prevButton]}>Previous</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={handleNext} disabled={activeIndex === inputFields.length - 1}>
-                            <Text style={[styles.button, styles.nextButton]}>Next</Text>
+                        <TouchableOpacity
+                            onPress={handleNext}
+                            disabled={activeIndex === inputFields.length - 1 || !areAllFieldsFilled()}
+                            style={[
+                                { opacity: activeIndex === inputFields.length - 1 || !areAllFieldsFilled() ? 0.5 : 1 },
+                            ]}
+                        >
+                            <Text style={[styles.button, styles.prevButton]}>Next</Text>
                         </TouchableOpacity>
                     </View>
-                    {activeIndex === inputFields.length - 1 && (
+                    {activeIndex === inputFields.length - 1 && areAllFieldsFilled() && (
                         <TouchableOpacity onPress={handleSubmit}>
                             <Animated.Text
                                 style={[styles.button, styles.submitButton, { transform: [{ scale: heartScale }] }]}
@@ -265,7 +278,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
     },
     nextButton: {
-        backgroundColor: '#5b92e5', // Light Blue button
+        backgroundColor: '#ff1493', // Light Blue button
         paddingHorizontal: 25,
     },
     submitButton: {

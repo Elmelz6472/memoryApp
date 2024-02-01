@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet, Animated, Easing } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+
 
 const PopupScreen = ({ visible, onClose }: any) => {
     const scaleValue = new Animated.Value(0);
@@ -15,7 +15,6 @@ const PopupScreen = ({ visible, onClose }: any) => {
         }).start();
     }, [visible]);
 
-    const navigation = useNavigation();
 
     return (
         <Modal
