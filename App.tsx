@@ -1,10 +1,10 @@
 // App.js
 import 'react-native-gesture-handler'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { StatusBar } from 'react-native'
-import { AppProvider } from './AppContext'
+import { AppProvider, useAppContext } from './AppContext'
 import NightSkyBackdrop from './components/nightSky/NightSkyBackdrop'
 import LetterSections from './components/Letter/LetterSection'
 import LetterContent from './components/Letter/LetterContent'
@@ -23,9 +23,11 @@ import ConvoComponent from './components/Convo/Convo'
 import BucketList from './components/BucketList/BucketList'
 import Settings from './components/Settings/Settings'
 import Form from './components/RDV/RDV'
+
+
+
 const App = () => {
     const Stack = createStackNavigator()
-
     return (
         // @ts-ignore
         <AppProvider>

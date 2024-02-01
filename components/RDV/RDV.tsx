@@ -38,9 +38,9 @@ const AppointmentForm = () => {
         { key: 'clothes', placeholder: 'Clothes to bring', value: clothes, onChangeText: setClothes },
         { key: 'food', placeholder: 'Food to bring', value: food, onChangeText: setFood },
         { key: 'grooming', placeholder: "Hair cut/General Grooming", value: grooming, onChangeText: setGrooming },
-        { key: 'specialRequest', placeholder: "Special Request:", value: specialRequest, onChangeText: setSpecialRequest },
+        { key: 'specialRequest', placeholder: "Special Request", value: specialRequest, onChangeText: setSpecialRequest },
         { key: 'date', placeholder: 'Date (MM/DD/YYYY)', value: date, onChangeText: setDate },
-        { key: 'time', placeholder: 'Time', value: time, onChangeText: setTime },
+        { key: 'time', placeholder: 'Time (HOUR)', value: time, onChangeText: setTime },
     ];
 
     const [activeIndex, setActiveIndex] = useState(0);
@@ -174,8 +174,8 @@ const AppointmentForm = () => {
                     onPress={() => {
                         navigation.goBack();
                     }}
-                    backgroundColor="#FF4D4D"
-                    backgroundDarker="#CC3333"
+                    backgroundColor="#dd99a7"
+                    backgroundDarker="#dd99a7"
                 >
                     Go Back
                 </AwesomeButton>

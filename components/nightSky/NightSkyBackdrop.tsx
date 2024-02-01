@@ -4,19 +4,34 @@ import AwesomeButton from 'react-native-really-awesome-button'
 import StarPattern from './StarPattern'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { useAppContext } from '../../AppContext'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => void } }) => {
     const [showButtons, setShowButtons] = useState(true)
     const fadeAnim = useRef(new Animated.Value(1)).current
-    const { seedValue, mode, availableApps, selectedApps } = useAppContext()
+    const { seedValue, mode, availableApps, selectedApps, setSelectedApps } = useAppContext()
 
     useEffect(() => {
         animateButtons()
     }, [showButtons])
 
-    // useEffect(() => {
-    //     console.log('selectedApps ', JSON.stringify(selectedApps, null, 2))
-    // }, [selectedApps])
+    useEffect(() => {
+        loadSelectedApps();
+    }, []);
+
+    const loadSelectedApps = async () => {
+        try {
+            const selectedAppsData = await AsyncStorage.getItem('selectedApps');
+            if (selectedAppsData) {
+                const parsedSelectedApps = JSON.parse(selectedAppsData);
+                setSelectedApps(parsedSelectedApps);
+            }
+        } catch (error) {
+            console.error('Error loading selected apps:', error);
+        }
+    };
 
     const animateButtons = () => {
         Animated.timing(fadeAnim, {
@@ -111,16 +126,6 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
 
                                         <AwesomeButton
                                             onPress={() => {
-                                                props.navigation.navigate('Settings')
-                                            }}
-                                            backgroundColor='#CCCCCC' // Orange
-                                            backgroundDarker='#999999'
-                                        >
-                                            <FontAwesome5 name='cog' size={30} color='#FFFFFF' />
-                                        </AwesomeButton>
-
-                                        <AwesomeButton
-                                            onPress={() => {
                                                 props.navigation.navigate('RDV')
                                             }}
                                             backgroundColor='#FF69B4' // Pink
@@ -131,6 +136,16 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                                                 size={30}
                                                 color='#FFFFFF'
                                             />
+                                        </AwesomeButton>
+
+                                        <AwesomeButton
+                                            onPress={() => {
+                                                props.navigation.navigate('Settings')
+                                            }}
+                                            backgroundColor='#CCCCCC' // Orange
+                                            backgroundDarker='#999999'
+                                        >
+                                            <FontAwesome5 name='cog' size={30} color='#FFFFFF' />
                                         </AwesomeButton>
                                     </>
                                 )}
