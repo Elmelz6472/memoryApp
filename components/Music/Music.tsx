@@ -3,12 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet, Image, FlatList, Dimensions, 
 import { AVPlaybackStatus, Audio } from 'expo-av';
 import { FontAwesome } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
-import { TaylorSwiftAudioFiles } from '../../assets/sound/Taylor_Swift/Taylor_Swift_AudioObject'
-import { KanyeWestAudioFiles } from '../../assets/sound/Kanye_West/Kanye_West_AudioObject'
-import { AudioFile } from "../../assets/sound/AudioFileType";
+import audioFiles from '../../assets/sound/AudioFileType';
 
 const { width } = Dimensions.get('window');
-
 
 const BasicAudioPlayer = () => {
     const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
@@ -16,97 +13,135 @@ const BasicAudioPlayer = () => {
     const [currentPosition, setCurrentPosition] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
     const soundObject = useRef(new Audio.Sound());
-
-    const audioFiles: AudioFile[] = KanyeWestAudioFiles.concat(TaylorSwiftAudioFiles)
+    const isLoadedRef = useRef(false);
 
     useEffect(() => {
-        return () => {
-            soundObject.current.unloadAsync();
-        };
+        return soundObject.current ? () => soundObject.current.unloadAsync() : undefined;
     }, []);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (isPlaying) {
-                soundObject.current.getStatusAsync().then((status) => {
-                    if (status.isLoaded) {
-                        setCurrentPosition(status.positionMillis / 1000);
-                    }
-                });
-            }
-        }, 1000);
-        return () => clearInterval(interval);
-    }, [isPlaying]);
 
-    const onPlaybackStatusUpdate = async (status: AVPlaybackStatus) => {
-        if (status.isLoaded && status.durationMillis !== undefined) {
-            const { positionMillis, durationMillis } = status;
-            const isFinished = positionMillis >= (durationMillis - 1000); // Within 1 second of end
-            if (isFinished && !status.isLooping) {
-                await onNextPress();
+    Audio.setAudioModeAsync({
+        staysActiveInBackground: true,
+        playsInSilentModeIOS: true,
+        shouldDuckAndroid: true,
+        playThroughEarpieceAndroid: false
+    }).catch((error) => {
+        console.error('Error setting audio mode:', error);
+    });;
+
+
+    const onPlaybackStatusUpdate = useCallback((status: AVPlaybackStatus) => {
+        if (status.isLoaded) {
+            setCurrentPosition(status.positionMillis);
+            if (status.isPlaying !== isPlaying) {
+                setIsPlaying(status.isPlaying);
+            }
+            if (status.didJustFinish && !status.isLooping) {
+                onNextPress(); // Call onNextPress if the song finishes
+            }
+        } else {
+            if (status.error) {
+                console.error(`FATAL PLAYER ERROR: ${status.error}`);
             }
         }
-    };
-
-    useEffect(() => {
-        soundObject.current.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
     }, []);
 
 
-    const loadAudio = async (index: number) => {
-        setIsPlaying(false);
-        await soundObject.current.unloadAsync();
-        await soundObject.current.loadAsync({ uri: audioFiles[index].uri });
-        setIsPlaying(true);
-        await soundObject.current.playAsync();
+
+    useEffect(() => {
+        loadAudio(currentTrackIndex);
+
+        return () => {
+            if (soundObject.current) {
+                soundObject.current.unloadAsync();
+            }
+        };
+    }, [currentTrackIndex]);
+
+
+    useEffect(() => {
+        soundObject.current.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate)
+        return () => {
+            if (soundObject.current) {
+                soundObject.current.unloadAsync().catch((error) => {
+                    console.error('Error unloading audio:', error);
+                });
+            }
+        };
+    }, [onPlaybackStatusUpdate]);
+
+
+
+    const loadAudio = async (index: any) => {
+        const playbackObject = soundObject.current;
+        if (playbackObject) {
+            setIsPlaying(false);
+            setCurrentPosition(0);  // Resetting the progress bar
+            isLoadedRef.current = false;
+            try {
+                await playbackObject.unloadAsync();
+                await playbackObject.loadAsync({ uri: audioFiles[index].uri });
+                isLoadedRef.current = true;
+                await playbackObject.playAsync();
+            } catch (error) {
+                console.error("Error loading and playing audio:", error);
+            }
+        }
     };
 
     const playPauseAudio = async () => {
-        if (isPlaying) {
-            await soundObject.current.pauseAsync();
-            setIsPlaying(false);
-        } else {
-            await soundObject.current.playAsync();
-            setIsPlaying(true);
+        const playbackObject = soundObject.current;
+        if (!playbackObject) return;
+
+        try {
+            if (isPlaying) {
+                await playbackObject.pauseAsync();
+            } else {
+                await playbackObject.playAsync();
+            }
+            setIsPlaying(!isPlaying);
+        } catch (error) {
+            console.error('Error playing/pausing audio', error);
         }
     };
+
+
+
 
     const onNextPress = async () => {
-        let nextIndex = currentTrackIndex + 1;
-        if (nextIndex >= audioFiles.length) {
-            nextIndex = 0; // Wrap around to the first song
+        setCurrentTrackIndex((prevIndex) => (prevIndex + 1) % audioFiles.length);
+        isLoadedRef.current = false;
+    };
+
+    const onPreviousPress = () => {
+        setCurrentTrackIndex((prevIndex) => {
+            return prevIndex === 0 ? audioFiles.length - 1 : prevIndex - 1;
+        });
+        isLoadedRef.current = false;
+    };
+
+    const onSliderValueChange = async (value: any) => {
+        if (isLoadedRef.current) {
+            try {
+                await soundObject.current.setPositionAsync(value);
+                setCurrentPosition(value);
+            } catch (error) {
+                console.error('Error setting audio position:', error);
+            }
         }
-        setCurrentTrackIndex(nextIndex);
-        await loadAudio(nextIndex);
     };
 
-    const onPreviousPress = async () => {
-        let prevIndex = currentTrackIndex - 1;
-        if (prevIndex < 0) {
-            prevIndex = audioFiles.length - 1;
-        }
-        setCurrentTrackIndex(prevIndex);
-        await loadAudio(prevIndex);
-    };
-
-    const onShufflePress = async () => {
-        let newIndex;
-        do {
-            newIndex = Math.floor(Math.random() * audioFiles.length);
-        } while (newIndex === currentTrackIndex);
-        setCurrentTrackIndex(newIndex);
-        await loadAudio(newIndex);
-    };
-
-    const onSliderValueChange = async (value: number) => {
-        await soundObject.current.setPositionAsync(value * 1000);
-        setCurrentPosition(value);
-    };
-
-    const selectTrack = async (index: number) => {
+    const selectTrack = async (index: any) => {
         setCurrentTrackIndex(index);
-        await loadAudio(index);
+        isLoadedRef.current = false;
     };
+
+    // Function to filter audio files based on search query
+    const filteredAudioFiles = audioFiles.filter(
+        (file) =>
+            file.artist.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            file.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     const renderItem = useCallback(({ item, index }: any) => (
         <TouchableOpacity
@@ -118,22 +153,21 @@ const BasicAudioPlayer = () => {
                 <Text style={styles.listItemTitle}>{item.title}</Text>
             </View>
         </TouchableOpacity>
-    ), [currentTrackIndex]);
+    ), [currentTrackIndex, selectTrack]);
 
     const currentAudioFile = audioFiles[currentTrackIndex];
-
-    // Function to filter audio files based on search query
-    const filteredAudioFiles = audioFiles.filter(
-        (file) =>
-            file.artist.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            file.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
 
     function durationToSeconds(durationString: string) {
         const [minutes, seconds] = durationString.split(':').map(Number);
         return minutes * 60 + seconds;
     }
 
+    function getFormattedTime(ms: any) {
+        const totalSeconds = Math.floor(ms / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
 
     return (
         <View style={styles.container}>
@@ -154,12 +188,18 @@ const BasicAudioPlayer = () => {
                 <Slider
                     style={styles.progressContainer}
                     value={currentPosition}
+                    onValueChange={onSliderValueChange} // This updates the slider while dragging
+                    onSlidingComplete={onSliderValueChange} // This sets the position when the user lets go
+                    maximumValue={isLoadedRef.current ? durationToMillis(currentAudioFile.duration) : 0}
                     minimumValue={0}
-                    maximumValue={durationToSeconds(currentAudioFile.duration)}
                     thumbTintColor="#007bff"
                     minimumTrackTintColor="#007bff"
-                    onSlidingComplete={onSliderValueChange}
+                    maximumTrackTintColor="#e0e0e0"
                 />
+                <Text style={styles.currentTime}>{getFormattedTime(currentPosition)}</Text>
+                <Text style={styles.duration}>{currentAudioFile.duration}</Text>
+
+
                 <View style={styles.buttonsContainer}>
                     <TouchableOpacity style={styles.controlButton} onPress={onPreviousPress}>
                         <FontAwesome name="backward" size={24} color="#007bff" />
@@ -169,12 +209,6 @@ const BasicAudioPlayer = () => {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.controlButton} onPress={onNextPress}>
                         <FontAwesome name="forward" size={24} color="#007bff" />
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.shufflerContainer}>
-                    <TouchableOpacity style={styles.shufflerButton} onPress={onShufflePress}>
-                        <FontAwesome name="random" size={20} color="#007bff" />
-                        <Text style={styles.shufflerText}>Shuffle</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -187,6 +221,14 @@ const BasicAudioPlayer = () => {
         </View>
     );
 };
+
+
+
+function durationToMillis(durationString: string) {
+    const [minutes, seconds] = durationString.split(':').map(Number);
+    return (minutes * 60 + seconds) * 1000;
+}
+
 
 const styles = StyleSheet.create({
     button: {
@@ -231,10 +273,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#666',
         marginBottom: 8,
-    },
-    progressContainer: {
-        width: '100%',
-        height: 30,
     },
     buttonsContainer: {
         flexDirection: 'row',
@@ -294,7 +332,22 @@ const styles = StyleSheet.create({
     },
     listItemAlbum: {
         color: '#666',
-    }
+    },
+    progressContainer: {
+        width: '100%',
+        height: 30,
+        marginTop: 20,
+    },
+    currentTime: {
+        position: 'absolute',
+        left: 20,
+        bottom: -25,
+    },
+    duration: {
+        position: 'absolute',
+        right: 20,
+        bottom: -25,
+    },
 });
 
 export default BasicAudioPlayer;
