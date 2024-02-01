@@ -97,7 +97,6 @@ const BasicAudioPlayer = () => {
             <Image source={{ uri: item.coverArt }} style={styles.coverArt} />
             <View style={styles.listItemInfo}>
                 <Text style={styles.listItemTitle}>{item.title}</Text>
-                <Text style={styles.listItemAlbum}>{item.album}</Text>
                 <Text style={styles.listItemArtist}>{item.artist}</Text>
             </View>
         </TouchableOpacity>
@@ -194,8 +193,8 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     coverArtPlayer: {
-        width: width - 40,
-        height: width - 40,
+        width: width - 80,
+        height: width - 80,
         marginBottom: 5,
         borderRadius: 10,
     },
@@ -226,7 +225,7 @@ const styles = StyleSheet.create({
         marginTop: 16,
     },
     controlButton: {
-        margin: 5,
+        margin: 0,
     },
     playPauseButton: {
         marginHorizontal: 32,
