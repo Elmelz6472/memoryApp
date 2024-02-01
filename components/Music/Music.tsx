@@ -60,6 +60,7 @@ const BasicAudioPlayer = () => {
         await loadAudio(nextIndex);
     };
 
+
     const onPreviousPress = async () => {
         let prevIndex = currentTrackIndex - 1;
         if (prevIndex < 0) {
@@ -96,6 +97,7 @@ const BasicAudioPlayer = () => {
             <Image source={{ uri: item.coverArt }} style={styles.coverArt} />
             <View style={styles.listItemInfo}>
                 <Text style={styles.listItemTitle}>{item.title}</Text>
+                <Text style={styles.listItemAlbum}>{item.album}</Text>
                 <Text style={styles.listItemArtist}>{item.artist}</Text>
             </View>
         </TouchableOpacity>
@@ -110,12 +112,18 @@ const BasicAudioPlayer = () => {
             file.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    function durationToSeconds(durationString: string) {
+        const [minutes, seconds] = durationString.split(':').map(Number);
+        return minutes * 60 + seconds;
+    }
+
+
     return (
         <View style={styles.container}>
             {/* Search input */}
             <TextInput
                 style={styles.searchInput}
-                placeholder="Search for artist or title"
+                placeholder="Search for artist, album or title"
                 onChangeText={(text) => setSearchQuery(text)}
                 value={searchQuery}
             />
@@ -124,12 +132,13 @@ const BasicAudioPlayer = () => {
             <View style={styles.playerContainer}>
                 <Image source={{ uri: currentAudioFile.coverArt }} style={styles.coverArtPlayer} />
                 <Text style={styles.title}>{currentAudioFile.title}</Text>
+                <Text style={styles.album}>{currentAudioFile.album}</Text>
                 <Text style={styles.artist}>{currentAudioFile.artist}</Text>
                 <Slider
                     style={styles.progressContainer}
                     value={currentPosition}
                     minimumValue={0}
-                    maximumValue={currentAudioFile.durationSecond}
+                    maximumValue={durationToSeconds(currentAudioFile.duration)}
                     thumbTintColor="#007bff"
                     minimumTrackTintColor="#007bff"
                     onSlidingComplete={onSliderValueChange}
@@ -153,7 +162,6 @@ const BasicAudioPlayer = () => {
                 </View>
             </View>
 
-            {/* FlatList for filtered audio files */}
             <FlatList
                 data={filteredAudioFiles}
                 renderItem={renderItem}
@@ -169,10 +177,10 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        paddingVertical: 20,
+        paddingVertical: 15,
     },
     playerContainer: {
-        paddingTop: 25,
+        paddingTop: 0,
         alignItems: 'center',
         marginBottom: 0,
         paddingHorizontal: 20,
@@ -188,7 +196,7 @@ const styles = StyleSheet.create({
     coverArtPlayer: {
         width: width - 40,
         height: width - 40,
-        marginBottom: 10,
+        marginBottom: 5,
         borderRadius: 10,
     },
     title: {
@@ -202,9 +210,14 @@ const styles = StyleSheet.create({
         color: '#666',
         marginBottom: 8,
     },
+    album: {
+        fontSize: 16,
+        color: '#666',
+        marginBottom: 8,
+    },
     progressContainer: {
         width: '100%',
-        height: 40,
+        height: 30,
     },
     buttonsContainer: {
         flexDirection: 'row',
@@ -213,7 +226,7 @@ const styles = StyleSheet.create({
         marginTop: 16,
     },
     controlButton: {
-        margin: 16,
+        margin: 5,
     },
     playPauseButton: {
         marginHorizontal: 32,
@@ -262,6 +275,9 @@ const styles = StyleSheet.create({
     listItemArtist: {
         color: '#666',
     },
+    listItemAlbum: {
+        color: '#666',
+    }
 });
 
 export default BasicAudioPlayer;
