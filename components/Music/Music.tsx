@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { AVPlaybackStatus, Audio } from 'expo-av';
 import { FontAwesome } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
@@ -7,22 +7,28 @@ import Slider from '@react-native-community/slider';
 interface AudioFile {
     id: number;
     uri: string;
+    artist: string;
     title: string;
     durationSecond: number;
+    coverArt: string;
 }
 
 const audioFiles: AudioFile[] = [
     {
         id: 1,
         uri: 'https://firebasestorage.googleapis.com/v0/b/memoryapp-fc002.appspot.com/o/affirmation_music.mp3?alt=media&token=27f313cb-aa3f-43d3-8216-e1e46caf4e59',
+        artist: 'Artist 1',
         title: 'Affirmation Music',
         durationSecond: 399,
+        coverArt: 'https://firebasestorage.googleapis.com/v0/b/memoryapp-fc002.appspot.com/o/Screenshot%202024-02-01%20at%2012.12.53%E2%80%AFPM.png?alt=media&token=ddbab5e9-adea-4128-ba09-169265e77142',
     },
     {
         id: 2,
         uri: 'https://firebasestorage.googleapis.com/v0/b/memoryapp-fc002.appspot.com/o/lol.mp3?alt=media&token=eb022955-6e66-44b1-8aba-31d05be20e5a',
+        artist: 'Artist 2',
         title: 'barcaaaa',
         durationSecond: 42,
+        coverArt: 'https://firebasestorage.googleapis.com/v0/b/memoryapp-fc002.appspot.com/o/Screenshot%202024-02-01%20at%2012.12.53%E2%80%AFPM.png?alt=media&token=ddbab5e9-adea-4128-ba09-169265e77142'
 
     },
 ];
@@ -35,10 +41,11 @@ const BasicAudioPlayer = () => {
     const isReady = useRef(false);
 
     useEffect(() => {
-        setupAudio();
-        return () => {
-            Audio.setAudioModeAsync({ staysActiveInBackground: true }); // Keep audio playing in the background
-        };
+        return soundObject.current
+            ? () => {
+                soundObject.current.unloadAsync();
+            }
+            : undefined;
     }, []);
 
     useEffect(() => {
@@ -54,25 +61,14 @@ const BasicAudioPlayer = () => {
         return () => clearInterval(interval);
     }, [isPlaying]);
 
-    const setupAudio = async () => {
-        await Audio.setAudioModeAsync({ staysActiveInBackground: true }); // Keep audio playing in the background
-        return soundObject.current
-            ? () => {
-                soundObject.current.unloadAsync();
-            }
-            : undefined;
-    };
-
     const loadAudio = async (index: number) => {
         const playbackInstance = soundObject.current;
-        await playbackInstance.stopAsync(); // Stop all other tracks
-        await playbackInstance.unloadAsync(); // Unload current track
-        await playbackInstance.loadAsync({ uri: audioFiles[index].uri }); // Load new track
+        await playbackInstance.unloadAsync();
+        await playbackInstance.loadAsync({ uri: audioFiles[index].uri });
         playbackInstance.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
         isReady.current = true;
         setCurrentPosition(0);
     };
-
 
     const onPlaybackStatusUpdate = async (status: AVPlaybackStatus) => {
         if (status.isLoaded && status.durationMillis !== undefined) {
@@ -147,7 +143,9 @@ const BasicAudioPlayer = () => {
 
     return (
         <View style={styles.container}>
+            <Image source={{ uri: currentAudioFile.coverArt }} style={styles.coverArt} />
             <Text style={styles.title}>{currentAudioFile.title}</Text>
+            <Text style={styles.artist}>{currentAudioFile.artist}</Text>
             <Slider
                 style={styles.progressContainer}
                 value={currentPosition}
@@ -158,17 +156,20 @@ const BasicAudioPlayer = () => {
                 onSlidingComplete={onSliderValueChange}
             />
             <View style={styles.buttonsContainer}>
-                <TouchableOpacity style={styles.button} onPress={onPreviousPress}>
-                    <FontAwesome name="step-backward" size={30} color="#007bff" />
+                <TouchableOpacity style={styles.controlButton} onPress={onPreviousPress}>
+                    <FontAwesome name="backward" size={24} color="#007bff" />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={playPauseAudio}>
-                    <FontAwesome name={isPlaying ? 'pause' : 'play'} size={30} color="#007bff" />
+                <TouchableOpacity style={[styles.controlButton, styles.playPauseButton]} onPress={playPauseAudio}>
+                    <FontAwesome name={isPlaying ? 'pause-circle' : 'play-circle'} size={48} color="#007bff" />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={onNextPress}>
-                    <FontAwesome name="step-forward" size={30} color="#007bff" />
+                <TouchableOpacity style={styles.controlButton} onPress={onNextPress}>
+                    <FontAwesome name="forward" size={24} color="#007bff" />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={onShufflePress}>
-                    <FontAwesome name="random" size={30} color="#007bff" />
+            </View>
+            <View style={styles.shufflerContainer}>
+                <TouchableOpacity style={styles.shufflerButton} onPress={onShufflePress}>
+                    <FontAwesome name="random" size={20} color="#007bff" />
+                    <Text style={styles.shufflerText}>Shuffle</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -176,26 +177,69 @@ const BasicAudioPlayer = () => {
 };
 
 const styles = StyleSheet.create({
+    button: {
+
+    },
     container: {
         alignItems: 'center',
-        justifyContent: 'center'
+        borderRadius: 10,
+        backgroundColor: '#fff',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.15,
+        shadowRadius: 8,
+        padding: 20,
+        top: 100
+    },
+    coverArt: {
+        width: 200,
+        height: 200,
+        borderRadius: 10,
+        marginBottom: 16,
     },
     title: {
-        fontSize: 18,
-        marginBottom: 10
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#333',
+        marginBottom: 8,
+    },
+    artist: {
+        fontSize: 16,
+        color: '#666',
+        marginBottom: 8,
     },
     progressContainer: {
-        width: '80%',
-        height: 40
+        width: '100%',
+        height: 40,
     },
     buttonsContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginVertical: 20
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 16,
     },
-    button: {
-        marginHorizontal: 20 // Adjust this value to increase or decrease spacing between icons
-    }
+    controlButton: {
+        margin: 16,
+    },
+    playPauseButton: {
+        marginHorizontal: 32,
+    },
+    shufflerContainer: {
+        marginVertical: 16,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    shufflerButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    shufflerText: {
+        color: '#007bff',
+        fontSize: 16,
+        paddingLeft: 8,
+    },
 });
 
 export default BasicAudioPlayer;
