@@ -1,15 +1,7 @@
-export interface AudioFile {
-    id: number;
-    uri: string;
-    artist: string;
-    album: string;
-    title: string;
-    duration: string;
-    coverArt: string;
-}
+import { AudioFile } from "../AudioFileType";
 
 
-export const audioFiles: AudioFile[] = [
+export const TaylorSwiftAudioFiles: AudioFile[] = [
     {
         id: 1,
         uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/TaylorSwift/Evermore/01%20willow.mp3",

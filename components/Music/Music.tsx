@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, FlatList, Dimensions, TextInput } from 'react-native';
-import { Audio } from 'expo-av';
+import { AVPlaybackStatus, Audio } from 'expo-av';
 import { FontAwesome } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
-import { AudioFile, audioFiles } from '../../assets/sound/AudioObject'
+import { TaylorSwiftAudioFiles } from '../../assets/sound/Taylor_Swift/Taylor_Swift_AudioObject'
+import { KanyeWestAudioFiles } from '../../assets/sound/Kanye_West/Kanye_West_AudioObject'
+import { AudioFile } from "../../assets/sound/AudioFileType";
+
 const { width } = Dimensions.get('window');
 
 
@@ -13,6 +16,8 @@ const BasicAudioPlayer = () => {
     const [currentPosition, setCurrentPosition] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
     const soundObject = useRef(new Audio.Sound());
+
+    const audioFiles: AudioFile[] = KanyeWestAudioFiles.concat(TaylorSwiftAudioFiles)
 
     useEffect(() => {
         return () => {
@@ -32,6 +37,21 @@ const BasicAudioPlayer = () => {
         }, 1000);
         return () => clearInterval(interval);
     }, [isPlaying]);
+
+    const onPlaybackStatusUpdate = async (status: AVPlaybackStatus) => {
+        if (status.isLoaded && status.durationMillis !== undefined) {
+            const { positionMillis, durationMillis } = status;
+            const isFinished = positionMillis >= (durationMillis - 1000); // Within 1 second of end
+            if (isFinished && !status.isLooping) {
+                await onNextPress();
+            }
+        }
+    };
+
+    useEffect(() => {
+        soundObject.current.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
+    }, []);
+
 
     const loadAudio = async (index: number) => {
         setIsPlaying(false);
@@ -54,12 +74,11 @@ const BasicAudioPlayer = () => {
     const onNextPress = async () => {
         let nextIndex = currentTrackIndex + 1;
         if (nextIndex >= audioFiles.length) {
-            nextIndex = 0;
+            nextIndex = 0; // Wrap around to the first song
         }
         setCurrentTrackIndex(nextIndex);
         await loadAudio(nextIndex);
     };
-
 
     const onPreviousPress = async () => {
         let prevIndex = currentTrackIndex - 1;
@@ -97,7 +116,6 @@ const BasicAudioPlayer = () => {
             <Image source={{ uri: item.coverArt }} style={styles.coverArt} />
             <View style={styles.listItemInfo}>
                 <Text style={styles.listItemTitle}>{item.title}</Text>
-                <Text style={styles.listItemArtist}>{item.artist}</Text>
             </View>
         </TouchableOpacity>
     ), [currentTrackIndex]);
