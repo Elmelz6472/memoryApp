@@ -73,12 +73,12 @@ const Settings = () => {
         // You can use the values from the state (seedValue, theme, numberOfElementDisplayed, mode)
         // and perform any save operation here
         // For demonstration, let's just log the values
-        console.log('Settings saved:', {
-            seedValue,
-            theme,
-            numberOfElementDisplayed,
-            mode,
-        })
+        // console.log('Settings saved:', {
+        //     seedValue,
+        //     theme,
+        //     numberOfElementDisplayed,
+        //     mode,
+        // })
         setSeedValue(seedValue)
         setTheme(theme)
         setNumberOfElementDisplayed(numberOfElementDisplayed)
@@ -87,7 +87,7 @@ const Settings = () => {
     }
 
     const handleCancel = () => {
-        console.log('Settings canceled')
+        // console.log('Settings canceled')
         navigation.navigate('homeScreen' as never)
     }
 

@@ -118,7 +118,7 @@ const App = () => {
                     <Stack.Screen name='BucketList' component={BucketList} />
                     <Stack.Screen name='Convo' component={ConvoComponent} />
 
-                    <Stack.Screen name='RDV' component={Form} />
+                    <Stack.Screen name='RDV' component={Form} options={{ headerShown: false }} />
 
                     <Stack.Screen name='Settings' component={Settings} />
                 </Stack.Navigator>
