@@ -118,7 +118,9 @@ const App = () => {
                     />
 
                     <Stack.Screen name='BucketList' component={BucketList} />
-                    <Stack.Screen name='Convo' component={ConvoComponent} />
+                    <Stack.Screen name='Convo' component={ConvoComponent} options={{
+                        title: 'Music',
+                    }} />
 
                     <Stack.Screen name='RDV' component={Form} options={{ headerShown: false }} />
 

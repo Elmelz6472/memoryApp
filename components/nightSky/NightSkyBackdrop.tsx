@@ -117,7 +117,7 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                                                 backgroundDarker='#B8860B'
                                             >
                                                 <FontAwesome5
-                                                    name='comments'
+                                                    name='music'
                                                     size={30}
                                                     color='#FFFFFF'
                                                 />
