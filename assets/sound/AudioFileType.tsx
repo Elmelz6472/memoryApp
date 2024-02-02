@@ -12,6 +12,8 @@ import { TaylorSwiftAudioFiles } from './Taylor_Swift/Taylor_Swift_AudioObject'
 import { KanyeWestAudioFiles } from './Kanye_West/Kanye_West_AudioObject';
 import shuffleArray from '../../utils/shuffleArray';
 
-const audioFiles: AudioFile[] = shuffleArray(KanyeWestAudioFiles.concat(TaylorSwiftAudioFiles))
+// const audioFiles: AudioFile[] = shuffleArray(KanyeWestAudioFiles.concat(TaylorSwiftAudioFiles))
+const audioFiles: AudioFile[] = TaylorSwiftAudioFiles
+
 
 export default audioFiles

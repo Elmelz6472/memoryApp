@@ -4,7 +4,6 @@ import { AVPlaybackStatus, Audio } from 'expo-av';
 import { FontAwesome } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
 import audioFiles from '../../assets/sound/AudioFileType';
-import { useAppContext } from '../../AppContext';
 
 const { width } = Dimensions.get('window');
 
@@ -14,17 +13,11 @@ const BasicAudioPlayer = () => {
     const [currentPosition, setCurrentPosition] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
     const soundObject = useRef(new Audio.Sound());
-    const [shuffle, setShuffle] = useState(false);
-    const [shuffledIndexList, setShuffledIndexList] = useState([]);
     const isLoadedRef = useRef(false);
 
-    const { mode } = useAppContext()
-
-    enum Mode {
-        Compact = 'compact',
-        Default = 'default',
-    }
-
+    useEffect(() => {
+        return soundObject.current ? () => soundObject.current.unloadAsync() : undefined;
+    }, []);
 
 
     Audio.setAudioModeAsync({
@@ -44,7 +37,7 @@ const BasicAudioPlayer = () => {
                 setIsPlaying(status.isPlaying);
             }
             if (status.didJustFinish && !status.isLooping) {
-                onNextPress();
+                onNextPress(); // Call onNextPress if the song finishes
             }
         } else {
             if (status.error) {
@@ -113,63 +106,16 @@ const BasicAudioPlayer = () => {
     };
 
 
-    const shuffleArray = (array) => {
-        let currentIndex = array.length, randomIndex;
-
-        // While there remain elements to shuffle...
-        while (currentIndex !== 0) {
-            // Pick a remaining element...
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-
-            // And swap it with the current element.
-            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-        }
-
-        return array;
-    };
 
 
-    const toggleShuffle = () => {
-        const newShuffleState = !shuffle;
-        if (newShuffleState) {
-            // Create an array of track indices and shuffle it
-            const shuffledIndices = shuffleArray(audioFiles.map((_, index) => index));
-            setShuffledIndexList(shuffledIndices);
-            setCurrentTrackIndex(shuffledIndices[0]); // Start with the first track in the shuffled list
-        } else {
-            // If shuffle is turned off, reset to the original list and current index
-            setShuffledIndexList([]);
-            // Optionally, you can set currentTrackIndex to the track that was playing before shuffling
-        }
-        setShuffle(newShuffleState);
-    };
-
-
-
-    const onNextPress = () => {
-        setCurrentTrackIndex((prevIndex) => {
-            if (shuffle) {
-                const currentShuffledIndex = shuffledIndexList.indexOf(prevIndex);
-                const nextShuffledIndex = (currentShuffledIndex + 1) % shuffledIndexList.length;
-                return shuffledIndexList[nextShuffledIndex];
-            } else {
-                return (prevIndex + 1) % audioFiles.length;
-            }
-        });
+    const onNextPress = async () => {
+        setCurrentTrackIndex((prevIndex) => (prevIndex + 1) % audioFiles.length);
         isLoadedRef.current = false;
     };
 
-
     const onPreviousPress = () => {
         setCurrentTrackIndex((prevIndex) => {
-            if (shuffle) {
-                const currentShuffledIndex = shuffledIndexList.indexOf(prevIndex);
-                const prevShuffledIndex = (currentShuffledIndex - 1 + shuffledIndexList.length) % shuffledIndexList.length;
-                return shuffledIndexList[prevShuffledIndex];
-            } else {
-                return prevIndex === 0 ? audioFiles.length - 1 : prevIndex - 1;
-            }
+            return prevIndex === 0 ? audioFiles.length - 1 : prevIndex - 1;
         });
         isLoadedRef.current = false;
     };
@@ -226,14 +172,13 @@ const BasicAudioPlayer = () => {
     return (
         <View style={styles.container}>
             {/* Search input */}
-
-
-            {mode == Mode.Default && <TextInput
+            <TextInput
                 style={styles.searchInput}
                 placeholder="Search for artist, album or title"
                 onChangeText={(text) => setSearchQuery(text)}
                 value={searchQuery}
-            />}
+            />
+
             {/* Player section */}
             <View style={styles.playerContainer}>
                 <Image source={{ uri: currentAudioFile.coverArt }} style={styles.coverArtPlayer} />
@@ -251,15 +196,8 @@ const BasicAudioPlayer = () => {
                     minimumTrackTintColor="#007bff"
                     maximumTrackTintColor="#e0e0e0"
                 />
-
-                <TouchableOpacity onPress={toggleShuffle} style={styles.shuffleButton}>
-                    <FontAwesome name={shuffle ? 'random' : 'retweet'} size={24} color={shuffle ? '#007bff' : '#666'} />
-                </TouchableOpacity>
-
-
                 <Text style={styles.currentTime}>{getFormattedTime(currentPosition)}</Text>
                 <Text style={styles.duration}>{currentAudioFile.duration}</Text>
-
 
 
                 <View style={styles.buttonsContainer}>
@@ -275,14 +213,11 @@ const BasicAudioPlayer = () => {
                 </View>
             </View>
 
-
-
-            {mode == Mode.Default &&
-                (<FlatList
-                    data={filteredAudioFiles}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id.toString()}
-                />)}
+            <FlatList
+                data={filteredAudioFiles}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id.toString()}
+            />
         </View>
     );
 };
@@ -406,12 +341,12 @@ const styles = StyleSheet.create({
     currentTime: {
         position: 'absolute',
         left: 20,
-        bottom: 10,
+        bottom: -25,
     },
     duration: {
         position: 'absolute',
         right: 20,
-        bottom: 10,
+        bottom: -25,
     },
 });
 

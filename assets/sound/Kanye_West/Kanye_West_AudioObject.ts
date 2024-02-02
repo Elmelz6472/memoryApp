@@ -128,4 +128,13 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         duration: "03:06",
         coverArt: 'https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/Graduation.png',
     },
+    {
+        id: 48,
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/14%20Good%20Night.mp3",
+        album: "Graduation",
+        artist: 'Kanye West',
+        title: 'Good night',
+        duration: "03:06",
+        coverArt: 'https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/Graduation.png',
+    },
 ]
