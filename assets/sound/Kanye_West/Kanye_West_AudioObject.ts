@@ -4,7 +4,7 @@ import { AudioFile } from "../AudioFileType";
 export const KanyeWestAudioFiles: AudioFile[] = [
     {
         id: 17,
-        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/01%20Good%20Morning.mp3",
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/01%20Good%20Morning.mp3",
         album: "Graduation",
         artist: 'Kanye West',
         title: 'Good Morning',
@@ -13,7 +13,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
     },
     {
         id: 18,
-        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/02%20Champion.mp3",
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/02%20Champion.mp3",
         album: "Graduation",
         artist: 'Kanye West',
         title: 'Champion',
@@ -22,7 +22,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
     },
      {
         id: 19,
-        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/03%20Stronger.mp3",
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/03%20Stronger.mp3",
         album: "Graduation",
         artist: 'Kanye West',
         title: 'Stronger',
@@ -31,7 +31,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
     },
      {
         id: 20,
-        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/04%20I%20Wonder.mp3",
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/04%20I%20Wonder.mp3",
         album: "Graduation",
         artist: 'Kanye West',
         title: 'Wonder',
@@ -40,7 +40,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
     },
      {
         id: 21,
-        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/05%20Good%20Life%20(Feat.%20T-Pain).mp3",
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/05%20Good%20Life%20(Feat.%20T-Pain).mp3",
         album: "Graduation",
         artist: 'Kanye West',
         title: 'Good Life (Feat. T-Pain)',
@@ -49,7 +49,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
     },
      {
         id: 22,
-        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/06%20Can't%20Tell%20Me%20Nothing.mp3",
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/06%20Can't%20Tell%20Me%20Nothing.mp3",
         album: "Graduation",
         artist: 'Kanye West',
         title: "Can't Tell Me Nothing",
@@ -58,7 +58,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
     },
      {
         id: 23,
-        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/07%20Barry%20Bonds%20(Feat.%20Lil%20Wayne).mp3",
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/07%20Barry%20Bonds%20(Feat.%20Lil%20Wayne).mp3",
         album: "Graduation",
         artist: 'Kanye West',
         title: 'Barry Bonds (Feat. Lil Wayne)',
@@ -67,7 +67,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
     },
      {
         id: 24,
-        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/08%20Drunk%20And%20Hot%20Girls%20(Feat.%20Mos%20Def).mp3",
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/08%20Drunk%20And%20Hot%20Girls%20(Feat.%20Mos%20Def).mp3",
         album: "Graduation",
         artist: 'Kanye West',
         title: 'Drunk And Hot Girls (Feat. Mos Def)',
@@ -76,7 +76,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
     },
      {
         id: 25,
-        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/09%20Flashing%20Lights%20(Feat.%20Dwele).mp3",
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/09%20Flashing%20Lights%20(Feat.%20Dwele).mp3",
         album: "Graduation",
         artist: 'Kanye West',
         title: 'Flashing Lights',
@@ -85,7 +85,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
     },
      {
         id: 26,
-        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/10%20Everything%20I%20Am%20(Feat.%20DJ%20Premier).mp3",
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/10%20Everything%20I%20Am%20(Feat.%20DJ%20Premier).mp3",
         album: "Graduation",
         artist: 'Kanye West',
         title: 'Everything I Am (Feat. DJ Premier)',
@@ -94,7 +94,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
     },
      {
         id: 27,
-        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/11%20The%20Glory.mp3",
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/11%20The%20Glory.mp3",
         album: "Graduation",
         artist: 'Kanye West',
         title: 'The Glory',
@@ -103,7 +103,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
     },
     {
         id: 28,
-        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/12%20Homecoming%20(Feat.%20Chris%20Martin).mp3",
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/12%20Homecoming%20(Feat.%20Chris%20Martin).mp3",
         album: "Graduation",
         artist: 'Kanye West',
         title: 'Homecoming',
@@ -112,7 +112,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
     },
      {
         id: 29,
-        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/13%20Big%20Brother.mp3",
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/13%20Big%20Brother.mp3",
         album: "Graduation",
         artist: 'Kanye West',
         title: 'Big Brother',
@@ -121,7 +121,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
     },
     {
         id: 30,
-        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/14%20Good%20Night.mp3",
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/14%20Good%20Night.mp3",
         album: "Graduation",
         artist: 'Kanye West',
         title: 'Good night',
@@ -130,7 +130,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
     },
     {
         id: 48,
-        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/14%20Good%20Night.mp3",
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/14%20Good%20Night.mp3",
         album: "Graduation",
         artist: 'Kanye West',
         title: 'Good night',

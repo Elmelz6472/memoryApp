@@ -19,10 +19,13 @@ import MemorySectionFun from './components/Memory/MemoryFunSection'
 import MemoryFunContent from './components/Memory/MemoryFunContent'
 import CameraPhoto from './components/Camera/CameraPhoto'
 import CameraVideo from './components/Camera/CameraVideo'
-import ConvoComponent from './components/Music/Music'
+
 import BucketList from './components/BucketList/BucketList'
 import Settings from './components/Settings/Settings'
 import Form from './components/RDV/RDV'
+import audioFiles from './assets/sound/AudioFileType'
+import PlaylistComponent from './components/Music/PlaylistComponent'
+import MusicPlayer from './components/Music/MusicPlayer'
 
 
 
@@ -118,10 +121,20 @@ const App = () => {
                     />
 
                     <Stack.Screen name='BucketList' component={BucketList} />
-                    <Stack.Screen name='Convo' component={ConvoComponent} options={{
-                        title: 'Music',
-                        headerShown: false
-                    }} />
+
+
+                    <Stack.Screen
+                        name="Convo"
+                        options={{ title: 'Music', headerShown: false }}
+                        component={PlaylistComponent}
+                    />
+
+                    <Stack.Screen
+                        name="Music player"
+                        component={MusicPlayer}
+                        options={{ headerShown: false }}
+                    />
+
 
                     <Stack.Screen name='RDV' component={Form} options={{ headerShown: false }} />
 
