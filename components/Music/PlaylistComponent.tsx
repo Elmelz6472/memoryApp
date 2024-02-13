@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { View, Text, TouchableOpacity, FlatList, Button, ScrollView, Image, TextInput, StyleSheet, SafeAreaView } from 'react-native';
 import { Audio } from 'expo-av';
 import audioFiles, { AudioFile } from '../../assets/sound/AudioFileType';
@@ -11,23 +11,18 @@ interface Playlist {
     songs: AudioFile[];
 }
 
-
 const Player: React.FC = () => {
     const navigation = useNavigation()
 
     const [minimizedPlaylists, setMinimizedPlaylists] = useState<number[]>([]);
-
     const [search, setSearch] = useState("");
-
     const [currentSongIndex, setCurrentSongIndex] = useState(0);
     const [currentSong, setCurrentSong] = useState<AudioFile | null>(audioFiles[currentSongIndex]);
     const [isPlaying, setIsPlaying] = useState(false);
     const [sound, setSound] = useState<Audio.Sound | null>(null);
-
     const [playlists, setPlaylists] = useState<Playlist[]>([]);
     const [activePlaylist, setActivePlaylist] = useState<Playlist | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-
 
     useEffect(() => {
         const fetchPlaylists = async () => {
@@ -39,101 +34,87 @@ const Player: React.FC = () => {
         fetchPlaylists();
     }, []);
 
-    const storePlaylists = async (playlists: Playlist[]) => {
-        await AsyncStorage.setItem('playlists', JSON.stringify(playlists))
-    }
+    const storePlaylists = useCallback(async (updatedPlaylists: Playlist[]) => {
+        await AsyncStorage.setItem('playlists', JSON.stringify(updatedPlaylists));
+        setPlaylists(updatedPlaylists);
+    }, []);
 
-    const createPlaylist = async (name: string) => {
+    const createPlaylist = useCallback(async (name: string) => {
         const newPlaylist = { id: Date.now(), name: name, songs: [] };
         const newPlaylists = [...playlists, newPlaylist];
-        setPlaylists(newPlaylists);
         await storePlaylists(newPlaylists);
-    }
+    }, [playlists, storePlaylists]);
+
+    const initializeSong = useCallback(async () => {
+        if (!currentSong || !sound) return;
+        await sound.unloadAsync();
+        const { sound: newSound } = await Audio.Sound.createAsync({ uri: currentSong.uri });
+        setSound(newSound);
+        if (isPlaying) {
+            await newSound.playAsync();
+        }
+    }, [currentSong, isPlaying, sound]);
 
     useEffect(() => {
-        const initializeSong = async () => {
-            if (sound) {
-                await sound.stopAsync();
-                await sound.unloadAsync();
-            }
-
-            const { sound: newSound } = await Audio.Sound.createAsync({ uri: currentSong!!.uri });
-            setSound(newSound);
-            if (isPlaying) {
-                await newSound.playAsync();
-            }
-        }
-
-        if (currentSong) {
-            initializeSong();
-        }
-
+        initializeSong();
         return () => {
             if (sound) {
                 sound.unloadAsync();
             }
-        }
-    }, [currentSong]);
+        };
+    }, [initializeSong, sound]);
 
-    const togglePlayback = async () => {
+    const togglePlayback = useCallback(async () => {
         if (!sound) return;
-
         if (isPlaying) {
             await sound.pauseAsync();
         } else {
             await sound.playAsync();
         }
-        setIsPlaying(!isPlaying);
-    }
+        setIsPlaying(prevState => !prevState);
+    }, [isPlaying, sound]);
 
-    const nextSong = () => {
-        const nextSongIndex = (currentSongIndex + 1) % audioFiles.length;
-        setCurrentSongIndex(nextSongIndex);
-        setCurrentSong(audioFiles[nextSongIndex]);
-    }
-
-    const prevSong = () => {
-        const prevSongIndex = (currentSongIndex - 1 + audioFiles.length) % audioFiles.length;
-        setCurrentSongIndex(prevSongIndex);
-        setCurrentSong(audioFiles[prevSongIndex]);
-    }
-
-
-    const selectPlaylist = (playlistId: number) => {
+    const selectPlaylist = useCallback((playlistId: number) => {
         setActivePlaylist(playlists.find(playlist => playlist.id === playlistId) || null);
-    }
+    }, [playlists]);
 
-
-    const addToPlaylist = async (playlistId: number, song: AudioFile) => {
-        const newPlaylists = playlists.map(playlist =>
+    const addToPlaylist = useCallback(async (playlistId: number, song: AudioFile) => {
+        const updatedPlaylists = playlists.map(playlist =>
             playlist.id === playlistId
                 ? { ...playlist, songs: [...playlist.songs, song] }
                 : playlist
         );
-        setPlaylists(newPlaylists);
-        await storePlaylists(newPlaylists);
-    }
+        await storePlaylists(updatedPlaylists);
+    }, [playlists, storePlaylists]);
 
-    const removeFromPlaylist = async (playlistId: number, songId: number) => {
-        const newPlaylists = playlists.map(playlist =>
+    const removeFromPlaylist = useCallback(async (playlistId: number, songId: number) => {
+        const updatedPlaylists = playlists.map(playlist =>
             playlist.id === playlistId
                 ? { ...playlist, songs: playlist.songs.filter(song => song.id !== songId) }
                 : playlist
         );
-        setPlaylists(newPlaylists);
-        await storePlaylists(newPlaylists);
-    }
+        await storePlaylists(updatedPlaylists);
+    }, [playlists, storePlaylists]);
 
-    const deletePlaylist = async (playlistId: number) => {
-        const newPlaylists = playlists.filter(playlist => playlist.id !== playlistId);
-        setPlaylists(newPlaylists);
-        await storePlaylists(newPlaylists);
-    }
+    const deletePlaylist = useCallback(async (playlistId: number) => {
+        const updatedPlaylists = playlists.filter(playlist => playlist.id !== playlistId);
+        await storePlaylists(updatedPlaylists);
+    }, [playlists, storePlaylists]);
 
+    const filteredAudioFiles = useMemo(() =>
+        audioFiles.filter(audioFile =>
+            activePlaylist &&
+            !activePlaylist.songs.some(song => song.id === audioFile.id) &&
+            (audioFile.title.toLowerCase().includes(search.toLowerCase()) ||
+                audioFile.artist.toLowerCase().includes(search.toLowerCase()))
+        ), [activePlaylist, search]);
+
+    const availableSongs = useMemo(() =>
+        audioFiles.filter(audioFile =>
+            !activePlaylist || !activePlaylist.songs.some(song => song.id === audioFile.id)
+        ), [activePlaylist]);
 
     return (
-
-
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
                 <TextInput
@@ -142,15 +123,11 @@ const Player: React.FC = () => {
                     placeholderTextColor="#666"
                     onSubmitEditing={(event) => createPlaylist(event.nativeEvent.text)}
                 />
-
                 <TouchableOpacity onPress={() => {
                     navigation.navigate("Music player" as never)
                 }}>
-                    <Text>
-                        Hello
-                    </Text>
+                    <Text>Hello</Text>
                 </TouchableOpacity>
-
                 <FlatList
                     data={playlists}
                     keyExtractor={(playlist) => playlist.id.toString()}
@@ -167,7 +144,6 @@ const Player: React.FC = () => {
                             }}>
                                 <Text style={styles.playlistTitle}>{playlist.name}</Text>
                             </TouchableOpacity>
-
                             {!minimizedPlaylists.includes(playlist.id) && (
                                 <>
                                     <TextInput
@@ -177,7 +153,6 @@ const Player: React.FC = () => {
                                         value={search}
                                         onChangeText={text => setSearch(text)}
                                     />
-
                                     <TouchableOpacity style={styles.removeButton} onPress={() => deletePlaylist(playlist.id)}>
                                         <Text style={styles.removeButtonText}>Delete Playlist</Text>
                                     </TouchableOpacity>
@@ -190,28 +165,17 @@ const Player: React.FC = () => {
                                             </TouchableOpacity>
                                         </View>
                                     ))}
-
-
                                     <Text style={styles.addSongTitle}>Add song to playlist:</Text>
-
-
                                     <ScrollView>
-                                        {audioFiles.filter(audioFile =>
-                                            (!playlist.songs.find(song => song.id === audioFile.id)) &&
-                                            ((audioFile.title.toLowerCase().includes(search.toLowerCase())) ||
-                                                (audioFile.artist.toLowerCase().includes(search.toLowerCase())))
-                                        ).map(audioFile => (
+                                        {filteredAudioFiles.map(audioFile => (
                                             <TouchableOpacity style={styles.songContainer} key={audioFile.id} onPress={() => addToPlaylist(playlist.id, audioFile)}>
                                                 <Image source={{ uri: audioFile.coverArt }} style={styles.songArt} />
                                                 <Text style={styles.songTitle}>{audioFile.title}</Text>
                                             </TouchableOpacity>
                                         ))}
                                     </ScrollView>
-
                                     <ScrollView>
-                                        {audioFiles.filter(audioFile =>
-                                            !playlist.songs.find(song => song.id === audioFile.id)
-                                        ).map(audioFile => (
+                                        {availableSongs.map(audioFile => (
                                             <TouchableOpacity style={styles.songContainer} key={audioFile.id} onPress={() => addToPlaylist(playlist.id, audioFile)}>
                                                 <Image source={{ uri: audioFile.coverArt }} style={styles.songArt} />
                                                 <Text style={styles.songTitle}>{audioFile.title}</Text>

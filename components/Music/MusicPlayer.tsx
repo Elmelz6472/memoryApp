@@ -1,11 +1,11 @@
 import { Audio } from "expo-av";
 import { useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StyleSheet, Button, View, Image, Text, TouchableOpacity, ImageBackground } from "react-native";
-import { BlurView } from 'expo-blur'; // Import BlurView
+import { StyleSheet, Button, View, Image, Text, TouchableOpacity, ImageBackground, FlatList } from "react-native";
+import { BlurView } from 'expo-blur';
 import audioFiles, { AudioFile } from "../../assets/sound/AudioFileType";
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { FontAwesome } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 
 
@@ -16,6 +16,8 @@ interface Playlist {
 }
 
 const MusicPlayer: React.FC = () => {
+
+    const navigation = useNavigation()
     const [currentSongIndex, setCurrentSongIndex] = useState(0);
     const [currentSong, setCurrentSong] = useState<AudioFile | null>(audioFiles[currentSongIndex]);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -23,6 +25,7 @@ const MusicPlayer: React.FC = () => {
     const [activePlaylist, setActivePlaylist] = useState<Playlist | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [playlists, setPlaylists] = useState<Playlist[]>([]);
+
 
     useEffect(() => {
         const fetchPlaylists = async () => {
@@ -59,6 +62,8 @@ const MusicPlayer: React.FC = () => {
         }
     }, [currentSong]);
 
+
+
     const togglePlayback = async () => {
         if (!sound) return;
 
@@ -71,25 +76,70 @@ const MusicPlayer: React.FC = () => {
     }
 
     const nextSong = () => {
-        const nextSongIndex = (currentSongIndex + 1) % audioFiles.length;
-        setCurrentSongIndex(nextSongIndex);
-        setCurrentSong(audioFiles[nextSongIndex]);
+        if (activePlaylist) {
+            const nextSongIndex = (currentSongIndex + 1) % activePlaylist.songs.length;
+            setCurrentSongIndex(nextSongIndex);
+            setCurrentSong(activePlaylist.songs[nextSongIndex]);
+        }
+        else {
+            const nextSongIndex = (currentSongIndex + 1) % audioFiles.length;
+            setCurrentSongIndex(nextSongIndex);
+            setCurrentSong(audioFiles[nextSongIndex]);
+        }
     }
 
     const prevSong = () => {
-        const prevSongIndex = (currentSongIndex - 1 + audioFiles.length) % audioFiles.length;
-        setCurrentSongIndex(prevSongIndex);
-        setCurrentSong(audioFiles[prevSongIndex]);
+        if (activePlaylist) {
+            const nextSongIndex = (currentSongIndex - 1) % activePlaylist.songs.length;
+            setCurrentSongIndex(nextSongIndex);
+            setCurrentSong(activePlaylist.songs[nextSongIndex]);
+        }
+        else {
+            const prevSongIndex = (currentSongIndex - 1 + audioFiles.length) % audioFiles.length;
+            setCurrentSongIndex(prevSongIndex);
+            setCurrentSong(audioFiles[prevSongIndex]);
+        }
+
     }
 
-    const selectPlaylist = (playlistId: number) => {
-        setActivePlaylist(playlists.find(playlist => playlist.id === playlistId) || null);
-    }
 
     return (
 
         <ImageBackground source={{ uri: currentSong?.coverArt }} style={styles.backgroundImage} blurRadius={5} >
             <BlurView intensity={50} style={styles.container}>
+
+                <View style={styles.navbar}>
+                    <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('Convo' as never)}>
+                        <Text style={styles.navButtonText}>Playlists</Text>
+                    </TouchableOpacity>
+                    <FlatList
+                        horizontal
+                        data={playlists}
+                        keyExtractor={(playlist) => playlist.id.toString()}
+                        renderItem={({ item: playlist }) => (
+                            <TouchableOpacity
+                                style={[
+                                    styles.playlistButton,
+                                    activePlaylist && activePlaylist.id === playlist.id && styles.activePlaylistButton
+                                ]}
+                                onPress={() => {
+                                    setActivePlaylist(playlist)
+                                    if (activePlaylist) {
+                                        setCurrentSongIndex(1)
+                                        setCurrentSong(activePlaylist.songs[currentSongIndex])
+                                    }
+                                }}
+                            >
+                                <Text style={styles.playlistButtonText}>{playlist.name}</Text>
+                            </TouchableOpacity>
+                        )}
+                    />
+
+                </View>
+
+                {activePlaylist?.songs.map((song) => {
+                    return (<Text>{song.title}</Text>)
+                })}
                 <View style={styles.songInfoContainer}>
                     <Text style={styles.title}>{currentSong?.title}</Text>
                     <Text style={styles.artist}>{currentSong?.album}</Text>
@@ -122,6 +172,39 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         backgroundColor: 'rgba(255,255,255,0.5)', // Transparent background to see the blurred image
+    },
+    playlistButton: {
+        marginRight: 10,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderRadius: 5,
+        backgroundColor: '#eee',
+    },
+    activePlaylistButton: {
+        backgroundColor: 'blue',
+    },
+    playlistButtonText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#555',
+    },
+    navbar: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        backgroundColor: 'transparent', // Set background color to transparent
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
+    },
+    navButton: {
+        padding: 10,
+    },
+    navButtonText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#555', // Set text color
     },
     backgroundImage: {
         flex: 1,
