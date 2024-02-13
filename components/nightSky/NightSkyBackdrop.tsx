@@ -112,7 +112,7 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                                         {selectedApps.some((app) => app.name === 'chat') && (
                                             <AwesomeButton
                                                 onPress={() => {
-                                                    props.navigation.navigate('Convo')
+                                                    props.navigation.navigate('Music player')
                                                 }}
                                                 backgroundColor='#DAA520'
                                                 backgroundDarker='#B8860B'

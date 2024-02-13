@@ -117,17 +117,19 @@ const Player: React.FC = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
+                <TouchableOpacity
+                    style={styles.goToMusicPlayerButton}
+                    onPress={() => {
+                        navigation.navigate("Music player" as never)
+                    }}>
+                    <Text style={styles.goToMusicPlayerButtonText}>go to music player</Text>
+                </TouchableOpacity>
                 <TextInput
                     style={styles.input}
                     placeholder="New playlist name"
                     placeholderTextColor="#666"
                     onSubmitEditing={(event) => createPlaylist(event.nativeEvent.text)}
                 />
-                <TouchableOpacity onPress={() => {
-                    navigation.navigate("Music player" as never)
-                }}>
-                    <Text>Hello</Text>
-                </TouchableOpacity>
                 <FlatList
                     data={playlists}
                     keyExtractor={(playlist) => playlist.id.toString()}
@@ -197,6 +199,28 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    goToMusicPlayerButton: {
+        backgroundColor: '#DAA520',
+        paddingVertical: 15,
+        paddingHorizontal: 30,
+        borderRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 20,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    goToMusicPlayerButtonText: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold',
     },
     buttonsContainer: {
         flexDirection: 'row',

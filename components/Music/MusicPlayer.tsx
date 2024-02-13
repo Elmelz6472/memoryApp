@@ -109,7 +109,7 @@ const MusicPlayer: React.FC = () => {
             <BlurView intensity={50} style={styles.container}>
 
                 <View style={styles.navbar}>
-                    <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('Convo' as never)}>
+                    <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('PlaylistPage' as never)}>
                         <Text style={styles.navButtonText}>Playlists</Text>
                     </TouchableOpacity>
                     <FlatList
@@ -137,9 +137,25 @@ const MusicPlayer: React.FC = () => {
 
                 </View>
 
-                {activePlaylist?.songs.map((song) => {
-                    return (<Text>{song.title}</Text>)
-                })}
+                <View style={styles.songListContainer}>
+                    <FlatList
+                        data={activePlaylist?.songs}
+                        keyExtractor={(song) => song.id.toString()}
+                        renderItem={({ item: song }) => (
+                            <TouchableOpacity style={styles.songContainer} onPress={() => {
+                                setCurrentSong(song)
+                            }}>
+                                <Image source={{ uri: song.coverArt }} style={styles.songArt} />
+                                <View style={styles.songDetails}>
+                                    <Text style={styles.songTitle}>{song.title}</Text>
+                                    <Text style={styles.songArtist}>{song.artist}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        )}
+                    />
+                </View>
+
+
                 <View style={styles.songInfoContainer}>
                     <Text style={styles.title}>{currentSong?.title}</Text>
                     <Text style={styles.artist}>{currentSong?.album}</Text>
@@ -173,6 +189,34 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: 'rgba(255,255,255,0.5)', // Transparent background to see the blurred image
     },
+    songListContainer: {
+        maxHeight: 200, // Adjust the height as needed
+    },
+    songContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 15,
+        backgroundColor: '#f0f0f0',
+        borderRadius: 5,
+        padding: 10,
+    },
+    songArt: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        marginRight: 15,
+    },
+    songDetails: {
+        flex: 1,
+    },
+    songTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    songArtist: {
+        fontSize: 14,
+        color: '#888',
+    },
     playlistButton: {
         marginRight: 10,
         paddingVertical: 5,
@@ -181,7 +225,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#eee',
     },
     activePlaylistButton: {
-        backgroundColor: 'blue',
+        backgroundColor: 'grey',
     },
     playlistButtonText: {
         fontSize: 16,
@@ -193,7 +237,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 20,
-        paddingVertical: 10,
+        paddingVertical: 40,
         backgroundColor: 'transparent', // Set background color to transparent
         borderBottomWidth: 1,
         borderBottomColor: '#ddd',

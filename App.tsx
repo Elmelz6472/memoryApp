@@ -124,7 +124,7 @@ const App = () => {
 
 
                     <Stack.Screen
-                        name="Convo"
+                        name="PlaylistPage"
                         options={{ title: 'Music', headerShown: false }}
                         component={PlaylistComponent}
                     />
