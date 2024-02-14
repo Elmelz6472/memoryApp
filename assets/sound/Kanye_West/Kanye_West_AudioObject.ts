@@ -137,4 +137,122 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         duration: "03:06",
         coverArt: 'https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/Graduation.png',
     },
+    {
+        id: 49,
+        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/01%20Intro.mp3",
+        album: "College Dropout",
+        artist: 'Kanye West',
+        title: 'Intro',
+        duration: "03:06",
+        coverArt: 'https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png',
+    },
+        {
+        "id": 119,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/808s/%20Coldest%20Winter.mp3",
+        "album": "808s and heartbreak",
+        "artist": "Kanye West",
+        "title": " Coldest Winter.mp3",
+        "duration": "3:54",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/808s.png"
+    },
+    {
+        "id": 120,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/808s/%20Heartless.mp3",
+        "album": "808s and heartbreak",
+        "artist": "Kanye West",
+        "title": " Heartless.mp3",
+        "duration": "3:40",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/808s.png"
+    },
+    {
+        "id": 121,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/808s/%20Bad%20News.mp3",
+        "album": "808s and heartbreak",
+        "artist": "Kanye West",
+        "title": " Bad News.mp3",
+        "duration": "3:59",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/808s.png"
+    },
+    {
+        "id": 122,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/808s/%20Amazing.mp3",
+        "album": "808s and heartbreak",
+        "artist": "Kanye West",
+        "title": " Amazing.mp3",
+        "duration": "3:59",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/808s.png"
+    },
+    {
+        "id": 123,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/808s/%20Paranoid.mp3",
+        "album": "808s and heartbreak",
+        "artist": "Kanye West",
+        "title": " Paranoid.mp3",
+        "duration": "3:24",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/808s.png"
+    },
+    {
+        "id": 124,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/808s/%20See%20You%20In%20My%20Nightmares.mp3",
+        "album": "808s and heartbreak",
+        "artist": "Kanye West",
+        "title": " See You In My Nightmares.mp3",
+        "duration": "4:18",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/808s.png"
+    },
+    {
+        "id": 125,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/808s/%20Pinocchio%20Story.mp3",
+        "album": "808s and heartbreak",
+        "artist": "Kanye West",
+        "title": " Pinocchio Story.mp3",
+        "duration": "6:01",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/808s.png"
+    },
+    {
+        "id": 126,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/808s/%20Love%20Lockdown.mp3",
+        "album": "808s and heartbreak",
+        "artist": "Kanye West",
+        "title": " Love Lockdown.mp3",
+        "duration": "4:35",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/808s.png"
+    },
+    {
+        "id": 127,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/808s/%20Street%20Lights.mp3",
+        "album": "808s and heartbreak",
+        "artist": "Kanye West",
+        "title": " Street Lights.mp3",
+        "duration": "3:10",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/808s.png"
+    },
+    {
+        "id": 128,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/808s/%20Welcome%20To%20Heartbreak.mp3",
+        "album": "808s and heartbreak",
+        "artist": "Kanye West",
+        "title": " Welcome To Heartbreak.mp3",
+        "duration": "4:30",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/808s.png"
+    },
+    {
+        "id": 129,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/808s/%20Say%20You%20Will.mp3",
+        "album": "808s and heartbreak",
+        "artist": "Kanye West",
+        "title": " Say You Will.mp3",
+        "duration": "6:18",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/808s.png"
+    },
+    {
+        "id": 130,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/808s/%20RoboCop.mp3",
+        "album": "808s and heartbreak",
+        "artist": "Kanye West",
+        "title": " RoboCop.mp3",
+        "duration": "4:34",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/808s.png"
+    }
+
 ]

@@ -101,13 +101,13 @@ const Player: React.FC = () => {
         await storePlaylists(updatedPlaylists);
     }, [playlists, storePlaylists]);
 
-    const filteredAudioFiles = useMemo(() =>
-        audioFiles.filter(audioFile =>
-            activePlaylist &&
-            !activePlaylist.songs.some(song => song.id === audioFile.id) &&
-            (audioFile.title.toLowerCase().includes(search.toLowerCase()) ||
-                audioFile.artist.toLowerCase().includes(search.toLowerCase()))
-        ), [activePlaylist, search]);
+    const filteredAudioFiles = audioFiles.filter(audioFile =>
+        activePlaylist &&
+        !activePlaylist.songs.some(song => song.id === audioFile.id) &&
+        (audioFile.title.toLowerCase().includes(search.toLowerCase()) ||
+            audioFile.artist.toLowerCase().includes(search.toLowerCase()))
+    );
+
 
     const availableSongs = useMemo(() =>
         audioFiles.filter(audioFile =>
@@ -122,7 +122,7 @@ const Player: React.FC = () => {
                     onPress={() => {
                         navigation.navigate("Music player" as never)
                     }}>
-                    <Text style={styles.goToMusicPlayerButtonText}>go to music player</Text>
+                    <Text style={styles.goToMusicPlayerButtonText}>Music player</Text>
                 </TouchableOpacity>
                 <TextInput
                     style={styles.input}

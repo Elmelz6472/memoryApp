@@ -44,3 +44,8 @@ letter
 
 
 assets/sounds/*
+
+
+virtual_env/*
+
+scripts/.env

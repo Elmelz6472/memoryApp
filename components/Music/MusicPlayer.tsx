@@ -1,13 +1,12 @@
-import { Audio } from "expo-av";
-import { useEffect, useState } from "react";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StyleSheet, Button, View, Image, Text, TouchableOpacity, ImageBackground, FlatList } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, FlatList, Image, ImageBackground, StyleSheet } from 'react-native';
+import Slider from '@react-native-community/slider';
 import { BlurView } from 'expo-blur';
-import audioFiles, { AudioFile } from "../../assets/sound/AudioFileType";
-import { FontAwesome } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-
-
+import { FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { Audio } from 'expo-av';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import audioFiles, { AudioFile } from '../../assets/sound/AudioFileType';
 
 interface Playlist {
     id: number;
@@ -16,8 +15,7 @@ interface Playlist {
 }
 
 const MusicPlayer: React.FC = () => {
-
-    const navigation = useNavigation()
+    const navigation = useNavigation();
     const [currentSongIndex, setCurrentSongIndex] = useState(0);
     const [currentSong, setCurrentSong] = useState<AudioFile | null>(audioFiles[currentSongIndex]);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -25,13 +23,14 @@ const MusicPlayer: React.FC = () => {
     const [activePlaylist, setActivePlaylist] = useState<Playlist | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [playlists, setPlaylists] = useState<Playlist[]>([]);
-
+    const [sliderValue, setSliderValue] = useState(0);
+    const [duration, setDuration] = useState('0:00');
 
     useEffect(() => {
         const fetchPlaylists = async () => {
             const storedPlaylists = await AsyncStorage.getItem('playlists');
             if (storedPlaylists) {
-                setPlaylists(JSON.parse(storedPlaylists))
+                setPlaylists(JSON.parse(storedPlaylists));
             }
         };
         fetchPlaylists();
@@ -44,12 +43,13 @@ const MusicPlayer: React.FC = () => {
                 await sound.unloadAsync();
             }
 
-            const { sound: newSound } = await Audio.Sound.createAsync({ uri: currentSong!!.uri });
+            const { sound: newSound } = await Audio.Sound.createAsync({ uri: currentSong!!.uri }, {}, (status) => {
+            });
             setSound(newSound);
             if (isPlaying) {
                 await newSound.playAsync();
             }
-        }
+        };
 
         if (currentSong) {
             initializeSong();
@@ -59,10 +59,8 @@ const MusicPlayer: React.FC = () => {
             if (sound) {
                 sound.unloadAsync();
             }
-        }
+        };
     }, [currentSong]);
-
-
 
     const togglePlayback = async () => {
         if (!sound) return;
@@ -73,7 +71,7 @@ const MusicPlayer: React.FC = () => {
             await sound.playAsync();
         }
         setIsPlaying(!isPlaying);
-    }
+    };
 
     const nextSong = () => {
         if (activePlaylist) {
@@ -103,6 +101,7 @@ const MusicPlayer: React.FC = () => {
     }
 
 
+
     return (
 
         <ImageBackground source={{ uri: currentSong?.coverArt }} style={styles.backgroundImage} blurRadius={5} >
@@ -125,7 +124,7 @@ const MusicPlayer: React.FC = () => {
                                 onPress={() => {
                                     setActivePlaylist(playlist)
                                     if (activePlaylist) {
-                                        setCurrentSongIndex(1)
+                                        setCurrentSongIndex(0)
                                         setCurrentSong(activePlaylist.songs[currentSongIndex])
                                     }
                                 }}
@@ -163,6 +162,7 @@ const MusicPlayer: React.FC = () => {
                     <Image source={{ uri: currentSong?.coverArt }} style={styles.image} />
                 </View>
 
+
                 <View style={[styles.buttonsContainer, { paddingBottom: '20%' }]}>
                     <TouchableOpacity style={{ opacity: 0.75 }} onPress={prevSong}>
                         <FontAwesome name="step-backward" size={24} color="white" />
@@ -174,6 +174,7 @@ const MusicPlayer: React.FC = () => {
                             <FontAwesome name="play" size={24} color="white" />
                         )}
                     </TouchableOpacity>
+
                     <TouchableOpacity style={{ opacity: 0.75 }} onPress={nextSong}>
                         <FontAwesome name="step-forward" size={24} color="white" />
                     </TouchableOpacity>
@@ -191,6 +192,19 @@ const styles = StyleSheet.create({
     },
     songListContainer: {
         maxHeight: 200, // Adjust the height as needed
+    },
+    progressBarContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20,
+    },
+    progressBar: {
+        flex: 1,
+        marginHorizontal: 10,
+    },
+    durationText: {
+        color: '#ffffff',
     },
     songContainer: {
         flexDirection: 'row',
