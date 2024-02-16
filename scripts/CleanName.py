@@ -21,7 +21,7 @@ def remove_substring_from_files(folder_path, substring):
 
 
 
-folder_path = "/Users/malikmacbook/Downloads/[SPOTIFY-DOWNLOADER.COM] 808s & Heartbreak"
+folder_path = "/Users/malikmacbook/Downloads/[SPOTIFY-DOWNLOADER.COM] Pink Friday (Complete Edition)"
 substring = "[SPOTIFY-DOWNLOADER.COM]"
 
 remove_substring_from_files(folder_path, substring)

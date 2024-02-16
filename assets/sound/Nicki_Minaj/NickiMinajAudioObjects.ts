@@ -1,4 +1,6 @@
-[
+import { AudioFile } from "../AudioFileType";
+
+export const NickiMinajAudioObjects: AudioFile[] = [
     {
         "id": 170,
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Roman%27s%20Revenge.mp3",

@@ -75,11 +75,11 @@ def upload_directory_to_do_spaces(local_directory, bucket_name, spaces_directory
 
 
 artist = input("Enter artiste name: ")
-album = input("Enter album")
-covertArt = input("Enter coverArt link")
+album = input("Enter album: ")
+covertArt = input("Enter coverArt link: ")
 
 
-upload_directory_to_do_spaces('/Users/malikmacbook/Downloads/808s', 'Songs',
-                              'KanyeWest/808s', start_id=130)
+upload_directory_to_do_spaces('/Users/malikmacbook/Downloads/Pink Friday (Complete Edition)', 'Songs',
+                              'NickiMinaj/Pink Friday (Complete Version)', start_id=170)
 
 

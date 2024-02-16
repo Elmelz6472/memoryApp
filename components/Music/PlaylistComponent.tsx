@@ -64,21 +64,13 @@ const Player: React.FC = () => {
         };
     }, [initializeSong, sound]);
 
-    const togglePlayback = useCallback(async () => {
-        if (!sound) return;
-        if (isPlaying) {
-            await sound.pauseAsync();
-        } else {
-            await sound.playAsync();
-        }
-        setIsPlaying(prevState => !prevState);
-    }, [isPlaying, sound]);
-
-    const selectPlaylist = useCallback((playlistId: number) => {
-        setActivePlaylist(playlists.find(playlist => playlist.id === playlistId) || null);
-    }, [playlists]);
 
     const addToPlaylist = useCallback(async (playlistId: number, song: AudioFile) => {
+        // Check if the song already exists in the playlist
+        const playlist = playlists.find(playlist => playlist.id === playlistId);
+        if (!playlist || playlist.songs.some(existingSong => existingSong.id === song.id)) {
+            return;
+        }
         const updatedPlaylists = playlists.map(playlist =>
             playlist.id === playlistId
                 ? { ...playlist, songs: [...playlist.songs, song] }
@@ -86,6 +78,8 @@ const Player: React.FC = () => {
         );
         await storePlaylists(updatedPlaylists);
     }, [playlists, storePlaylists]);
+
+
 
     const removeFromPlaylist = useCallback(async (playlistId: number, songId: number) => {
         const updatedPlaylists = playlists.map(playlist =>
@@ -102,12 +96,9 @@ const Player: React.FC = () => {
     }, [playlists, storePlaylists]);
 
     const filteredAudioFiles = audioFiles.filter(audioFile =>
-        activePlaylist &&
-        !activePlaylist.songs.some(song => song.id === audioFile.id) &&
-        (audioFile.title.toLowerCase().includes(search.toLowerCase()) ||
-            audioFile.artist.toLowerCase().includes(search.toLowerCase()))
+        audioFile.title.toLowerCase().includes(search.toLowerCase()) ||
+        audioFile.artist.toLowerCase().includes(search.toLowerCase())
     );
-
 
     const availableSongs = useMemo(() =>
         audioFiles.filter(audioFile =>
