@@ -23,8 +23,8 @@ const MusicPlayer: React.FC = () => {
     const [activePlaylist, setActivePlaylist] = useState<Playlist | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [playlists, setPlaylists] = useState<Playlist[]>([]);
-    const [currentPosition, setCurrentPosition] = useState(0);
-    const [totalDuration, setTotalDuration] = useState<number | undefined>(0);
+    const [sliderValue, setSliderValue] = useState(0);
+    const [duration, setDuration] = useState('0:00');
 
     useEffect(() => {
         const fetchPlaylists = async () => {
@@ -44,21 +44,11 @@ const MusicPlayer: React.FC = () => {
             }
 
             const { sound: newSound } = await Audio.Sound.createAsync({ uri: currentSong!!.uri }, {}, (status) => {
-                if (status.isLoaded) {
-                    if (status.isPlaying) {
-                        setCurrentPosition(status.positionMillis);
-                        setTotalDuration(status.durationMillis);
-                    }
-                    if (status.didJustFinish) {
-                        nextSong()
-                    }
-                }
             });
             setSound(newSound);
             if (isPlaying) {
                 await newSound.playAsync();
             }
-
         };
 
         if (currentSong) {
@@ -109,19 +99,6 @@ const MusicPlayer: React.FC = () => {
         }
 
     }
-
-
-    const formatDuration = (milliseconds: number) => {
-        const minutes = Math.floor(milliseconds / 60000);
-        const seconds = ((milliseconds % 60000) / 1000).toFixed(0);
-        return `${minutes}:${parseInt(seconds) < 10 ? '0' : ''}${seconds}`;
-    };
-
-    const seekToPosition = (value: number) => {
-        if (sound) {
-            sound.setPositionAsync(value);
-        }
-    };
 
 
     return (
@@ -185,22 +162,6 @@ const MusicPlayer: React.FC = () => {
                 </View>
 
 
-                <View style={styles.progressContainer}>
-                    <Text style={styles.durationText}>{formatDuration(currentPosition)}</Text>
-                    <Slider
-                        style={styles.slider}
-                        minimumValue={0}
-                        maximumValue={totalDuration}
-                        value={currentPosition}
-                        minimumTrackTintColor="#FFFFFF"
-                        maximumTrackTintColor="rgba(255, 255, 255, 0.3)"
-                        onSlidingComplete={(value) => seekToPosition(value)}
-                    />
-                    <Text style={styles.durationText}>{formatDuration(totalDuration || 1)}</Text>
-                </View>
-
-
-
                 <View style={[styles.buttonsContainer, { paddingBottom: '20%' }]}>
                     <TouchableOpacity style={{ opacity: 0.75 }} onPress={prevSong}>
                         <FontAwesome name="step-backward" size={24} color="white" />
@@ -230,18 +191,6 @@ const styles = StyleSheet.create({
     },
     songListContainer: {
         maxHeight: 200, // Adjust the height as needed
-    },
-    progressContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 20,
-        marginTop: 20,
-    },
-
-    slider: {
-        flex: 1,
-        marginHorizontal: 10,
     },
     progressBarContainer: {
         flexDirection: 'row',

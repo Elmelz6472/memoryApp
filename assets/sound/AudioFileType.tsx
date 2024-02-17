@@ -14,8 +14,8 @@ import { JorjaSmithAudioFiles } from './Jorja_Smith/Jorja_Smith_AudioObjects'
 import { NickiMinajAudioObjects } from './Nicki_Minaj/NickiMinajAudioObjects';
 import shuffleArray from '../../utils/shuffleArray';
 
-// const audioFiles: AudioFile[] = shuffleArray(KanyeWestAudioFiles.concat(TaylorSwiftAudioFiles))
-const audioFiles: AudioFile[] = NickiMinajAudioObjects
+// const audioFiles: AudioFile[] = shuffleArray(JorjaSmithAudioFiles.concat(NickiMinajAudioObjects))
+const audioFiles: AudioFile[] = TaylorSwiftAudioFiles
 
 
 export default audioFiles

@@ -1,182 +1,155 @@
 [
     {
-        "id": 170,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Roman%27s%20Revenge.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Roman's Revenge.mp3",
-        "duration": "4:36",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
+        "id": 16,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20cardigan.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " cardigan.",
+        "duration": "4:34",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
     },
     {
-        "id": 171,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Super%20Bass.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Super Bass.mp3",
-        "duration": "3:38",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
+        "id": 17,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20invisible%20string.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " invisible string.",
+        "duration": "4:14",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
     },
     {
-        "id": 172,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Last%20Chance.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Last Chance.mp3",
-        "duration": "3:51",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
+        "id": 18,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20my%20tears%20ricochet.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " my tears ricochet.",
+        "duration": "4:17",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
     },
     {
-        "id": 173,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Catch%20Me.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Catch Me.mp3",
-        "duration": "3:57",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
+        "id": 19,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20exile%20%28feat.%20Bon%20Iver%29.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " exile (feat. Bon Iver).",
+        "duration": "4:46",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
     },
     {
-        "id": 174,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Muny.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Muny.mp3",
-        "duration": "3:46",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
+        "id": 20,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20august.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " august.",
+        "duration": "4:24",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
     },
     {
-        "id": 175,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Fly.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Fly.mp3",
-        "duration": "4:35",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
+        "id": 21,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20hoax.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " hoax.",
+        "duration": "3:41",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
     },
     {
-        "id": 176,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20BedRock.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " BedRock.mp3",
+        "id": 22,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20illicit%20affairs.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " illicit affairs.",
+        "duration": "3:12",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
+    },
+    {
+        "id": 23,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20the%20lakes%20-%20bonus%20track.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " the lakes - bonus track.",
+        "duration": "3:30",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
+    },
+    {
+        "id": 24,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20the%20last%20great%20american%20dynasty.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " the last great american dynasty.",
+        "duration": "3:52",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
+    },
+    {
+        "id": 25,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20mad%20woman.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " mad woman.",
+        "duration": "3:58",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
+    },
+    {
+        "id": 26,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20peace.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " peace.",
+        "duration": "3:55",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
+    },
+    {
+        "id": 27,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20this%20is%20me%20trying.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " this is me trying.",
+        "duration": "3:16",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
+    },
+    {
+        "id": 28,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20seven.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " seven.",
+        "duration": "3:30",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
+    },
+    {
+        "id": 29,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20the%201.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " the 1.",
+        "duration": "3:31",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
+    },
+    {
+        "id": 30,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20mirrorball.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " mirrorball.",
+        "duration": "3:30",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
+    },
+    {
+        "id": 31,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20epiphany.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " epiphany.",
         "duration": "4:51",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
     },
     {
-        "id": 177,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Here%20I%20Am.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Here I Am.mp3",
-        "duration": "2:55",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
-    },
-    {
-        "id": 178,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Your%20Love.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Your Love.mp3",
-        "duration": "4:06",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
-    },
-    {
-        "id": 179,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Moment%204%20Life.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Moment 4 Life.mp3",
-        "duration": "4:42",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
-    },
-    {
-        "id": 180,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Blow%20Ya%20Mind.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Blow Ya Mind.mp3",
-        "duration": "3:40",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
-    },
-    {
-        "id": 181,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Girls%20Fall%20Like%20Dominoes.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Girls Fall Like Dominoes.mp3",
-        "duration": "3:45",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
-    },
-    {
-        "id": 182,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Wave%20Ya%20Hand.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Wave Ya Hand.mp3",
-        "duration": "3:01",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
-    },
-    {
-        "id": 183,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Right%20Thru%20Me.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Right Thru Me.mp3",
-        "duration": "3:56",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
-    },
-    {
-        "id": 184,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Check%20It%20Out.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Check It Out.mp3",
-        "duration": "4:32",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
-    },
-    {
-        "id": 185,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Save%20Me.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Save Me.mp3",
-        "duration": "3:05",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
-    },
-    {
-        "id": 186,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20I%E2%80%99m%20The%20Best.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " I\u2019m The Best.mp3",
-        "duration": "3:37",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
-    },
-    {
-        "id": 187,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Dear%20Old%20Nicki.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Dear Old Nicki.mp3",
-        "duration": "3:53",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
-    },
-    {
-        "id": 188,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Blazin.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Blazin.mp3",
-        "duration": "5:02",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
-    },
-    {
-        "id": 189,
-        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/NickiMinaj/Pink%20Friday%20%28Complete%20Version%29/%20Did%20It%20On%E2%80%99em.mp3",
-        "album": "Pink Friday (Complete Edition)",
-        "artist": "Nicki Minaj",
-        "title": " Did It On\u2019em.mp3",
-        "duration": "3:40",
-        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/NickiMinaj/Pink%20Friday%20Full%20Edition.png"
+        "id": 32,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/TaylorSwift/Folklore/%20betty.",
+        "album": "Folklore",
+        "artist": "Taylor Swift",
+        "title": " betty.",
+        "duration": "4:55",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/TaylorSwift/Folklore.png"
     }
 ]
