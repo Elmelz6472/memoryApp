@@ -72,6 +72,16 @@ const MusicPlayer: React.FC = () => {
         };
     }, [currentSong]);
 
+    useEffect(() => {
+        return () => {
+            // Cleanup function to stop and unload audio when the component is unmounted
+            if (sound) {
+                sound.stopAsync();
+                sound.unloadAsync();
+            }
+        };
+    }, []);
+
     const togglePlayback = async () => {
         if (!sound) return;
 
@@ -124,6 +134,34 @@ const MusicPlayer: React.FC = () => {
     };
 
 
+    const shuffleSongs = () => {
+        if (activePlaylist) {
+            const shuffledSongs = [...activePlaylist.songs].sort(() => Math.random() - 0.5);
+            setPlaylists((prevPlaylists) => {
+                const updatedPlaylists = prevPlaylists.map((playlist) => {
+                    if (playlist.id === activePlaylist.id) {
+                        return { ...playlist, songs: shuffledSongs };
+                    }
+                    return playlist;
+                });
+                return updatedPlaylists;
+            });
+            setCurrentSongIndex(0);
+            setCurrentSong(shuffledSongs[0]);
+            setActivePlaylist((prevActivePlaylist) => {
+                if (prevActivePlaylist) {
+                    return {
+                        ...prevActivePlaylist,
+                        songs: shuffledSongs,
+                    };
+                }
+                return null; // Return null if prevActivePlaylist is null
+            });
+        }
+    };
+
+
+
     return (
 
         <ImageBackground source={{ uri: currentSong?.coverArt }} style={styles.backgroundImage} blurRadius={5} >
@@ -162,10 +200,9 @@ const MusicPlayer: React.FC = () => {
                     <FlatList
                         data={activePlaylist?.songs}
                         keyExtractor={(song) => song.id.toString()}
+                        extraData={activePlaylist?.songs} // Add extraData to trigger re-render when the playlist is shuffled
                         renderItem={({ item: song }) => (
-                            <TouchableOpacity style={styles.songContainer} onPress={() => {
-                                setCurrentSong(song)
-                            }}>
+                            <TouchableOpacity style={styles.songContainer} onPress={() => setCurrentSong(song)}>
                                 <Image source={{ uri: song.coverArt }} style={styles.songArt} />
                                 <View style={styles.songDetails}>
                                     <Text style={styles.songTitle}>{song.title}</Text>
@@ -174,6 +211,7 @@ const MusicPlayer: React.FC = () => {
                             </TouchableOpacity>
                         )}
                     />
+
                 </View>
 
 
@@ -192,31 +230,33 @@ const MusicPlayer: React.FC = () => {
                         minimumValue={0}
                         maximumValue={totalDuration}
                         value={currentPosition}
-                        minimumTrackTintColor="#FFFFFF"
-                        maximumTrackTintColor="rgba(255, 255, 255, 0.3)"
+                        minimumTrackTintColor="#3498db" // Use a contrasting color
+                        maximumTrackTintColor="rgba(52, 152, 219, 0.3)" // Adjust the alpha for a subtle background color
+                        thumbTintColor="#3498db" // Use the same color as the minimumTrackTintColor
                         onSlidingComplete={(value) => seekToPosition(value)}
                     />
                     <Text style={styles.durationText}>{formatDuration(totalDuration || 1)}</Text>
                 </View>
 
-
-
                 <View style={[styles.buttonsContainer, { paddingBottom: '20%' }]}>
-                    <TouchableOpacity style={{ opacity: 0.75 }} onPress={prevSong}>
-                        <FontAwesome name="step-backward" size={24} color="white" />
+                    <TouchableOpacity style={styles.button} onPress={prevSong}>
+                        <FontAwesome name="step-backward" size={24} color="#3498db" />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ opacity: 0.75 }} onPress={togglePlayback}>
+                    <TouchableOpacity style={styles.button} onPress={togglePlayback}>
                         {isPlaying ? (
-                            <FontAwesome name="pause" size={24} color="white" />
+                            <FontAwesome name="pause" size={24} color="#3498db" />
                         ) : (
-                            <FontAwesome name="play" size={24} color="white" />
+                            <FontAwesome name="play" size={24} color="#3498db" />
                         )}
                     </TouchableOpacity>
-
-                    <TouchableOpacity style={{ opacity: 0.75 }} onPress={nextSong}>
-                        <FontAwesome name="step-forward" size={24} color="white" />
+                    <TouchableOpacity style={styles.button} onPress={shuffleSongs}>
+                        <FontAwesome name="random" size={24} color="#3498db" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={nextSong}>
+                        <FontAwesome name="step-forward" size={24} color="#3498db" />
                     </TouchableOpacity>
                 </View>
+
             </BlurView>
         </ImageBackground>
     );
@@ -325,6 +365,20 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: 20,
     },
+    button: {
+        opacity: 0.75,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
+        elevation: 2,
+        backgroundColor: '#fff', // Add a background color for iOS
+        borderRadius: 50, // Use a border radius for a circular shape
+        padding: 10,
+    },
     songInfoContainer: {
         flex: 1,
         alignItems: 'center',
@@ -351,14 +405,7 @@ const styles = StyleSheet.create({
         height: 200,
         borderRadius: 20,
     },
-    button: {
-        borderColor: '#4287f5',
-        borderWidth: 1,
-        borderRadius: 20,
-        padding: 10,
-        backgroundColor: '#4287f5',
-        width: '30%'
-    },
+
     buttonText: {
         color: '#fff',
         textAlign: 'center',
