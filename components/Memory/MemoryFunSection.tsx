@@ -1,56 +1,97 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList, Image } from 'react-native'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import AwesomeButton from 'react-native-really-awesome-button'
 import { useNavigation } from '@react-navigation/native'
-import videosFun from '../../videos/videosFun'
+import videosFun from '../../videos/videosFun.json'
+import { Video } from 'expo-av';
 
-const MemoryIconVlog = ({ title, date }: any) => {
-    return (
-        <View>
-            <View style={styles.memoryIcon}>
-                <FontAwesome5 name='smile' size={30} color='#FFF' />
-                <View style={styles.titleDateContainer}>
-                    <Text style={styles.title}>{title}</Text>
-                    <Text style={styles.date}>{date}</Text>
-                </View>
-            </View>
-        </View>
-    )
+
+function shuffleArray(array: any) {
+    let currentIndex = array.length, randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex !== 0) {
+
+        // Pick a remaining element.
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
 }
 
-const MemorySectionFun: React.FC = () => {
-    const navigation = useNavigation()
+
+
+// Interface definitions
+interface MediaFile {
+    filename: string;
+    dimensions: number[] | null; // Updated to allow null
+    duration: string | null;
+    created: string | null; // Also updated to reflect your error message
+    ContentType: string;
+    uri: string;
+}
+
+interface MediaCardProps {
+    item: MediaFile; // Use the MediaFile interface here
+}
+
+
+const MediaCard: React.FC<MediaCardProps> = ({ item }) => {
+    const isVideo = item.ContentType.startsWith('video');
+
+    return (
+        <TouchableOpacity style={styles.memoryIcon}>
+            {isVideo ? (
+                <Video
+                    source={{ uri: item.uri }}
+                    style={{ width: '100%', height: '100%' }}
+                    useNativeControls // This shows the native playback controls
+                    isLooping // If you want the video to loop
+                    shouldPlay={false} // If you want the video to start playing by default
+                />
+            ) : (
+                <Image
+                    source={{ uri: item.uri }}
+                    style={{ width: '100%', height: '100%' }}
+                    resizeMode="cover"
+                />
+            )}
+            <View style={styles.titleDateContainer}>
+                <Text style={styles.title}>{item.ContentType.split('/')[0].toUpperCase()}</Text>
+                <Text style={styles.date}>{item.created}</Text>
+            </View>
+        </TouchableOpacity>
+    );
+};
+
+
+
+
+
+const MediaList = () => {
+    const shuffledAndSlicedVideos = shuffleArray([...videosFun]).slice(0, 5);
+
     return (
         <View style={styles.container}>
-            <ScrollView style={styles.scrollContainer}>
-                <View style={styles.memoryShelf}>
-                    {videosFun.map((item, index) => (
-                        <TouchableOpacity
-                            key={index}
-                            // @ts-ignore
-                            onPress={() => navigation.navigate('VlogContent', item)}
-                            style={styles.memoryIconContainer}
-                        >
-                            <MemoryIconVlog {...item} />
-                        </TouchableOpacity>
-                    ))}
-                </View>
-            </ScrollView>
-            <View style={styles.fixedButtonContainer}>
-                <AwesomeButton
-                    onPress={() => {
-                        navigation.goBack()
-                    }}
-                    backgroundColor='#c0392b'
-                    backgroundDarker='#c0392b'
-                >
-                    Go back
-                </AwesomeButton>
-            </View>
+            <FlatList
+                data={shuffledAndSlicedVideos}
+                renderItem={({ item }) => <MediaCard item={item} />}
+                keyExtractor={(item) => item.filename}
+                contentContainerStyle={styles.memoryShelf}
+                numColumns={2} // Specify the number of columns here. Adjust this number based on your design requirements.
+            />
         </View>
-    )
-}
+    );
+};
+
+export default MediaList;
+
+
 
 const styles = StyleSheet.create({
     container: {
@@ -61,17 +102,25 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Align items in the center
     },
     titleDateContainer: {
-        marginTop: 5, // Add space between MemoryIconDate and title/date
-        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)', // Semi-transparent dark background for better contrast
+        position: 'absolute', // Adjust positioning if needed
+        bottom: 0, // Align at the bottom of the memory card
+        width: '100%', // Ensure it spans the full width of the card
+        paddingVertical: 5, // Add some vertical padding
+        paddingHorizontal: 10, // Add some horizontal padding
+        alignItems: 'center', // Center-align the text
+        borderBottomLeftRadius: 10, // Match the card's border radius for bottom corners
+        borderBottomRightRadius: 10,
     },
     title: {
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 'bold',
-        color: '#fff', // Change the color to your preference
+        color: '#fff', // White color for better readability
+        marginBottom: 2, // Add a slight space between the title and the date
     },
     date: {
-        fontSize: 14,
-        color: '#fff', // Change the color to your preference
+        fontSize: 12,
+        color: '#fff', // White color for better readability
     },
     scrollContainer: {
         flex: 1,
@@ -104,4 +153,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default MemorySectionFun
+
