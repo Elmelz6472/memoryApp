@@ -155,7 +155,7 @@ const Settings = () => {
                         value={numberOfElementDisplayed}
                         onSlidingComplete={handleNumberOfElementChange}
                         minimumValue={5}
-                        maximumValue={30}
+                        maximumValue={250}
                         tapToSeek={true}
                         step={1}
                     />

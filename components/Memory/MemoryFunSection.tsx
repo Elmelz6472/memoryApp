@@ -5,6 +5,7 @@ import AwesomeButton from 'react-native-really-awesome-button'
 import { useNavigation } from '@react-navigation/native'
 import videosFun from '../../videos/videosFun.json'
 import { Video } from 'expo-av';
+import { useAppContext } from '../../AppContext'
 
 
 function shuffleArray(array: any) {
@@ -29,23 +30,47 @@ function shuffleArray(array: any) {
 // Interface definitions
 interface MediaFile {
     filename: string;
-    dimensions: number[] | null; // Updated to allow null
-    duration: string | null;
-    created: string | null; // Also updated to reflect your error message
+    dimensions: number[] | null;
+    created: string;
     ContentType: string;
     uri: string;
 }
 
 interface MediaCardProps {
-    item: MediaFile; // Use the MediaFile interface here
+    item: MediaFile;
 }
+
+
+function formatDate(dateString: string | number | Date) {
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear();
+
+    // Function to add suffix to date
+    function getOrdinalSuffix(day: number) {
+        if (day > 3 && day < 21) return 'th'; // covers 4th to 20th
+        switch (day % 10) {
+            case 1: return "st";
+            case 2: return "nd";
+            case 3: return "rd";
+            default: return "th";
+        }
+    }
+
+    return `${monthNames[monthIndex]} ${day}${getOrdinalSuffix(day)} ${year}`;
+}
+
+
 
 
 const MediaCard: React.FC<MediaCardProps> = ({ item }) => {
     const isVideo = item.ContentType.startsWith('video');
+    const navigation = useNavigation()
 
     return (
-        <TouchableOpacity style={styles.memoryIcon}>
+        <TouchableOpacity style={styles.memoryIcon} onPress={() => navigation.navigate('FunContent', { item })}>
             {isVideo ? (
                 <Video
                     source={{ uri: item.uri }}
@@ -63,7 +88,8 @@ const MediaCard: React.FC<MediaCardProps> = ({ item }) => {
             )}
             <View style={styles.titleDateContainer}>
                 <Text style={styles.title}>{item.ContentType.split('/')[0].toUpperCase()}</Text>
-                <Text style={styles.date}>{item.created}</Text>
+                <Text style={styles.date}>{formatDate(item.created)}</Text>
+
             </View>
         </TouchableOpacity>
     );
@@ -74,16 +100,21 @@ const MediaCard: React.FC<MediaCardProps> = ({ item }) => {
 
 
 const MediaList = () => {
-    const shuffledAndSlicedVideos = shuffleArray([...videosFun]).slice(0, 5);
-
+    const navigation = useNavigation()
+    const { numberOfElementDisplayed } = useAppContext();
+    const shuffledAndSlicedVideos = shuffleArray([...videosFun]).slice(0, numberOfElementDisplayed);
     return (
         <View style={styles.container}>
             <FlatList
                 data={shuffledAndSlicedVideos}
-                renderItem={({ item }) => <MediaCard item={item} />}
+                renderItem={({ item }) => (
+                    <MediaCard
+                        item={item}
+                        onPress={() => navigation.navigate('VlogContent', { item })}
+                    />
+                )}
                 keyExtractor={(item) => item.filename}
                 contentContainerStyle={styles.memoryShelf}
-                numColumns={2} // Specify the number of columns here. Adjust this number based on your design requirements.
             />
         </View>
     );

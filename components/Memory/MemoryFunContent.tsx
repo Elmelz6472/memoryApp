@@ -1,74 +1,78 @@
-import React from 'react'
-import { View, Text, StyleSheet, Button } from 'react-native'
-import { Video, ResizeMode } from 'expo-av'
+import React, { useState, useEffect } from 'react';
+import { View, Image, StyleSheet, Modal, TouchableOpacity } from 'react-native';
+import { Video } from 'expo-av';
+import * as ScreenOrientation from 'expo-screen-orientation';
+import ImageZoomViewer from 'react-native-image-zoom-viewer';
+import { Ionicons } from '@expo/vector-icons';
 
-const MemoryFunContent = ({ route }: any) => {
-    const { uri, title, date } = route.params
 
-    const video = React.useRef(null)
-    const [status, setStatus] = React.useState({})
+const VlogContentScreen = ({ route, navigation }: any) => { // Notice the addition of navigation here
+    const { item } = route.params;
+    const isVideo = item.ContentType.startsWith('video');
+    const [modalVisible, setModalVisible] = useState(true);
+
+    const images = [{ url: item.uri }];
+
+    const renderHeader = () => (
+        <TouchableOpacity
+            style={{
+                position: 'absolute',
+                top: 40, right: 30, // Adjust positioning according to your app design
+                zIndex: 1000, // Ensure the button is above all other components
+            }}
+            onPress={() => {
+                setModalVisible(false); // Close the modal
+                navigation.goBack(); // Navigate back to the previous screen
+            }}>
+            <Ionicons name="close-circle" size={30} color="white" />
+        </TouchableOpacity>
+    );
 
     return (
-        <View style={styles.container}>
-            <Video
-                ref={video}
-                style={styles.video}
-                source={{
-                    uri: uri,
-                }}
-                useNativeControls
-                resizeMode={ResizeMode.CONTAIN}
-                isLooping
-                onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-            />
-            <View style={styles.infoContainer}>
-                <Text style={styles.title}>{title}</Text>
-                <Text style={styles.date}>{date}</Text>
-            </View>
-            <View style={styles.buttons}>
-                <Button
-                    title={status.isPlaying ? 'Pause' : 'Play'}
-                    onPress={() =>
-                        status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
-                    }
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            {isVideo ? (
+                <Video
+                    source={{ uri: item.uri }}
+                    rate={1.0}
+                    volume={1.0}
+                    isMuted={false}
+                    shouldPlay
+                    useNativeControls
+                    style={{ width: '100%', height: '100%' }}
                 />
-            </View>
+            ) : (
+                <Modal
+                    visible={modalVisible}
+                    transparent={true}
+                    onRequestClose={() => {
+                        setModalVisible(false); // Ensure modal can be closed using Android's back button
+                        navigation.goBack();
+                    }}>
+                    <ImageZoomViewer
+                        imageUrls={images}
+                        renderHeader={renderHeader}
+                    />
+                </Modal>
+            )}
         </View>
-    )
-}
-
+    );
+};
+// Define styles for portrait and landscape orientations
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: '#000',
     },
-    video: {
+    mediaPortrait: {
         width: '100%',
-        height: 250,
-        borderRadius: 15,
-        overflow: 'hidden',
-        marginBottom: 20,
+        height: '75%',
     },
-    infoContainer: {
-        alignItems: 'center',
-        marginBottom: 20,
+    mediaLandscape: {
+        width: '100%',
+        height: '100%',
     },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 5,
-    },
-    date: {
-        fontSize: 16,
-        color: '#777',
-    },
-    buttons: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-})
+});
 
-export default MemoryFunContent
+export default VlogContentScreen;

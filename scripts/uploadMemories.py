@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import boto3
 from moviepy.editor import VideoFileClip
 from PIL import Image
+from PIL.ExifTags import TAGS
 import mimetypes
 import json
 from datetime import datetime
