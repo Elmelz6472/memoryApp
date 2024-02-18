@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, StyleSheet, Animated, TouchableWithoutFeedback } from 'react-native'
+import { View, StyleSheet, Animated, TouchableWithoutFeedback, GestureResponderEvent } from 'react-native'
 import AwesomeButton from 'react-native-really-awesome-button'
 import StarPattern from './StarPattern'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
@@ -48,26 +48,22 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
 
     const onPressLetters = () => {
         props.navigation.navigate('Letters')
-        // toggleButtons()
     }
 
     const onPressEvent = () => {
         props.navigation.navigate('CountDown')
-        // toggleButtons()
     }
 
     const onPressMemories = () => {
         props.navigation.navigate('Affirmations')
-        // toggleButtons()
     }
 
     const onPressTests = () => {
         props.navigation.navigate('Tests')
-        // toggleButtons()
     }
 
     return (
-        <TouchableWithoutFeedback onPress={toggleButtons}>
+        <TouchableWithoutFeedback onLongPress={toggleButtons}>
             <View style={styles.backdrop}>
                 <StarPattern seed={seedValue} />
                 <Animated.View style={[styles.UpperContainer, { opacity: fadeAnim }]}>

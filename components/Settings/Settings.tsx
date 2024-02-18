@@ -46,6 +46,8 @@ const Settings = () => {
         setAvailableApps,
         selectedApps,
         setSelectedApps,
+        numberOfStars,
+        setNumberOfStars
     } = useAppContext();
 
     // Function to save the settings to AsyncStorage
@@ -57,6 +59,7 @@ const Settings = () => {
                 numberOfElementDisplayed,
                 mode,
                 selectedApps,
+                numberOfStars
             });
             await AsyncStorage.setItem('settings', settingsToSave);
         } catch (error) {
@@ -67,14 +70,15 @@ const Settings = () => {
     // Function to load the settings from AsyncStorage
     const loadData = async () => {
         try {
-            const savedSettings = await AsyncStorage.getItem('settings');
             if (savedSettings !== null) {
+                console.log(savedSettings)
                 const parsedSettings = JSON.parse(savedSettings);
                 setSeedValue(parsedSettings.seedValue);
                 setTheme(parsedSettings.theme);
                 setNumberOfElementDisplayed(parsedSettings.numberOfElementDisplayed);
                 setMode(parsedSettings.mode);
                 setSelectedApps(parsedSettings.selectedApps);
+                setNumberOfStars(parsedSettings.numberOfStars)
             }
         } catch (error) {
             console.error('Error loading settings:', error);
@@ -94,6 +98,10 @@ const Settings = () => {
 
     const handleSeedChange = (value: string) => {
         setSeedValue(value);
+    }
+
+    const handleNumberStars = (value: number) => {
+        setNumberOfStars(value)
     }
 
     const handleThemeChange = (selectedTheme: Theme) => {
@@ -135,20 +143,21 @@ const Settings = () => {
                 </View>
 
                 <View style={[styles.optionContainer, styles.separator]}>
-                    <Text style={styles.optionText}>Theme</Text>
-                    <RNPicker
-                        selectedValue={theme}
-                        style={styles.picker}
-                        onValueChange={(itemValue: Theme) => handleThemeChange(itemValue as Theme)}
-                    >
-                        <RNPicker.Item label='Light' value={Theme.Light} />
-                        <RNPicker.Item label='Dark' value={Theme.Dark} />
-                        <RNPicker.Item label='Bright' value={Theme.Bright} />
-                    </RNPicker>
+                    <Text style={styles.optionText}># stars: </Text>
+                    <Text style={styles.sliderValue}>{numberOfStars}</Text>
+                    <Slider
+                        style={styles.slider}
+                        value={numberOfStars}
+                        onSlidingComplete={handleNumberStars}
+                        minimumValue={50}
+                        maximumValue={300}
+                        tapToSeek={true}
+                        step={1}
+                    />
                 </View>
 
                 <View style={[styles.optionContainer, styles.separator]}>
-                    <Text style={styles.optionText}>#Display elements: </Text>
+                    <Text style={styles.optionText}># Display elements: </Text>
                     <Text style={styles.sliderValue}>{numberOfElementDisplayed}</Text>
                     <Slider
                         style={styles.slider}

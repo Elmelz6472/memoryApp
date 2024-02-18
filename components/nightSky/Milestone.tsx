@@ -1,23 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, Image } from 'react-native';
-import { Video } from 'expo-av'
+import { Video } from 'expo-av';
 
 interface MilestonePopupProps {
     visible: boolean;
     onClose: () => void;
-    date: string;
-    event: string;
-    cuteDescription: string;
-    mediaUri?: string; // Optional picture or video URI
+    uri?: string; // Optional picture or video URI
 }
 
 const MilestonePopup: React.FC<MilestonePopupProps> = ({
     visible,
     onClose,
-    date,
-    event,
-    cuteDescription,
-    mediaUri,
+    uri,
 }) => {
     return (
         <Modal transparent visible={visible} animationType='slide'>
@@ -27,21 +21,22 @@ const MilestonePopup: React.FC<MilestonePopupProps> = ({
                         <Text style={styles.closeButtonText}>✕</Text>
                     </TouchableOpacity>
                     <Text style={styles.title}>Cherished Moment 💖</Text>
-                    {mediaUri && (
+                    {uri && (
                         <View style={styles.mediaContainer}>
-                            {mediaUri.includes('.mp4') ? (
+                            {(uri.includes('.mp4') || uri.includes('.mov')) ? (
                                 <Video
-                                    source={{ uri: mediaUri }}
-                                    style={styles.media}
-                                    resizeMode='cover'
-                                    controls
+                                    source={{ uri: uri }}
+                                    style={{ width: '100%', height: '100%' }}
+                                    useNativeControls // This shows the native playback controls
+                                    isLooping // If you want the video to loop
+                                    shouldPlay={false} // If you want the video to start playing by default
                                 />
                             ) : (
-                                <Image source={{ uri: mediaUri }} style={styles.media} resizeMode='cover' />
+                                <Image source={{ uri: uri }} style={styles.media} resizeMode='cover' />
                             )}
                         </View>
                     )}
-                    <View style={styles.detailsContainer}>
+                    {/* <View style={styles.detailsContainer}>
                         <View style={styles.detailItem}>
                             <Text style={[styles.detailText, styles.dateText]}>{date}</Text>
                         </View>
@@ -53,7 +48,7 @@ const MilestonePopup: React.FC<MilestonePopupProps> = ({
                         <View style={styles.detailItem}>
                             <Text style={styles.detailText}>{cuteDescription}</Text>
                         </View>
-                    </View>
+                    </View> */}
                 </View>
             </View>
         </Modal>

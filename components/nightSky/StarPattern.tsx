@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native'
 import seedrandom from 'seedrandom'
-import MilestonePopup from './Milestone' // Import the MilestonePopup component
-import milestones from '../../utils/mileStones'
+import MilestonePopup from './Milestone'
+import milestones from '../../videos/all.json'
+import { useAppContext } from '../../AppContext'
 
 const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
     const rng = seedrandom(seed)
@@ -10,7 +11,7 @@ const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
     const [shiningStars, setShiningStars] = useState<number[]>([])
 
     const generateRandomSize = () => {
-        return Math.floor(rng() * 3) + 1 // Random size between 1 and 3
+        return Math.floor(rng() * 4) + 1 // Random size between 1 and 3
     }
 
     const generateRandomPosition = () => {
@@ -29,7 +30,8 @@ const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
     }
 
     const renderStars = () => {
-        const numberOfStars = 100 // You can adjust the number of stars as needed
+        const { numberOfStars } = useAppContext()
+        // const numberOfStars = numberOfStars // You can adjust the number of stars as needed
         const stars = []
 
         for (let i = 0; i < numberOfStars; i++) {
@@ -59,7 +61,7 @@ const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
     useEffect(() => {
         const shiningInterval = setInterval(() => {
             const newShiningStars: number[] = []
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 10; i++) {
                 const randomStar = Math.floor(rng() * 50)
                 newShiningStars.push(randomStar)
             }

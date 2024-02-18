@@ -31,6 +31,8 @@ interface AppContextType {
     setAvailableApps: React.Dispatch<React.SetStateAction<App[]>>
     selectedApps: App[]
     setSelectedApps: React.Dispatch<React.SetStateAction<App[]>>
+    numberOfStars: number
+    setNumberOfStars: React.Dispatch<React.SetStateAction<number>>
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
@@ -47,7 +49,8 @@ export const useAppContext = () => {
 export const AppProvider: React.FC<React.ReactNode> = ({ children }) => {
     const [seedValue, setSeedValue] = useState('12345')
     const [theme, setTheme] = useState<Theme>(Theme.Light) // Default theme is 'light'
-    const [numberOfElementDisplayed, setNumberOfElementDisplayed] = useState(25)
+    const [numberOfElementDisplayed, setNumberOfElementDisplayed] = useState(50)
+    const [numberOfStars, setNumberOfStars] = useState(300)
     const [mode, setMode] = useState<Mode>(Mode.Default)
     const [availableApps, setAvailableApps] = useState<App[]>([
         // { id: 1, name:"settings"},
@@ -86,6 +89,8 @@ export const AppProvider: React.FC<React.ReactNode> = ({ children }) => {
                 setAvailableApps,
                 selectedApps,
                 setSelectedApps,
+                numberOfStars,
+                setNumberOfStars
             }}
         >
             {children}
