@@ -48,22 +48,22 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
 
     const onPressLetters = () => {
         props.navigation.navigate('Letters')
-        toggleButtons()
+        // toggleButtons()
     }
 
     const onPressEvent = () => {
         props.navigation.navigate('CountDown')
-        toggleButtons()
+        // toggleButtons()
     }
 
     const onPressMemories = () => {
         props.navigation.navigate('Affirmations')
-        toggleButtons()
+        // toggleButtons()
     }
 
     const onPressTests = () => {
         props.navigation.navigate('Tests')
-        toggleButtons()
+        // toggleButtons()
     }
 
     return (
@@ -76,7 +76,7 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                             <View style={styles.upperButtonsContainer}>
                                 {mode === 'default' && (
                                     <>
-                                        {selectedApps.some((app) => app.name === 'camera') && (
+                                        {/* {selectedApps.some((app) => app.name === 'camera') && (
                                             <AwesomeButton
                                                 onPress={() => {
                                                     props.navigation.navigate('CameraVideo')
@@ -91,7 +91,7 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                                                     color='#FFFFFF'
                                                 />
                                             </AwesomeButton>
-                                        )}
+                                        )} */}
 
                                         {selectedApps.some((app) => app.name === 'bucketList') && (
                                             <AwesomeButton
@@ -109,7 +109,7 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                                             </AwesomeButton>
                                         )}
 
-                                        {selectedApps.some((app) => app.name === 'chat') && (
+                                        {selectedApps.some((app) => app.name === 'music') && (
                                             <AwesomeButton
                                                 onPress={() => {
                                                     props.navigation.navigate('Music player')
@@ -125,19 +125,22 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                                             </AwesomeButton>
                                         )}
 
-                                        <AwesomeButton
-                                            onPress={() => {
-                                                props.navigation.navigate('RDV')
-                                            }}
-                                            backgroundColor='#FF69B4' // Pink
-                                            backgroundDarker='#D450A4'
-                                        >
-                                            <FontAwesome5
-                                                name='calendar-day'
-                                                size={30}
-                                                color='#FFFFFF'
-                                            />
-                                        </AwesomeButton>
+                                        {selectedApps.some((app) => app.name === "RDV") && (
+                                            <AwesomeButton
+                                                onPress={() => {
+                                                    props.navigation.navigate('RDV')
+                                                }}
+                                                backgroundColor='#FF69B4' // Pink
+                                                backgroundDarker='#D450A4'
+                                            >
+                                                <FontAwesome5
+                                                    name='calendar-day'
+                                                    size={30}
+                                                    color='#FFFFFF'
+                                                />
+                                            </AwesomeButton>
+
+                                        )}
 
                                         <AwesomeButton
                                             onPress={() => {

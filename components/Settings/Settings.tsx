@@ -179,13 +179,20 @@ const Settings = () => {
                             <CheckBox
                                 key={appName.id}
                                 title={appName.name}
-                                checked={selectedApps.some((app) => app.id === appName.id)}
-                                onPress={() => handleAppToggle(appName)}
-                                containerStyle={styles.checkBoxContainer}
+                                checked={appName.name !== 'camera' && selectedApps.some((app) => app.id === appName.id)}
+                                onPress={() => appName.name !== 'camera' && handleAppToggle(appName)}
+                                containerStyle={
+                                    appName.name === 'camera'
+                                        ? [styles.checkBoxContainer, styles.greyedOutCheckbox]
+                                        : styles.checkBoxContainer
+                                }
+                                textStyle={appName.name === 'camera' ? styles.greyedOutText : undefined}
+                                disabled={appName.name === 'camera'}
                             />
                         ))}
                     </ScrollView>
                 </View>
+
 
             </ScrollView>
 
@@ -212,6 +219,13 @@ const styles = StyleSheet.create({
         borderBottomColor: '#ccc',
         paddingBottom: 8,
         marginBottom: 16,
+    },
+    greyedOutCheckbox: {
+        backgroundColor: '#d3d3d3', // Grey color
+    },
+
+    greyedOutText: {
+        color: '#808080', // Grey color
     },
     optionContainer: {
         flexDirection: 'row',

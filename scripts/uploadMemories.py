@@ -5,6 +5,7 @@ from moviepy.editor import VideoFileClip
 from PIL import Image
 import mimetypes
 import json
+from datetime import datetime
 
 load_dotenv()
 
@@ -25,11 +26,13 @@ def get_file_attributes(file_path):
         clip = VideoFileClip(file_path)
         dimensions = clip.size
         duration = clip.duration
-        created = os.path.getctime(file_path)
+        created_timestamp = os.path.getctime(file_path)
+        created = datetime.fromtimestamp(created_timestamp).strftime('%Y-%m-%d')
     elif file_path.lower().endswith(('.jpg', '.jpeg', '.png')):
         dimensions = Image.open(file_path).size
         duration = None  # No duration for image files
-        created = os.path.getctime(file_path)
+        created_timestamp = os.path.getctime(file_path)
+        created = datetime.fromtimestamp(created_timestamp).strftime('%Y-%m-%d')
     else:
         dimensions = None
         duration = None
@@ -45,40 +48,36 @@ def upload_to_digitalocean(folder_path, bucket_name, metadata_json_path):
         if os.path.isfile(file_path):
             dimensions, duration, created = get_file_attributes(file_path)
 
+            # Determine ContentType using mimetypes
+            mimetype, _ = mimetypes.guess_type(file_path)
+            if mimetype is None:
+                mimetype = 'application/octet-stream'  # Default to binary stream if unable to guess
+
             # Upload the file to DigitalOcean Space with the specified object key
             object_key = f"random/{filename}"
+            # with open(file_path, 'rb') as file:
+            #     client.upload_fileobj(file, bucket_name, object_key,
+            #                           ExtraArgs={'ACL': 'public-read',
+            #                                      'ContentDisposition': 'inline',
+            #                                      'ContentType': mimetype})  # Set the ContentType
 
-            # Determine ContentType based on file type
-            content_type, _ = mimetypes.guess_type(file_path)
-            content_type = content_type or 'application/octet-stream'
-
-            # Generate a presigned URL and set 'Content-Disposition' to 'inline'
-            presigned_url = client.generate_presigned_url(
-                'get_object',
-                Params={
-                    'Bucket': bucket_name,
-                    'Key': object_key,
-                    'ResponseContentDisposition': 'inline'
-                },
-                ExpiresIn=3600,  # Set the expiration time as needed
-                HttpMethod='GET'
-            )
+            # Create URI for streaming
+            uri = f"https://bucket-memoryapp.nyc3.digitaloceanspaces.com/memories/{object_key}"
 
             # Store metadata in the list
             metadata = {
                 "filename": filename,
                 "dimensions": dimensions,
-                "duration": duration,
+                "duration": f"{int(duration//60)}:{int(duration%60):02d}" if duration else None,
                 "created": created,
-                "content_type": content_type,
-                "presigned_url": presigned_url
+                "ContentType": mimetype,  # Include the ContentType in metadata
+                "uri": uri
             }
             metadata_list.append(metadata)
 
             print(f"Uploaded {filename} to DigitalOcean Space at 'random'")
-            print(f"Dimensions: {dimensions}, Duration: {duration}, Created: {created}")
-            print(f"Content Type: {content_type}")
-            print(f"Presigned URL: {presigned_url}\n")
+            print(f"Dimensions: {dimensions}, Duration: {duration}, Created: {created}, ContentType: {mimetype}")
+            print(f"URI for streaming: {uri}\n")
 
     # Save metadata list to JSON file
     with open(metadata_json_path, 'w') as json_file:
@@ -87,4 +86,4 @@ def upload_to_digitalocean(folder_path, bucket_name, metadata_json_path):
     print(f"Metadata saved to {metadata_json_path}")
 
 # Example usage
-upload_to_digitalocean('/Users/malikmacbook/Desktop/TestPics', 'memories', 'metadata.json')
+upload_to_digitalocean('/Users/malikmacbook/Desktop/Pics', 'memories', 'metadata.json')

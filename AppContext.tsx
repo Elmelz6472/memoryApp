@@ -57,7 +57,7 @@ export const AppProvider: React.FC<React.ReactNode> = ({ children }) => {
         { id: 5, name: 'affirmations' },
         { id: 6, name: 'camera' },
         { id: 7, name: 'bucketList' },
-        { id: 8, name: 'chat' },
+        { id: 8, name: 'music' },
         { id: 9, name: 'RDV' },
     ])
     const [selectedApps, setSelectedApps] = useState<App[]>([
@@ -67,7 +67,7 @@ export const AppProvider: React.FC<React.ReactNode> = ({ children }) => {
         { id: 5, name: 'affirmations' },
         { id: 6, name: 'camera' },
         { id: 7, name: 'bucketList' },
-        { id: 8, name: 'chat' },
+        { id: 8, name: 'music' },
         { id: 9, name: 'RDV' },
     ])
 

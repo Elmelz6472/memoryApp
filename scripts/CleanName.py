@@ -21,9 +21,12 @@ def remove_substring_from_files(folder_path, substring):
 
 
 
-folder_path = "/Users/malikmacbook/Downloads/folklore (deluxe version)"
+folder_path = "/Users/malikmacbook/Downloads/[SPOTIFY-DOWNLOADER.COM] The College Dropout"
 # substring = "[SPOTIFY-DOWNLOADER.COM]"
 substring = "mp3"
 
 
 remove_substring_from_files(folder_path, substring)
+
+
+# https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png

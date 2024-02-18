@@ -26,8 +26,8 @@ const allAudioFiles: AudioFile[] = [
 
 const keyExtractor = (item: AudioFile) => item.id;
 
-const shuffledAudioFiles = shuffleArray(allAudioFiles, keyExtractor);
-
+// const shuffledAudioFiles = shuffleArray(allAudioFiles, keyExtractor);
+const shuffledAudioFiles = KanyeWestAudioFiles;
 
 // const audioFiles: AudioFile[] = shuffleArray(JorjaSmithAudioFiles.concat(NickiMinajAudioObjects))
 

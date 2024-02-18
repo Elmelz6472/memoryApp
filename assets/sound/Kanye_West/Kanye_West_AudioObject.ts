@@ -253,6 +253,195 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         "title": " RoboCop.mp3",
         "duration": "4:34",
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/808s.png"
+    },
+        {
+        "id": 210,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Lil%20Jimmy%20Skit.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " Lil Jimmy Skit",
+        "duration": "0:53",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 211,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Intro.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " Intro",
+        "duration": "4:29",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 212,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Slow%20Jamz.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " Slow Jamz",
+        "duration": "3:34",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 213,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20All%20Falls%20Down.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " All Falls Down",
+        "duration": "4:05",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 214,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Through%20The%20Wire.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " Through The Wire",
+        "duration": "3:41",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 215,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Never%20Let%20Me%20Down.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " Never Let Me Down",
+        "duration": "5:24",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 216,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20I%27ll%20Fly%20Away.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " I'll Fly Away",
+        "duration": "1:09",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 217,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Two%20Words.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " Two Words",
+        "duration": "4:44",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 218,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20We%20Don%27t%20Care.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " We Don't Care",
+        "duration": "4:00",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 219,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Get%20Em%20High.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " Get Em High",
+        "duration": "4:49",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 220,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Jesus%20Walks.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " Jesus Walks",
+        "duration": "4:06",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 221,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Graduation%20Day.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " Graduation Day",
+        "duration": "1:21",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 222,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Workout%20Plan.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " Workout Plan",
+        "duration": "8:06",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 223,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20School%20Spirit.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " School Spirit",
+        "duration": "3:02",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 224,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20School%20Spirit%20Skit%201.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " School Spirit Skit 1",
+        "duration": "1:18",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 225,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Spaceship.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " Spaceship",
+        "duration": "5:24",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 226,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20The%20New%20Workout%20Plan.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " The New Workout Plan",
+        "duration": "8:06",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 227,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20School%20Spirit%20Skit%202.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " School Spirit Skit 2",
+        "duration": "0:43",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 228,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Last%20Call.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " Last Call",
+        "duration": "12:41",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 229,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Breathe%20In%20Breathe%20Out.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " Breathe In Breathe Out",
+        "duration": "4:07",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
+    },
+    {
+        "id": 230,
+        "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Family%20Business.",
+        "album": "The College Dropout",
+        "artist": "Kanye West",
+        "title": " Family Business",
+        "duration": "4:39",
+        "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
     }
 
 ]

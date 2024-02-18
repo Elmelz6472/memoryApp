@@ -111,8 +111,9 @@ const Player: React.FC = () => {
                 <TouchableOpacity
                     style={styles.goToMusicPlayerButton}
                     onPress={() => {
-                        navigation.navigate("Music player" as never)
-                    }}>
+                        navigation.navigate("Music player" as never);
+                    }}
+                >
                     <Text style={styles.goToMusicPlayerButtonText}>Music player</Text>
                 </TouchableOpacity>
                 <TextInput
@@ -124,17 +125,19 @@ const Player: React.FC = () => {
                 <FlatList
                     data={playlists}
                     keyExtractor={(playlist) => playlist.id.toString()}
-                    renderItem={({ item: playlist }) => (
+                    renderItem={({ item: playlist, index: playlistIndex }) => (
                         <View style={styles.playlist}>
-                            <TouchableOpacity onPress={() => {
-                                setMinimizedPlaylists(prevMinimizedPlaylists => {
-                                    if (prevMinimizedPlaylists.includes(playlist.id)) {
-                                        return prevMinimizedPlaylists.filter(id => id !== playlist.id);
-                                    } else {
-                                        return [...prevMinimizedPlaylists, playlist.id];
-                                    }
-                                });
-                            }}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setMinimizedPlaylists((prevMinimizedPlaylists) => {
+                                        if (prevMinimizedPlaylists.includes(playlist.id)) {
+                                            return prevMinimizedPlaylists.filter((id) => id !== playlist.id);
+                                        } else {
+                                            return [...prevMinimizedPlaylists, playlist.id];
+                                        }
+                                    });
+                                }}
+                            >
                                 <Text style={styles.playlistTitle}>{playlist.name}</Text>
                             </TouchableOpacity>
                             {!minimizedPlaylists.includes(playlist.id) && (
@@ -144,32 +147,51 @@ const Player: React.FC = () => {
                                         placeholder="Search for songs..."
                                         placeholderTextColor="#888"
                                         value={search}
-                                        onChangeText={text => setSearch(text)}
+                                        onChangeText={(text) => setSearch(text)}
                                     />
-                                    <TouchableOpacity style={styles.removeButton} onPress={() => deletePlaylist(playlist.id)}>
+                                    <TouchableOpacity
+                                        style={styles.removeButton}
+                                        onPress={() => deletePlaylist(playlist.id)}
+                                    >
                                         <Text style={styles.removeButtonText}>Delete Playlist</Text>
                                     </TouchableOpacity>
-                                    {playlist.songs.map(song => (
+                                    {playlist.songs.map((song, songIndex) => (
                                         <View style={styles.songContainer} key={song.id}>
                                             <Image source={{ uri: song.coverArt }} style={styles.songArt} />
                                             <Text style={styles.songTitle}>{song.title}</Text>
-                                            <TouchableOpacity style={styles.removeButton} onPress={() => removeFromPlaylist(playlist.id, song.id)}>
+                                            {/* Add the index to the far right */}
+                                            <Text style={styles.songIndex}>{playlistIndex + 1}.{songIndex + 1}</Text>
+                                            <TouchableOpacity
+                                                style={styles.removeButton}
+                                                onPress={() => removeFromPlaylist(playlist.id, song.id)}
+                                            >
                                                 <Text style={styles.removeButtonText}>Remove</Text>
                                             </TouchableOpacity>
                                         </View>
                                     ))}
                                     <Text style={styles.addSongTitle}>Add song to playlist:</Text>
                                     <ScrollView>
-                                        {filteredAudioFiles.map(audioFile => (
-                                            <TouchableOpacity style={styles.songContainer} key={audioFile.id} onPress={() => addToPlaylist(playlist.id, audioFile)}>
-                                                <Image source={{ uri: audioFile.coverArt }} style={styles.songArt} />
-                                                <Text style={styles.songTitle}>{audioFile.title}</Text>
-                                            </TouchableOpacity>
-                                        ))}
+                                        {availableSongs
+                                            .filter((audioFile) => !filteredAudioFiles.some((filteredFile) => filteredFile.id === audioFile.id))
+                                            .map((audioFile) => (
+                                                <TouchableOpacity
+                                                    style={styles.songContainer}
+                                                    key={audioFile.id}
+                                                    onPress={() => addToPlaylist(playlist.id, audioFile)}
+                                                >
+                                                    <Image source={{ uri: audioFile.coverArt }} style={styles.songArt} />
+                                                    <Text style={styles.songTitle}>{audioFile.title}</Text>
+                                                </TouchableOpacity>
+                                            ))}
                                     </ScrollView>
+
                                     <ScrollView>
-                                        {availableSongs.map(audioFile => (
-                                            <TouchableOpacity style={styles.songContainer} key={audioFile.id} onPress={() => addToPlaylist(playlist.id, audioFile)}>
+                                        {availableSongs.map((audioFile) => (
+                                            <TouchableOpacity
+                                                style={styles.songContainer}
+                                                key={audioFile.id}
+                                                onPress={() => addToPlaylist(playlist.id, audioFile)}
+                                            >
                                                 <Image source={{ uri: audioFile.coverArt }} style={styles.songArt} />
                                                 <Text style={styles.songTitle}>{audioFile.title}</Text>
                                             </TouchableOpacity>
@@ -183,6 +205,7 @@ const Player: React.FC = () => {
             </View>
         </SafeAreaView>
     );
+
 };
 
 const styles = StyleSheet.create({
@@ -190,6 +213,9 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    songIndex: {
+        color: "black"
     },
     goToMusicPlayerButton: {
         backgroundColor: '#DAA520',
