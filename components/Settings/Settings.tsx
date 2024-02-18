@@ -70,6 +70,7 @@ const Settings = () => {
     // Function to load the settings from AsyncStorage
     const loadData = async () => {
         try {
+            const savedSettings = await AsyncStorage.getItem('settings');
             if (savedSettings !== null) {
                 console.log(savedSettings)
                 const parsedSettings = JSON.parse(savedSettings);
