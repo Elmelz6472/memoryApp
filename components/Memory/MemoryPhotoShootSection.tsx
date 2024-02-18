@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList, Image }
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import AwesomeButton from 'react-native-really-awesome-button'
 import { useNavigation } from '@react-navigation/native'
-import videos from '../../videos/dates.json'
+import videos from '../../videos/photoshoot.json'
 import { Video } from 'expo-av';
 import { useAppContext } from '../../AppContext'
 
@@ -65,7 +65,7 @@ function formatDate(dateString: string | number | Date) {
     const day = dateComponents[2];
 
     // Function to add suffix to date
-    function getOrdinalSuffix(day: number) {
+    function getOrdinalSuffix(day) {
         if (day > 3 && day < 21) return 'th'; // covers 4th to 20th
         switch (day % 10) {
             case 1: return "st";

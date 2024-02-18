@@ -15,6 +15,7 @@ import MemorySectionDate from './components/Memory/MemoryDateSection'
 import MemoryDateContent from './components/Memory/MemoryDateContent'
 import MemorySectionVlog from './components/Memory/MemoryVlogSection'
 import MemoryVlogContent from './components/Memory/MemoryVlogContent'
+import MemorySmsSection from './components/Memory/MemorySmsSection'
 import MemorySectionFun from './components/Memory/MemoryFunSection'
 import MemoryFunContent from './components/Memory/MemoryFunContent'
 import CameraPhoto from './components/Camera/CameraPhoto'
@@ -26,6 +27,7 @@ import Form from './components/RDV/RDV'
 import audioFiles from './assets/sound/AudioFileType'
 import PlaylistComponent from './components/Music/PlaylistComponent'
 import MusicPlayer from './components/Music/MusicPlayer'
+import MemoryPhotoShoot from './components/Memory/MemoryPhotoShootSection'
 
 
 
@@ -88,6 +90,14 @@ const App = () => {
                         component={MemorySectionVlog}
                         options={{ headerShown: false }}
                     />
+
+                    <Stack.Screen
+                        name='Sms'
+                        component={MemorySmsSection}
+                        options={{ headerShown: false }}
+                    />
+
+
                     <Stack.Screen
                         name='VlogContent'
                         component={MemoryVlogContent}
@@ -109,6 +119,13 @@ const App = () => {
                             headerStyle: { backgroundColor: '#FDF5E6' },
                         }}
                     />
+                    <Stack.Screen
+                        name="PhotoShoot"
+                        component={MemoryPhotoShoot}
+                        options={{
+                            title: "Photshoot",
+                            headerStyle: { backgroundColor: '#FDF5E6' }
+                        }} />
                     <Stack.Screen
                         name='CameraPhoto'
                         component={CameraPhoto}

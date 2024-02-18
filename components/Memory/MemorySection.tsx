@@ -14,6 +14,10 @@ const MemoryIcon = ({ title, type }: { title: string; type: string }) => {
                 return 'video'
             case 'fun':
                 return 'smile'
+            case 'photoshoot':
+                return 'camera'
+            case 'sms':
+                return 'sms'
             default:
                 return 'heart'
         }
@@ -28,7 +32,7 @@ const MemoryIcon = ({ title, type }: { title: string; type: string }) => {
     )
 }
 
-const onPressFun = () => {}
+const onPressFun = () => { }
 
 const MemorySections: React.FC = () => {
     const navigation = useNavigation()
@@ -60,6 +64,25 @@ const MemorySections: React.FC = () => {
                     >
                         <MemoryIcon title='Fun' type='fun' />
                     </TouchableOpacity>
+
+
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate('Sms' as never)
+                        }}
+                    >
+                        <MemoryIcon title='sms' type='sms' />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate('PhotoShoot' as never)
+                        }}
+                    >
+                        <MemoryIcon title='photoshoot' type='photoshoot' />
+                    </TouchableOpacity>
+
+
                 </View>
             </ScrollView>
             <View style={styles.fixedButtonContainer}>

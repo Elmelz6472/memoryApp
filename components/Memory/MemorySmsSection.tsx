@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList, Image }
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import AwesomeButton from 'react-native-really-awesome-button'
 import { useNavigation } from '@react-navigation/native'
-import videos from '../../videos/dates.json'
+import videos from '../../videos/sms.json'
 import { Video } from 'expo-av';
 import { useAppContext } from '../../AppContext'
 
@@ -117,7 +117,7 @@ const MediaCard: React.FC<MediaCardProps> = ({ item }) => {
 
 
 
-const MemoryPhotoShoot = () => {
+const MemorySmsSection = () => {
     const navigation = useNavigation()
     const { numberOfElementDisplayed } = useAppContext();
     const shuffledAndSlicedVideos = shuffleArray([...videos]).slice(0, numberOfElementDisplayed);
@@ -138,7 +138,7 @@ const MemoryPhotoShoot = () => {
     );
 };
 
-export default MemoryPhotoShoot;
+export default MemorySmsSection;
 
 
 
