@@ -1,10 +1,12 @@
-[
+import { AudioFile } from "../AudioFileType";
+
+export const LordeAudioObjects: AudioFile[] = [
     {
         "id": 1000,
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/Lorde/Melodrama/%20Green%20Light.mp3",
         "album": "Melodrama",
         "artist": "Lorde",
-        "title": " Green Light.mp3",
+        "title": " Green Light",
         "duration": "4:03",
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/Lorde/Melodrama.png"
     },
@@ -13,7 +15,7 @@
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/Lorde/Melodrama/%20Writer%20In%20The%20Dark.mp3",
         "album": "Melodrama",
         "artist": "Lorde",
-        "title": " Writer In The Dark.mp3",
+        "title": " Writer In The Dark",
         "duration": "3:54",
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/Lorde/Melodrama.png"
     },
@@ -22,7 +24,7 @@
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/Lorde/Melodrama/%20Liability%20%28Reprise%29.mp3",
         "album": "Melodrama",
         "artist": "Lorde",
-        "title": " Liability (Reprise).mp3",
+        "title": " Liability (Reprise)",
         "duration": "2:16",
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/Lorde/Melodrama.png"
     },
@@ -31,7 +33,7 @@
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/Lorde/Melodrama/%20The%20Louvre.mp3",
         "album": "Melodrama",
         "artist": "Lorde",
-        "title": " The Louvre.mp3",
+        "title": " The Louvre",
         "duration": "4:31",
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/Lorde/Melodrama.png"
     },
@@ -40,7 +42,7 @@
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/Lorde/Melodrama/%20Homemade%20Dynamite.mp3",
         "album": "Melodrama",
         "artist": "Lorde",
-        "title": " Homemade Dynamite.mp3",
+        "title": " Homemade Dynamite",
         "duration": "3:34",
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/Lorde/Melodrama.png"
     },
@@ -49,7 +51,7 @@
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/Lorde/Melodrama/%20Liability.mp3",
         "album": "Melodrama",
         "artist": "Lorde",
-        "title": " Liability.mp3",
+        "title": " Liability",
         "duration": "2:53",
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/Lorde/Melodrama.png"
     },
@@ -58,7 +60,7 @@
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/Lorde/Melodrama/%20Supercut.mp3",
         "album": "Melodrama",
         "artist": "Lorde",
-        "title": " Supercut.mp3",
+        "title": " Supercut",
         "duration": "4:37",
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/Lorde/Melodrama.png"
     },
@@ -67,7 +69,7 @@
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/Lorde/Melodrama/%20Sober.mp3",
         "album": "Melodrama",
         "artist": "Lorde",
-        "title": " Sober.mp3",
+        "title": " Sober",
         "duration": "3:17",
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/Lorde/Melodrama.png"
     },
@@ -76,7 +78,7 @@
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/Lorde/Melodrama/%20Perfect%20Places.mp3",
         "album": "Melodrama",
         "artist": "Lorde",
-        "title": " Perfect Places.mp3",
+        "title": " Perfect Places",
         "duration": "4:18",
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/Lorde/Melodrama.png"
     },
@@ -85,7 +87,7 @@
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/Lorde/Melodrama/%20Sober%20II%20%28Melodrama%29.mp3",
         "album": "Melodrama",
         "artist": "Lorde",
-        "title": " Sober II (Melodrama).mp3",
+        "title": " Sober II (Melodrama)",
         "duration": "2:58",
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/Lorde/Melodrama.png"
     },
@@ -94,7 +96,7 @@
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/Lorde/Melodrama/%5BSPOTIFY-DOWNLOADER.COM%5D%20Hard%20Feelings/Loveless.mp3",
         "album": "Melodrama",
         "artist": "Lorde",
-        "title": "Loveless.mp3",
+        "title": "Loveless",
         "duration": "6:07",
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/Lorde/Melodrama.png"
     }

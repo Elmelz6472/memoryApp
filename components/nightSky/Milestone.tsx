@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, Modal, TouchableOpacity, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Modal, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { Video } from 'expo-av';
 
 interface MilestonePopupProps {
@@ -13,6 +13,13 @@ const MilestonePopup: React.FC<MilestonePopupProps> = ({
     onClose,
     uri,
 }) => {
+    const [loading, setLoading] = useState(true); // State to track loading
+
+    // Function to handle loading completion
+    const handleLoad = () => {
+        setLoading(false); // Set loading state to false when media is loaded
+    };
+
     return (
         <Modal transparent visible={visible} animationType='slide'>
             <View style={styles.modalContainer}>
@@ -27,28 +34,36 @@ const MilestonePopup: React.FC<MilestonePopupProps> = ({
                                 <Video
                                     source={{ uri: uri }}
                                     style={{ width: '100%', height: '100%' }}
-                                    useNativeControls // This shows the native playback controls
-                                    isLooping // If you want the video to loop
-                                    shouldPlay={false} // If you want the video to start playing by default
+                                    useNativeControls
+                                    isLooping
+                                    shouldPlay={false}
+                                    onLoad={handleLoad} // Call handleLoad when video is loaded
+                                    onLoadStart={() => {
+                                        setLoading(true)
+                                        console.log("URI: " + uri)
+                                    }} // Set loading state to true when video starts loading
                                 />
                             ) : (
-                                <Image source={{ uri: uri }} style={styles.media} resizeMode='cover' />
+                                <Image
+                                    source={{ uri: uri }}
+                                    style={styles.media}
+                                    resizeMode='cover'
+                                    onLoad={handleLoad} // Call handleLoad when image is loaded
+                                    onLoadStart={() => {
+                                        setLoading(true)
+                                        console.log("URI: " + uri)
+                                    }} // Set loading state to true when image starts loading
+                                />
+                            )}
+                            {loading && (
+                                <ActivityIndicator
+                                    size='large'
+                                    color='#FF69B4'
+                                    style={styles.loadingIndicator}
+                                />
                             )}
                         </View>
                     )}
-                    {/* <View style={styles.detailsContainer}>
-                        <View style={styles.detailItem}>
-                            <Text style={[styles.detailText, styles.dateText]}>{date}</Text>
-                        </View>
-                        <View style={styles.separator} />
-                        <View style={styles.detailItem}>
-                            <Text style={styles.detailText}>{event}</Text>
-                        </View>
-                        <View style={styles.separator} />
-                        <View style={styles.detailItem}>
-                            <Text style={styles.detailText}>{cuteDescription}</Text>
-                        </View>
-                    </View> */}
                 </View>
             </View>
         </Modal>
@@ -65,7 +80,7 @@ const styles = StyleSheet.create({
     popupContainer: {
         backgroundColor: '#FFF5F8', // Creamy pink background
         borderRadius: 20,
-        width: '80%',
+        width: '90%', // Increase the width to take more space
         paddingHorizontal: 20,
         paddingVertical: 15,
         alignItems: 'center',
@@ -91,31 +106,16 @@ const styles = StyleSheet.create({
         aspectRatio: 16 / 9, // Adjust as needed for your media aspect ratio
         borderRadius: 15,
         overflow: 'hidden',
-        marginVertical: 10,
+        marginVertical: 20, // Increase margin to give more space
+        position: 'relative', // Ensure the loading indicator is positioned correctly
     },
     media: {
         flex: 1,
     },
-    detailsContainer: {
-        width: '100%',
-        alignItems: 'center',
-    },
-    detailItem: {
-        marginBottom: 15,
-    },
-    separator: {
-        height: 1,
-        backgroundColor: '#FFB6C1', // Light pink separator color
-        width: '100%',
-        marginVertical: 5,
-    },
-    detailText: {
-        fontSize: 18,
-        color: '#7C6A70', // Soft rose text color
-        textAlign: 'center',
-    },
-    dateText: {
-        fontWeight: 'bold',
+    loadingIndicator: {
+        position: 'absolute',
+        alignSelf: 'center',
+        top: '50%', // Center the loading indicator vertically
     },
 });
 

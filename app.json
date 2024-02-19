@@ -24,7 +24,13 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.memoryApp"
+      "bundleIdentifier": "com.anonymous.memoryApp",
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "audio"
+        ]
+      }
+
     },
     "android": {
       "adaptiveIcon": {

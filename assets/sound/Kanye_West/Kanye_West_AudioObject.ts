@@ -3,13 +3,13 @@ import { AudioFile } from "../AudioFileType";
 
 export const KanyeWestAudioFiles: AudioFile[] = [
     {
-        id: 17,
-        uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/01%20Good%20Morning.mp3",
-        album: "Graduation",
-        artist: 'Kanye West',
-        title: 'Good Morning',
-        duration: "03:15",
-        coverArt: 'https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/Graduation.png',
+        "id": 17,
+        "uri": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/01%20Good%20Morning.mp3",
+        "album": "Graduation",
+        "artist": 'Kanye West',
+        "title": 'Good Morning',
+        "duration": "03:15",
+        "coverArt": 'https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/Graduation.png',
     },
     {
         id: 18,
@@ -102,7 +102,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         coverArt: 'https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/Graduation.png',
     },
     {
-        id: 28,
+        "id": 28,
         uri: "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Songs/KanyeWest/Graduation/12%20Homecoming%20(Feat.%20Chris%20Martin).mp3",
         album: "Graduation",
         artist: 'Kanye West',
@@ -246,7 +246,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/808s.png"
     },
     {
-        "id": 130,
+        "id": 1320,
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/808s/%20RoboCop.mp3",
         "album": "808s and heartbreak",
         "artist": "Kanye West",
@@ -255,7 +255,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/808s.png"
     },
         {
-        "id": 210,
+        "id": 2100,
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Lil%20Jimmy%20Skit.",
         "album": "The College Dropout",
         "artist": "Kanye West",
@@ -264,7 +264,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
     },
     {
-        "id": 211,
+        "id": 2101,
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Intro.",
         "album": "The College Dropout",
         "artist": "Kanye West",
@@ -318,7 +318,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
     },
     {
-        "id": 217,
+        "id": 2107,
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Two%20Words.",
         "album": "The College Dropout",
         "artist": "Kanye West",
@@ -327,7 +327,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
     },
     {
-        "id": 218,
+        "id": 2180,
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20We%20Don%27t%20Care.",
         "album": "The College Dropout",
         "artist": "Kanye West",
@@ -336,7 +336,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
     },
     {
-        "id": 219,
+        "id": 2109,
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Get%20Em%20High.",
         "album": "The College Dropout",
         "artist": "Kanye West",
@@ -345,7 +345,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
     },
     {
-        "id": 220,
+        "id": 2200,
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Jesus%20Walks.",
         "album": "The College Dropout",
         "artist": "Kanye West",
@@ -372,7 +372,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
     },
     {
-        "id": 223,
+        "id": 2023,
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20School%20Spirit.",
         "album": "The College Dropout",
         "artist": "Kanye West",
@@ -390,7 +390,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
     },
     {
-        "id": 225,
+        "id": 2250,
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Spaceship.",
         "album": "The College Dropout",
         "artist": "Kanye West",
@@ -399,7 +399,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
     },
     {
-        "id": 226,
+        "id": 2260,
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20The%20New%20Workout%20Plan.",
         "album": "The College Dropout",
         "artist": "Kanye West",
@@ -408,7 +408,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
     },
     {
-        "id": 227,
+        "id": 2270,
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20School%20Spirit%20Skit%202.",
         "album": "The College Dropout",
         "artist": "Kanye West",
@@ -417,7 +417,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
     },
     {
-        "id": 228,
+        "id": 2280,
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Last%20Call.",
         "album": "The College Dropout",
         "artist": "Kanye West",
@@ -426,7 +426,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
     },
     {
-        "id": 229,
+        "id": 2290,
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Breathe%20In%20Breathe%20Out.",
         "album": "The College Dropout",
         "artist": "Kanye West",
@@ -435,7 +435,7 @@ export const KanyeWestAudioFiles: AudioFile[] = [
         "coverArt": "https://bucket-memoryapp.nyc3.cdn.digitaloceanspaces.com/Covers/KanyeWest/CollegeDropout.png"
     },
     {
-        "id": 230,
+        "id": 2300,
         "uri": "https://bucket-memoryapp.nyc3.digitaloceanspaces.com/Songs/KanyeWest/CollegeDropout/%20Family%20Business.",
         "album": "The College Dropout",
         "artist": "Kanye West",

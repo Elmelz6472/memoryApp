@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Image, ImageBackground, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Image, ImageBackground, StyleSheet, ActivityIndicator } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { BlurView } from 'expo-blur';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { Audio } from 'expo-av';
+import { Audio, InterruptionModeIOS } from 'expo-av';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import audioFiles, { AudioFile } from '../../assets/sound/AudioFileType';
 
@@ -16,12 +16,12 @@ interface Playlist {
 
 const MusicPlayer: React.FC = () => {
     const navigation = useNavigation();
+    const [isLoading, setIsLoading] = useState(false); // State to manage loading indicator
+    const [sound, setSound] = useState<Audio.Sound | null>(null); // State to manage the audio sound
     const [currentSongIndex, setCurrentSongIndex] = useState(0);
     const [currentSong, setCurrentSong] = useState<AudioFile | null>(audioFiles[currentSongIndex]);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [sound, setSound] = useState<Audio.Sound | null>(null);
     const [activePlaylist, setActivePlaylist] = useState<Playlist | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
     const [playlists, setPlaylists] = useState<Playlist[]>([]);
     const [currentPosition, setCurrentPosition] = useState(0);
     const [totalDuration, setTotalDuration] = useState<number | undefined>(0);
@@ -38,27 +38,40 @@ const MusicPlayer: React.FC = () => {
 
     useEffect(() => {
         const initializeSong = async () => {
+            setIsLoading(true); // Set loading state to true when initializing the song
             if (sound) {
                 await sound.stopAsync();
                 await sound.unloadAsync();
             }
 
-            const { sound: newSound } = await Audio.Sound.createAsync({ uri: currentSong!!.uri }, {}, (status) => {
-                if (status.isLoaded) {
-                    if (status.isPlaying) {
-                        setCurrentPosition(status.positionMillis);
-                        setTotalDuration(status.durationMillis);
-                    }
-                    if (status.didJustFinish) {
-                        nextSong()
+            const { sound: newSound } = await Audio.Sound.createAsync(
+                { uri: currentSong!!.uri },
+                {},
+                (status) => {
+                    if (status.isLoaded) {
+                        setIsLoading(false); // Set loading state to false when the sound is loaded
+                        if (status.isPlaying) {
+                            setCurrentPosition(status.positionMillis);
+                            setTotalDuration(status.durationMillis);
+                        }
+                        if (status.didJustFinish) {
+                            nextSong();
+                        }
                     }
                 }
-            });
+            );
             setSound(newSound);
             if (isPlaying) {
                 await newSound.playAsync();
             }
-
+            await Audio.setAudioModeAsync({
+                staysActiveInBackground: true,
+                shouldDuckAndroid: false,
+                playThroughEarpieceAndroid: true,
+                allowsRecordingIOS: true,
+                interruptionModeIOS: InterruptionModeIOS.DuckOthers,
+                playsInSilentModeIOS: true,
+            });
         };
 
         if (currentSong) {
@@ -74,7 +87,6 @@ const MusicPlayer: React.FC = () => {
 
     useEffect(() => {
         return () => {
-            // Cleanup function to stop and unload audio when the component is unmounted
             if (sound) {
                 sound.stopAsync();
                 sound.unloadAsync();
@@ -98,28 +110,24 @@ const MusicPlayer: React.FC = () => {
             const nextSongIndex = (currentSongIndex + 1) % activePlaylist.songs.length;
             setCurrentSongIndex(nextSongIndex);
             setCurrentSong(activePlaylist.songs[nextSongIndex]);
-        }
-        else {
+        } else {
             const nextSongIndex = (currentSongIndex + 1) % audioFiles.length;
             setCurrentSongIndex(nextSongIndex);
             setCurrentSong(audioFiles[nextSongIndex]);
         }
-    }
+    };
 
     const prevSong = () => {
         if (activePlaylist) {
             const nextSongIndex = (currentSongIndex - 1) % activePlaylist.songs.length;
             setCurrentSongIndex(nextSongIndex);
             setCurrentSong(activePlaylist.songs[nextSongIndex]);
-        }
-        else {
+        } else {
             const prevSongIndex = (currentSongIndex - 1 + audioFiles.length) % audioFiles.length;
             setCurrentSongIndex(prevSongIndex);
             setCurrentSong(audioFiles[prevSongIndex]);
         }
-
-    }
-
+    };
 
     const formatDuration = (milliseconds: number) => {
         const minutes = Math.floor(milliseconds / 60000);
@@ -132,7 +140,6 @@ const MusicPlayer: React.FC = () => {
             sound.setPositionAsync(value);
         }
     };
-
 
     const shuffleSongs = () => {
         if (activePlaylist) {
@@ -160,13 +167,14 @@ const MusicPlayer: React.FC = () => {
         }
     };
 
-
-
     return (
-
         <ImageBackground source={{ uri: currentSong?.coverArt }} style={styles.backgroundImage} blurRadius={5} >
             <BlurView intensity={50} style={styles.container}>
-
+                {isLoading && ( // Show loading indicator if isLoading is true
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="large" color="#3498db" />
+                    </View>
+                )}
                 <View style={styles.navbar}>
                     <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('PlaylistPage' as never)}>
                         <Text style={styles.navButtonText}>Playlists</Text>
@@ -193,14 +201,12 @@ const MusicPlayer: React.FC = () => {
                             </TouchableOpacity>
                         )}
                     />
-
                 </View>
-
                 <View style={styles.songListContainer}>
                     <FlatList
                         data={activePlaylist?.songs}
                         keyExtractor={(song) => song.id.toString()}
-                        extraData={activePlaylist?.songs} // Add extraData to trigger re-render when the playlist is shuffled
+                        extraData={activePlaylist?.songs}
                         renderItem={({ item: song }) => (
                             <TouchableOpacity style={styles.songContainer} onPress={() => setCurrentSong(song)}>
                                 <Image source={{ uri: song.coverArt }} style={styles.songArt} />
@@ -211,18 +217,13 @@ const MusicPlayer: React.FC = () => {
                             </TouchableOpacity>
                         )}
                     />
-
                 </View>
-
-
                 <View style={styles.songInfoContainer}>
                     <Text style={styles.title}>{currentSong?.title}</Text>
                     <Text style={styles.artist}>{currentSong?.album}</Text>
                     <Text style={styles.artist}>{currentSong?.artist}</Text>
                     <Image source={{ uri: currentSong?.coverArt }} style={styles.image} />
                 </View>
-
-
                 <View style={styles.progressContainer}>
                     <Text style={styles.durationText}>{formatDuration(currentPosition)}</Text>
                     <Slider
@@ -230,14 +231,13 @@ const MusicPlayer: React.FC = () => {
                         minimumValue={0}
                         maximumValue={totalDuration}
                         value={currentPosition}
-                        minimumTrackTintColor="#3498db" // Use a contrasting color
-                        maximumTrackTintColor="rgba(52, 152, 219, 0.3)" // Adjust the alpha for a subtle background color
-                        thumbTintColor="#3498db" // Use the same color as the minimumTrackTintColor
+                        minimumTrackTintColor="#3498db"
+                        maximumTrackTintColor="rgba(52, 152, 219, 0.3)"
+                        thumbTintColor="#3498db"
                         onSlidingComplete={(value) => seekToPosition(value)}
                     />
                     <Text style={styles.durationText}>{formatDuration(totalDuration || 1)}</Text>
                 </View>
-
                 <View style={[styles.buttonsContainer, { paddingBottom: '20%' }]}>
                     <TouchableOpacity style={styles.button} onPress={prevSong}>
                         <FontAwesome name="step-backward" size={24} color="#3498db" />
@@ -256,7 +256,6 @@ const MusicPlayer: React.FC = () => {
                         <FontAwesome name="step-forward" size={24} color="#3498db" />
                     </TouchableOpacity>
                 </View>
-
             </BlurView>
         </ImageBackground>
     );
@@ -266,10 +265,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: 'rgba(255,255,255,0.5)', // Transparent background to see the blurred image
+        backgroundColor: 'rgba(255,255,255,0.5)',
     },
     songListContainer: {
-        maxHeight: 200, // Adjust the height as needed
+        maxHeight: 200,
     },
     progressContainer: {
         flexDirection: 'row',
@@ -278,18 +277,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         marginTop: 20,
     },
-
     slider: {
-        flex: 1,
-        marginHorizontal: 10,
-    },
-    progressBarContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 20,
-    },
-    progressBar: {
         flex: 1,
         marginHorizontal: 10,
     },
@@ -342,7 +330,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 20,
         paddingVertical: 40,
-        backgroundColor: 'transparent', // Set background color to transparent
+        backgroundColor: 'transparent',
         borderBottomWidth: 1,
         borderBottomColor: '#ddd',
     },
@@ -352,7 +340,7 @@ const styles = StyleSheet.create({
     navButtonText: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#555', // Set text color
+        color: '#555',
     },
     backgroundImage: {
         flex: 1,
@@ -375,8 +363,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 2,
         elevation: 2,
-        backgroundColor: '#fff', // Add a background color for iOS
-        borderRadius: 50, // Use a border radius for a circular shape
+        backgroundColor: '#fff',
+        borderRadius: 50,
         padding: 10,
     },
     songInfoContainer: {
@@ -388,28 +376,23 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontWeight: 'bold',
         marginBottom: 10,
-        color: '#fff' // Text color for better visibility on the blurred background
+        color: '#fff'
     },
     artist: {
         fontSize: 18,
-        color: '#fff', // Text color for better visibility on the blurred background
+        color: '#fff',
         marginBottom: 20,
-    },
-    album: {
-        fontSize: 16,
-        color: '#fff', // Text color for better visibility on the blurred background
-        fontStyle: 'italic',
     },
     image: {
         width: 200,
         height: 200,
         borderRadius: 20,
     },
-
-    buttonText: {
-        color: '#fff',
-        textAlign: 'center',
-    }
+    loadingContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });
 
 export default MusicPlayer;

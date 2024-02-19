@@ -18,6 +18,8 @@ const MemoryIcon = ({ title, type }: { title: string; type: string }) => {
                 return 'camera'
             case 'sms':
                 return 'sms'
+            case 'dice':
+                return 'dice'
             default:
                 return 'heart'
         }
@@ -62,7 +64,7 @@ const MemorySections: React.FC = () => {
                             navigation.navigate('FunSection' as never)
                         }}
                     >
-                        <MemoryIcon title='Fun' type='fun' />
+                        <MemoryIcon title='Random' type='dice' />
                     </TouchableOpacity>
 
 
