@@ -92,7 +92,7 @@ def upload_to_digitalocean(folder_path, bucket_name, metadata_json_path):
                 mimetype = 'application/octet-stream'  # Default to binary stream if unable to guess
 
             # Upload the file to DigitalOcean Space with the specified object key
-            object_key = f"sms/{filename}"
+            object_key = f"vlogs/{filename}"
             # with open(file_path, 'rb') as file:
             #     client.upload_fileobj(file, bucket_name, object_key,
             #                           ExtraArgs={'ACL': 'public-read',
@@ -124,4 +124,4 @@ def upload_to_digitalocean(folder_path, bucket_name, metadata_json_path):
     print(f"Metadata saved to {metadata_json_path}")
 
 # Example usage
-upload_to_digitalocean('/Users/malikmacbook/Desktop/sms', 'memories', 'metadata.json')
+upload_to_digitalocean('/Users/malikmacbook/Desktop/vlogs', 'memories', 'metadata.json')

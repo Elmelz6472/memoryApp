@@ -17,7 +17,7 @@ import MemorySectionVlog from './components/Memory/MemoryVlogSection'
 import MemoryVlogContent from './components/Memory/MemoryVlogContent'
 import MemorySmsSection from './components/Memory/MemorySmsSection'
 import MemorySectionFun from './components/Memory/MemoryFunSection'
-import MemoryFunContent from './components/Memory/MemoryFunContent'
+import MemoryFunContent from './components/Memory/MediaPlayer'
 import CameraPhoto from './components/Camera/CameraPhoto'
 import CameraVideo from './components/Camera/CameraVideo'
 
