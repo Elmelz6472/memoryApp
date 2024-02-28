@@ -5,14 +5,12 @@ import MilestonePopup from './Milestone'
 import milestones from '../../videos/all.json'
 import { useAppContext } from '../../AppContext'
 
-const newShuffledMilestones = [...milestones].sort(() => Math.random() - 0.5);
-
+const newShuffledMilestones = [...milestones].sort(() => Math.random() - 0.5)
 
 const StarsPattern: React.FC<{ seed: string }> = ({ seed }) => {
     const rng = seedrandom(seed)
     const [selectedStar, setSelectedStar] = useState<number | null>(null)
     const [shiningStars, setShiningStars] = useState<number[]>([])
-
 
     const generateRandomSize = () => {
         return Math.floor(rng() * 4) + 1 // Random size between 1 and 3

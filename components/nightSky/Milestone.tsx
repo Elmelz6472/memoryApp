@@ -1,24 +1,28 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Modal, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
-import { Video } from 'expo-av';
+import React, { useState } from 'react'
+import {
+    View,
+    Text,
+    StyleSheet,
+    Modal,
+    TouchableOpacity,
+    Image,
+    ActivityIndicator,
+} from 'react-native'
+import { Video } from 'expo-av'
 
 interface MilestonePopupProps {
-    visible: boolean;
-    onClose: () => void;
-    uri?: string; // Optional picture or video URI
+    visible: boolean
+    onClose: () => void
+    uri?: string // Optional picture or video URI
 }
 
-const MilestonePopup: React.FC<MilestonePopupProps> = ({
-    visible,
-    onClose,
-    uri,
-}) => {
-    const [loading, setLoading] = useState(true); // State to track loading
+const MilestonePopup: React.FC<MilestonePopupProps> = ({ visible, onClose, uri }) => {
+    const [loading, setLoading] = useState(true) // State to track loading
 
     // Function to handle loading completion
     const handleLoad = () => {
-        setLoading(false); // Set loading state to false when media is loaded
-    };
+        setLoading(false) // Set loading state to false when media is loaded
+    }
 
     return (
         <Modal transparent visible={visible} animationType='slide'>
@@ -30,7 +34,7 @@ const MilestonePopup: React.FC<MilestonePopupProps> = ({
                     <Text style={styles.title}>Cherished Moment 💖</Text>
                     {uri && (
                         <View style={styles.mediaContainer}>
-                            {(uri.includes('.mp4') || uri.includes('.mov')) ? (
+                            {uri.includes('.mp4') || uri.includes('.mov') ? (
                                 <Video
                                     source={{ uri: uri }}
                                     style={{ width: '100%', height: '100%' }}
@@ -40,7 +44,7 @@ const MilestonePopup: React.FC<MilestonePopupProps> = ({
                                     onLoad={handleLoad} // Call handleLoad when video is loaded
                                     onLoadStart={() => {
                                         setLoading(true)
-                                        console.log("URI: " + uri)
+                                        console.log('URI: ' + uri)
                                     }} // Set loading state to true when video starts loading
                                 />
                             ) : (
@@ -51,7 +55,7 @@ const MilestonePopup: React.FC<MilestonePopupProps> = ({
                                     onLoad={handleLoad} // Call handleLoad when image is loaded
                                     onLoadStart={() => {
                                         setLoading(true)
-                                        console.log("URI: " + uri)
+                                        console.log('URI: ' + uri)
                                     }} // Set loading state to true when image starts loading
                                 />
                             )}
@@ -67,8 +71,8 @@ const MilestonePopup: React.FC<MilestonePopupProps> = ({
                 </View>
             </View>
         </Modal>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     modalContainer: {
@@ -117,6 +121,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         top: '50%', // Center the loading indicator vertically
     },
-});
+})
 
-export default MilestonePopup;
+export default MilestonePopup

@@ -1,13 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, StyleSheet, Animated, TouchableWithoutFeedback, GestureResponderEvent } from 'react-native'
+import {
+    View,
+    StyleSheet,
+    Animated,
+    TouchableWithoutFeedback,
+    GestureResponderEvent,
+} from 'react-native'
 import AwesomeButton from 'react-native-really-awesome-button'
 import StarPattern from './StarPattern'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { useAppContext } from '../../AppContext'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => void } }) => {
     const [showButtons, setShowButtons] = useState(true)
@@ -19,20 +22,20 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
     }, [showButtons])
 
     useEffect(() => {
-        loadSelectedApps();
-    }, []);
+        loadSelectedApps()
+    }, [])
 
     const loadSelectedApps = async () => {
         try {
-            const selectedAppsData = await AsyncStorage.getItem('selectedApps');
+            const selectedAppsData = await AsyncStorage.getItem('selectedApps')
             if (selectedAppsData) {
-                const parsedSelectedApps = JSON.parse(selectedAppsData);
-                setSelectedApps(parsedSelectedApps);
+                const parsedSelectedApps = JSON.parse(selectedAppsData)
+                setSelectedApps(parsedSelectedApps)
             }
         } catch (error) {
-            console.error('Error loading selected apps:', error);
+            console.error('Error loading selected apps:', error)
         }
-    };
+    }
 
     const animateButtons = () => {
         Animated.timing(fadeAnim, {
@@ -105,19 +108,21 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                                             </AwesomeButton>
                                         )}
 
-
                                         {selectedApps.some((app) => app.name === 'countdown') && (
                                             <AwesomeButton
                                                 onPress={onPressEvent}
                                                 backgroundColor='#e74c3c'
                                                 backgroundDarker='#c0392b'
                                             >
-                                                <FontAwesome5 name='calendar' size={30} color='#FFFFFF' />
+                                                <FontAwesome5
+                                                    name='calendar'
+                                                    size={30}
+                                                    color='#FFFFFF'
+                                                />
                                             </AwesomeButton>
                                         )}
 
-
-                                        {selectedApps.some((app) => app.name === "RDV") && (
+                                        {selectedApps.some((app) => app.name === 'RDV') && (
                                             <AwesomeButton
                                                 onPress={() => {
                                                     props.navigation.navigate('RDV')
@@ -131,7 +136,6 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                                                     color='#FFFFFF'
                                                 />
                                             </AwesomeButton>
-
                                         )}
 
                                         <AwesomeButton
@@ -176,7 +180,6 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                                     </AwesomeButton>
                                 )}
 
-
                                 {selectedApps.some((app) => app.name === 'music') && (
                                     <AwesomeButton
                                         onPress={() => {
@@ -185,11 +188,7 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                                         backgroundColor='#DAA520'
                                         backgroundDarker='#B8860B'
                                     >
-                                        <FontAwesome5
-                                            name='music'
-                                            size={30}
-                                            color='#FFFFFF'
-                                        />
+                                        <FontAwesome5 name='music' size={30} color='#FFFFFF' />
                                     </AwesomeButton>
                                 )}
 
@@ -209,7 +208,11 @@ const NightSkyBackdrop = (props: { navigation: { navigate: (arg0: string) => voi
                                         backgroundColor='#e67e22'
                                         backgroundDarker='#d35400'
                                     >
-                                        <FontAwesome5 name='kiss-wink-heart' size={30} color='#FFFFFF' />
+                                        <FontAwesome5
+                                            name='kiss-wink-heart'
+                                            size={30}
+                                            color='#FFFFFF'
+                                        />
                                     </AwesomeButton>
                                 )}
                             </View>

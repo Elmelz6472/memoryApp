@@ -1,47 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Image, ImageBackground, StyleSheet, ActivityIndicator } from 'react-native';
-import Slider from '@react-native-community/slider';
-import { BlurView } from 'expo-blur';
-import { FontAwesome } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { Audio, InterruptionModeIOS } from 'expo-av';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import audioFiles, { AudioFile } from '../../assets/sound/AudioFileType';
+import React, { useState, useEffect } from 'react'
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    FlatList,
+    Image,
+    ImageBackground,
+    StyleSheet,
+    ActivityIndicator,
+} from 'react-native'
+import Slider from '@react-native-community/slider'
+import { BlurView } from 'expo-blur'
+import { FontAwesome } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
+import { Audio, InterruptionModeIOS } from 'expo-av'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import audioFiles, { AudioFile } from '../../assets/sound/AudioFileType'
 
 interface Playlist {
-    id: number;
-    name: string;
-    songs: AudioFile[];
+    id: number
+    name: string
+    songs: AudioFile[]
 }
 
 const MusicPlayer: React.FC = () => {
-    const navigation = useNavigation();
-    const [isLoading, setIsLoading] = useState(false); // State to manage loading indicator
-    const [sound, setSound] = useState<Audio.Sound | null>(null); // State to manage the audio sound
-    const [currentSongIndex, setCurrentSongIndex] = useState(0);
-    const [currentSong, setCurrentSong] = useState<AudioFile | null>(audioFiles[currentSongIndex]);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [activePlaylist, setActivePlaylist] = useState<Playlist | null>(null);
-    const [playlists, setPlaylists] = useState<Playlist[]>([]);
-    const [currentPosition, setCurrentPosition] = useState(0);
-    const [totalDuration, setTotalDuration] = useState<number | undefined>(0);
+    const navigation = useNavigation()
+    const [isLoading, setIsLoading] = useState(false) // State to manage loading indicator
+    const [sound, setSound] = useState<Audio.Sound | null>(null) // State to manage the audio sound
+    const [currentSongIndex, setCurrentSongIndex] = useState(0)
+    const [currentSong, setCurrentSong] = useState<AudioFile | null>(audioFiles[currentSongIndex])
+    const [isPlaying, setIsPlaying] = useState(false)
+    const [activePlaylist, setActivePlaylist] = useState<Playlist | null>(null)
+    const [playlists, setPlaylists] = useState<Playlist[]>([])
+    const [currentPosition, setCurrentPosition] = useState(0)
+    const [totalDuration, setTotalDuration] = useState<number | undefined>(0)
 
     useEffect(() => {
         const fetchPlaylists = async () => {
-            const storedPlaylists = await AsyncStorage.getItem('playlists');
+            const storedPlaylists = await AsyncStorage.getItem('playlists')
             if (storedPlaylists) {
-                setPlaylists(JSON.parse(storedPlaylists));
+                setPlaylists(JSON.parse(storedPlaylists))
             }
-        };
-        fetchPlaylists();
-    }, []);
+        }
+        fetchPlaylists()
+    }, [])
 
     useEffect(() => {
         const initializeSong = async () => {
-            setIsLoading(true); // Set loading state to true when initializing the song
+            setIsLoading(true) // Set loading state to true when initializing the song
             if (sound) {
-                await sound.stopAsync();
-                await sound.unloadAsync();
+                await sound.stopAsync()
+                await sound.unloadAsync()
             }
 
             const { sound: newSound } = await Audio.Sound.createAsync(
@@ -49,20 +58,20 @@ const MusicPlayer: React.FC = () => {
                 {},
                 (status) => {
                     if (status.isLoaded) {
-                        setIsLoading(false); // Set loading state to false when the sound is loaded
+                        setIsLoading(false) // Set loading state to false when the sound is loaded
                         if (status.isPlaying) {
-                            setCurrentPosition(status.positionMillis);
-                            setTotalDuration(status.durationMillis);
+                            setCurrentPosition(status.positionMillis)
+                            setTotalDuration(status.durationMillis)
                         }
                         if (status.didJustFinish) {
-                            nextSong();
+                            nextSong()
                         }
                     }
-                }
-            );
-            setSound(newSound);
+                },
+            )
+            setSound(newSound)
             if (isPlaying) {
-                await newSound.playAsync();
+                await newSound.playAsync()
             }
             await Audio.setAudioModeAsync({
                 staysActiveInBackground: true,
@@ -71,112 +80,119 @@ const MusicPlayer: React.FC = () => {
                 allowsRecordingIOS: true,
                 interruptionModeIOS: InterruptionModeIOS.DuckOthers,
                 playsInSilentModeIOS: true,
-            });
-        };
+            })
+        }
 
         if (currentSong) {
-            initializeSong();
+            initializeSong()
         }
 
         return () => {
             if (sound) {
-                sound.unloadAsync();
+                sound.unloadAsync()
             }
-        };
-    }, [currentSong]);
+        }
+    }, [currentSong])
 
     useEffect(() => {
         return () => {
             if (sound) {
-                sound.stopAsync();
-                sound.unloadAsync();
+                sound.stopAsync()
+                sound.unloadAsync()
             }
-        };
-    }, []);
+        }
+    }, [])
 
     const togglePlayback = async () => {
-        if (!sound) return;
+        if (!sound) return
 
         if (isPlaying) {
-            await sound.pauseAsync();
+            await sound.pauseAsync()
         } else {
-            await sound.playAsync();
+            await sound.playAsync()
         }
-        setIsPlaying(!isPlaying);
-    };
+        setIsPlaying(!isPlaying)
+    }
 
     const nextSong = () => {
         if (activePlaylist) {
-            const nextSongIndex = (currentSongIndex + 1) % activePlaylist.songs.length;
-            setCurrentSongIndex(nextSongIndex);
-            setCurrentSong(activePlaylist.songs[nextSongIndex]);
+            const nextSongIndex = (currentSongIndex + 1) % activePlaylist.songs.length
+            setCurrentSongIndex(nextSongIndex)
+            setCurrentSong(activePlaylist.songs[nextSongIndex])
         } else {
-            const nextSongIndex = (currentSongIndex + 1) % audioFiles.length;
-            setCurrentSongIndex(nextSongIndex);
-            setCurrentSong(audioFiles[nextSongIndex]);
+            const nextSongIndex = (currentSongIndex + 1) % audioFiles.length
+            setCurrentSongIndex(nextSongIndex)
+            setCurrentSong(audioFiles[nextSongIndex])
         }
-    };
+    }
 
     const prevSong = () => {
         if (activePlaylist) {
-            const nextSongIndex = (currentSongIndex - 1) % activePlaylist.songs.length;
-            setCurrentSongIndex(nextSongIndex);
-            setCurrentSong(activePlaylist.songs[nextSongIndex]);
+            const nextSongIndex = (currentSongIndex - 1) % activePlaylist.songs.length
+            setCurrentSongIndex(nextSongIndex)
+            setCurrentSong(activePlaylist.songs[nextSongIndex])
         } else {
-            const prevSongIndex = (currentSongIndex - 1 + audioFiles.length) % audioFiles.length;
-            setCurrentSongIndex(prevSongIndex);
-            setCurrentSong(audioFiles[prevSongIndex]);
+            const prevSongIndex = (currentSongIndex - 1 + audioFiles.length) % audioFiles.length
+            setCurrentSongIndex(prevSongIndex)
+            setCurrentSong(audioFiles[prevSongIndex])
         }
-    };
+    }
 
     const formatDuration = (milliseconds: number) => {
-        const minutes = Math.floor(milliseconds / 60000);
-        const seconds = ((milliseconds % 60000) / 1000).toFixed(0);
-        return `${minutes}:${parseInt(seconds) < 10 ? '0' : ''}${seconds}`;
-    };
+        const minutes = Math.floor(milliseconds / 60000)
+        const seconds = ((milliseconds % 60000) / 1000).toFixed(0)
+        return `${minutes}:${parseInt(seconds) < 10 ? '0' : ''}${seconds}`
+    }
 
     const seekToPosition = (value: number) => {
         if (sound) {
-            sound.setPositionAsync(value);
+            sound.setPositionAsync(value)
         }
-    };
+    }
 
     const shuffleSongs = () => {
         if (activePlaylist) {
-            const shuffledSongs = [...activePlaylist.songs].sort(() => Math.random() - 0.5);
+            const shuffledSongs = [...activePlaylist.songs].sort(() => Math.random() - 0.5)
             setPlaylists((prevPlaylists) => {
                 const updatedPlaylists = prevPlaylists.map((playlist) => {
                     if (playlist.id === activePlaylist.id) {
-                        return { ...playlist, songs: shuffledSongs };
+                        return { ...playlist, songs: shuffledSongs }
                     }
-                    return playlist;
-                });
-                return updatedPlaylists;
-            });
-            setCurrentSongIndex(0);
-            setCurrentSong(shuffledSongs[0]);
+                    return playlist
+                })
+                return updatedPlaylists
+            })
+            setCurrentSongIndex(0)
+            setCurrentSong(shuffledSongs[0])
             setActivePlaylist((prevActivePlaylist) => {
                 if (prevActivePlaylist) {
                     return {
                         ...prevActivePlaylist,
                         songs: shuffledSongs,
-                    };
+                    }
                 }
-                return null; // Return null if prevActivePlaylist is null
-            });
+                return null // Return null if prevActivePlaylist is null
+            })
         }
-    };
+    }
 
     return (
-        <ImageBackground source={{ uri: currentSong?.coverArt }} style={styles.backgroundImage} blurRadius={5} >
+        <ImageBackground
+            source={{ uri: currentSong?.coverArt }}
+            style={styles.backgroundImage}
+            blurRadius={5}
+        >
             <BlurView intensity={50} style={styles.container}>
                 {isLoading && ( // Show loading indicator if isLoading is true
                     <View style={styles.loadingContainer}>
-                        <ActivityIndicator size="large" color="#3498db" />
+                        <ActivityIndicator size='large' color='#3498db' />
                     </View>
                 )}
                 <View style={styles.navbar}>
-                    <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('PlaylistPage' as never)}>
+                    <TouchableOpacity
+                        style={styles.navButton}
+                        onPress={() => navigation.navigate('PlaylistPage' as never)}
+                    >
                         <Text style={styles.navButtonText}>Playlists</Text>
                     </TouchableOpacity>
                     <FlatList
@@ -187,7 +203,9 @@ const MusicPlayer: React.FC = () => {
                             <TouchableOpacity
                                 style={[
                                     styles.playlistButton,
-                                    activePlaylist && activePlaylist.id === playlist.id && styles.activePlaylistButton
+                                    activePlaylist &&
+                                        activePlaylist.id === playlist.id &&
+                                        styles.activePlaylistButton,
                                 ]}
                                 onPress={() => {
                                     setActivePlaylist(playlist)
@@ -208,7 +226,10 @@ const MusicPlayer: React.FC = () => {
                         keyExtractor={(song) => song.id.toString()}
                         extraData={activePlaylist?.songs}
                         renderItem={({ item: song }) => (
-                            <TouchableOpacity style={styles.songContainer} onPress={() => setCurrentSong(song)}>
+                            <TouchableOpacity
+                                style={styles.songContainer}
+                                onPress={() => setCurrentSong(song)}
+                            >
                                 <Image source={{ uri: song.coverArt }} style={styles.songArt} />
                                 <View style={styles.songDetails}>
                                     <Text style={styles.songTitle}>{song.title}</Text>
@@ -231,34 +252,34 @@ const MusicPlayer: React.FC = () => {
                         minimumValue={0}
                         maximumValue={totalDuration}
                         value={currentPosition}
-                        minimumTrackTintColor="#3498db"
-                        maximumTrackTintColor="rgba(52, 152, 219, 0.3)"
-                        thumbTintColor="#3498db"
+                        minimumTrackTintColor='#3498db'
+                        maximumTrackTintColor='rgba(52, 152, 219, 0.3)'
+                        thumbTintColor='#3498db'
                         onSlidingComplete={(value) => seekToPosition(value)}
                     />
                     <Text style={styles.durationText}>{formatDuration(totalDuration || 1)}</Text>
                 </View>
                 <View style={[styles.buttonsContainer, { paddingBottom: '20%' }]}>
                     <TouchableOpacity style={styles.button} onPress={prevSong}>
-                        <FontAwesome name="step-backward" size={24} color="#3498db" />
+                        <FontAwesome name='step-backward' size={24} color='#3498db' />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={togglePlayback}>
                         {isPlaying ? (
-                            <FontAwesome name="pause" size={24} color="#3498db" />
+                            <FontAwesome name='pause' size={24} color='#3498db' />
                         ) : (
-                            <FontAwesome name="play" size={24} color="#3498db" />
+                            <FontAwesome name='play' size={24} color='#3498db' />
                         )}
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={shuffleSongs}>
-                        <FontAwesome name="random" size={24} color="#3498db" />
+                        <FontAwesome name='random' size={24} color='#3498db' />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={nextSong}>
-                        <FontAwesome name="step-forward" size={24} color="#3498db" />
+                        <FontAwesome name='step-forward' size={24} color='#3498db' />
                     </TouchableOpacity>
                 </View>
             </BlurView>
         </ImageBackground>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -344,8 +365,8 @@ const styles = StyleSheet.create({
     },
     backgroundImage: {
         flex: 1,
-        resizeMode: "cover",
-        justifyContent: "center"
+        resizeMode: 'cover',
+        justifyContent: 'center',
     },
     buttonsContainer: {
         flexDirection: 'row',
@@ -376,7 +397,7 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontWeight: 'bold',
         marginBottom: 10,
-        color: '#fff'
+        color: '#fff',
     },
     artist: {
         fontSize: 18,
@@ -393,6 +414,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-});
+})
 
-export default MusicPlayer;
+export default MusicPlayer

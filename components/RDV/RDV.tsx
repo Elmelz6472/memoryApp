@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native'
+import React, { useState, useEffect } from 'react'
 import {
     View,
     Text,
@@ -10,43 +10,56 @@ import {
     Easing,
     Dimensions,
     DimensionValue,
-} from 'react-native';
-import AwesomeButton from 'react-native-really-awesome-button';
-import app from '../../firebase-config';
-import PopupScreen from './Popup';
-import { getDatabase, ref, push, serverTimestamp } from 'firebase/database';
+} from 'react-native'
+import AwesomeButton from 'react-native-really-awesome-button'
+import app from '../../firebase-config'
+import PopupScreen from './Popup'
+import { getDatabase, ref, push, serverTimestamp } from 'firebase/database'
 
-const { width } = Dimensions.get('window');
-const FORM_WIDTH = width * 0.8; // Adjust the width as desired
+const { width } = Dimensions.get('window')
+const FORM_WIDTH = width * 0.8 // Adjust the width as desired
 
 const AppointmentForm = () => {
-    const navigation = useNavigation();
-    const [popupVisible, setPopupVisible] = useState(false);
+    const navigation = useNavigation()
+    const [popupVisible, setPopupVisible] = useState(false)
 
+    const [clothes, setClothes] = useState('')
+    const [food, setFood] = useState('')
+    const [grooming, setGrooming] = useState('')
+    const [specialRequest, setSpecialRequest] = useState('')
+    const [date, setDate] = useState('')
+    const [time, setTime] = useState('')
 
-    const [clothes, setClothes] = useState('');
-    const [food, setFood] = useState('');
-    const [grooming, setGrooming] = useState('');
-    const [specialRequest, setSpecialRequest] = useState('');
-    const [date, setDate] = useState('');
-    const [time, setTime] = useState('');
-
-
-    const database = getDatabase(app);
+    const database = getDatabase(app)
 
     const inputFields = [
-        { key: 'clothes', placeholder: 'Clothes to bring', value: clothes, onChangeText: setClothes },
+        {
+            key: 'clothes',
+            placeholder: 'Clothes to bring',
+            value: clothes,
+            onChangeText: setClothes,
+        },
         { key: 'food', placeholder: 'Food to bring', value: food, onChangeText: setFood },
-        { key: 'grooming', placeholder: "Hair cut/General Grooming", value: grooming, onChangeText: setGrooming },
-        { key: 'specialRequest', placeholder: "Special Request", value: specialRequest, onChangeText: setSpecialRequest },
+        {
+            key: 'grooming',
+            placeholder: 'Hair cut/General Grooming',
+            value: grooming,
+            onChangeText: setGrooming,
+        },
+        {
+            key: 'specialRequest',
+            placeholder: 'Special Request',
+            value: specialRequest,
+            onChangeText: setSpecialRequest,
+        },
         { key: 'date', placeholder: 'Date (MM/DD/YYYY)', value: date, onChangeText: setDate },
         { key: 'time', placeholder: 'Time (HOUR)', value: time, onChangeText: setTime },
-    ];
+    ]
 
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(0)
 
     const handleSubmit = () => {
-        const rdvRef = ref(database, 'RDV');
+        const rdvRef = ref(database, 'RDV')
 
         push(rdvRef, {
             clothes: clothes,
@@ -55,18 +68,21 @@ const AppointmentForm = () => {
             specialRequest: specialRequest,
             date: date,
             time: time,
-            timestamp: serverTimestamp() // Add server timestamp
-        }).then(() => {
-            console.log('Data added to Firebase Realtime Database successfully.');
-        }).catch((error) => {
-            console.error('Error adding data to Firebase Realtime Database:', error);
-        }).finally(() => {
-            setPopupVisible(true);
-        });
-    };
+            timestamp: serverTimestamp(), // Add server timestamp
+        })
+            .then(() => {
+                console.log('Data added to Firebase Realtime Database successfully.')
+            })
+            .catch((error) => {
+                console.error('Error adding data to Firebase Realtime Database:', error)
+            })
+            .finally(() => {
+                setPopupVisible(true)
+            })
+    }
 
     // Heart animation
-    const animatedValue = new Animated.Value(0);
+    const animatedValue = new Animated.Value(0)
     useEffect(() => {
         const animation = Animated.loop(
             Animated.sequence([
@@ -82,38 +98,38 @@ const AppointmentForm = () => {
                     easing: Easing.inOut(Easing.quad),
                     useNativeDriver: true,
                 }),
-            ])
-        );
-        animation.start();
-        return () => animation.stop();
-    }, []);
+            ]),
+        )
+        animation.start()
+        return () => animation.stop()
+    }, [])
 
     const heartScale = animatedValue.interpolate({
         inputRange: [0, 1],
         outputRange: [1, 1.3],
-    });
+    })
 
     const handleNext = () => {
         if (activeIndex < inputFields.length - 1) {
-            setActiveIndex(activeIndex + 1);
+            setActiveIndex(activeIndex + 1)
         }
-    };
+    }
 
     const handlePrev = () => {
         if (activeIndex > 0) {
-            setActiveIndex(activeIndex - 1);
+            setActiveIndex(activeIndex - 1)
         }
-    };
+    }
 
     // Calculate progress percentage
-    const progress = ((activeIndex + 1) / inputFields.length) * 100;
+    const progress = ((activeIndex + 1) / inputFields.length) * 100
 
     // Dynamically adjust width of progress bar
-    const progressBarWidth = `${progress}%`;
+    const progressBarWidth = `${progress}%`
 
     const areAllFieldsFilled = () => {
-        return clothes && food && specialRequest && grooming && date && time;
-    };
+        return clothes && food && specialRequest && grooming && date && time
+    }
 
     return (
         <View style={styles.container}>
@@ -122,12 +138,26 @@ const AppointmentForm = () => {
             </Animated.View>
             <View style={styles.formContainer}>
                 <View style={styles.progressBarContainer}>
-                    <View style={[styles.progressBar, { width: progressBarWidth as DimensionValue | undefined }]} />
+                    <View
+                        style={[
+                            styles.progressBar,
+                            { width: progressBarWidth as DimensionValue | undefined },
+                        ]}
+                    />
                 </View>
                 <Animated.View
                     style={[
                         styles.content,
-                        { transform: [{ scale: animatedValue.interpolate({ inputRange: [0, 1], outputRange: [1, 1.05] }) }] },
+                        {
+                            transform: [
+                                {
+                                    scale: animatedValue.interpolate({
+                                        inputRange: [0, 1],
+                                        outputRange: [1, 1.05],
+                                    }),
+                                },
+                            ],
+                        },
                         { width: FORM_WIDTH },
                     ]}
                 >
@@ -135,7 +165,7 @@ const AppointmentForm = () => {
                     <TextInput
                         style={styles.input}
                         placeholder={inputFields[activeIndex].placeholder}
-                        placeholderTextColor="#774360" // Placeholder text color
+                        placeholderTextColor='#774360' // Placeholder text color
                         value={inputFields[activeIndex].value}
                         onChangeText={inputFields[activeIndex].onChangeText}
                     />
@@ -143,7 +173,10 @@ const AppointmentForm = () => {
                         <TouchableOpacity
                             onPress={handlePrev}
                             disabled={activeIndex === 0}
-                            style={[styles.buttonContainer, { opacity: activeIndex === 0 ? 0.5 : 1 }]}
+                            style={[
+                                styles.buttonContainer,
+                                { opacity: activeIndex === 0 ? 0.5 : 1 },
+                            ]}
                         >
                             <Text style={[styles.button, styles.prevButton]}>Previous</Text>
                         </TouchableOpacity>
@@ -161,7 +194,11 @@ const AppointmentForm = () => {
                     {activeIndex === inputFields.length - 1 && areAllFieldsFilled() && (
                         <TouchableOpacity onPress={handleSubmit}>
                             <Animated.Text
-                                style={[styles.button, styles.submitButton, { transform: [{ scale: heartScale }] }]}
+                                style={[
+                                    styles.button,
+                                    styles.submitButton,
+                                    { transform: [{ scale: heartScale }] },
+                                ]}
                             >
                                 Book Appointment
                             </Animated.Text>
@@ -172,24 +209,24 @@ const AppointmentForm = () => {
             <View style={styles.BackButtonContainer}>
                 <AwesomeButton
                     onPress={() => {
-                        navigation.goBack();
+                        navigation.goBack()
                     }}
-                    backgroundColor="#dd99a7"
-                    backgroundDarker="#dd99a7"
+                    backgroundColor='#dd99a7'
+                    backgroundDarker='#dd99a7'
                 >
                     Go Back
                 </AwesomeButton>
                 <PopupScreen
                     visible={popupVisible}
                     onClose={() => {
-                        setPopupVisible(false);
-                        navigation.goBack();
+                        setPopupVisible(false)
+                        navigation.goBack()
                     }}
                 />
             </View>
         </View>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -291,6 +328,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: '5%',
     },
-});
+})
 
-export default AppointmentForm;
+export default AppointmentForm

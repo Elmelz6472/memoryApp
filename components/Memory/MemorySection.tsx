@@ -34,7 +34,7 @@ const MemoryIcon = ({ title, type }: { title: string; type: string }) => {
     )
 }
 
-const onPressFun = () => { }
+const onPressFun = () => {}
 
 const MemorySections: React.FC = () => {
     const navigation = useNavigation()
@@ -67,7 +67,6 @@ const MemorySections: React.FC = () => {
                         <MemoryIcon title='Random' type='dice' />
                     </TouchableOpacity>
 
-
                     <TouchableOpacity
                         onPress={() => {
                             navigation.navigate('Sms' as never)
@@ -83,8 +82,6 @@ const MemorySections: React.FC = () => {
                     >
                         <MemoryIcon title='photoshoot' type='photoshoot' />
                     </TouchableOpacity>
-
-
                 </View>
             </ScrollView>
             <View style={styles.fixedButtonContainer}>

@@ -1,36 +1,38 @@
-import React, { useState } from 'react';
-import { View, Image, StyleSheet, Modal, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Video } from 'expo-av';
-import * as ScreenOrientation from 'expo-screen-orientation';
-import ImageZoomViewer from 'react-native-image-zoom-viewer';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from 'react'
+import { View, Image, StyleSheet, Modal, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { Video } from 'expo-av'
+import * as ScreenOrientation from 'expo-screen-orientation'
+import ImageZoomViewer from 'react-native-image-zoom-viewer'
+import { Ionicons } from '@expo/vector-icons'
 
 const VlogContentScreen = ({ route, navigation }: any) => {
-    const { item } = route.params;
-    const isVideo = item.ContentType.startsWith('video');
-    const [modalVisible, setModalVisible] = useState(true);
-    const [loading, setLoading] = useState(true); // Track loading state
+    const { item } = route.params
+    const isVideo = item.ContentType.startsWith('video')
+    const [modalVisible, setModalVisible] = useState(true)
+    const [loading, setLoading] = useState(true) // Track loading state
 
-    const images = [{ url: item.uri }];
+    const images = [{ url: item.uri }]
 
     const renderHeader = () => (
         <TouchableOpacity
             style={{
                 position: 'absolute',
-                top: 40, right: 30,
+                top: 40,
+                right: 30,
                 zIndex: 1000,
             }}
             onPress={() => {
-                setModalVisible(false);
-                navigation.goBack();
-            }}>
-            <Ionicons name="close-circle" size={30} color="white" />
+                setModalVisible(false)
+                navigation.goBack()
+            }}
+        >
+            <Ionicons name='close-circle' size={30} color='white' />
         </TouchableOpacity>
-    );
+    )
 
     const handleLoad = () => {
-        setLoading(false); // Set loading to false when media is loaded
-    };
+        setLoading(false) // Set loading to false when media is loaded
+    }
 
     return (
         <View style={styles.container}>
@@ -50,31 +52,28 @@ const VlogContentScreen = ({ route, navigation }: any) => {
                     visible={modalVisible}
                     transparent={true}
                     onRequestClose={() => {
-                        setModalVisible(false);
-                        navigation.goBack();
-                    }}>
+                        setModalVisible(false)
+                        navigation.goBack()
+                    }}
+                >
                     <ImageZoomViewer
                         imageUrls={images}
                         renderHeader={renderHeader}
                         enableSwipeDown
                         onSwipeDown={() => {
-                            setModalVisible(false);
-                            navigation.goBack();
+                            setModalVisible(false)
+                            navigation.goBack()
                         }}
                     />
                 </Modal>
             )}
 
             {loading && (
-                <ActivityIndicator
-                    size="large"
-                    color="#ffffff"
-                    style={styles.loadingIndicator}
-                />
+                <ActivityIndicator size='large' color='#ffffff' style={styles.loadingIndicator} />
             )}
         </View>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -96,6 +95,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         top: '50%',
     },
-});
+})
 
-export default VlogContentScreen;
+export default VlogContentScreen

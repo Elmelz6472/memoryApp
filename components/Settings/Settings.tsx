@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import {
-    View,
-    Text,
-    StyleSheet,
-    ScrollView,
-} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { useAppContext } from '../../AppContext';
-import { Picker as RNPicker } from '@react-native-picker/picker';
-import { TextInput as PaperTextInput, Button as PaperButton } from 'react-native-paper';
-import Slider from '@react-native-community/slider';
-import { useNavigation } from '@react-navigation/native';
-import { CheckBox } from 'react-native-elements';
+import { useAppContext } from '../../AppContext'
+import { Picker as RNPicker } from '@react-native-picker/picker'
+import { TextInput as PaperTextInput, Button as PaperButton } from 'react-native-paper'
+import Slider from '@react-native-community/slider'
+import { useNavigation } from '@react-navigation/native'
+import { CheckBox } from 'react-native-elements'
 
 // Define your enums
 enum Theme {
@@ -27,12 +22,12 @@ enum Mode {
 }
 
 interface App {
-    id: number;
-    name: string;
+    id: number
+    name: string
 }
 
 const Settings = () => {
-    const navigation = useNavigation();
+    const navigation = useNavigation()
     const {
         seedValue,
         setSeedValue,
@@ -47,8 +42,8 @@ const Settings = () => {
         selectedApps,
         setSelectedApps,
         numberOfStars,
-        setNumberOfStars
-    } = useAppContext();
+        setNumberOfStars,
+    } = useAppContext()
 
     // Function to save the settings to AsyncStorage
     const saveData = async () => {
@@ -59,46 +54,46 @@ const Settings = () => {
                 numberOfElementDisplayed,
                 mode,
                 selectedApps,
-                numberOfStars
-            });
-            await AsyncStorage.setItem('settings', settingsToSave);
+                numberOfStars,
+            })
+            await AsyncStorage.setItem('settings', settingsToSave)
         } catch (error) {
-            console.error('Error saving settings:', error);
+            console.error('Error saving settings:', error)
         }
-    };
+    }
 
     // Function to load the settings from AsyncStorage
     const loadData = async () => {
         try {
-            const savedSettings = await AsyncStorage.getItem('settings');
+            const savedSettings = await AsyncStorage.getItem('settings')
             if (savedSettings !== null) {
                 console.log(savedSettings)
-                const parsedSettings = JSON.parse(savedSettings);
-                setSeedValue(parsedSettings.seedValue);
-                setTheme(parsedSettings.theme);
-                setNumberOfElementDisplayed(parsedSettings.numberOfElementDisplayed);
-                setMode(parsedSettings.mode);
-                setSelectedApps(parsedSettings.selectedApps);
+                const parsedSettings = JSON.parse(savedSettings)
+                setSeedValue(parsedSettings.seedValue)
+                setTheme(parsedSettings.theme)
+                setNumberOfElementDisplayed(parsedSettings.numberOfElementDisplayed)
+                setMode(parsedSettings.mode)
+                setSelectedApps(parsedSettings.selectedApps)
                 setNumberOfStars(parsedSettings.numberOfStars)
             }
         } catch (error) {
-            console.error('Error loading settings:', error);
+            console.error('Error loading settings:', error)
         }
-    };
+    }
 
     useEffect(() => {
         // Load data when component mounts
-        loadData();
-    }, []);
+        loadData()
+    }, [])
 
     // Function to handle saving settings and navigate back
     const handleSave = () => {
-        saveData();
-        navigation.navigate('homeScreen' as never);
-    };
+        saveData()
+        navigation.navigate('homeScreen' as never)
+    }
 
     const handleSeedChange = (value: string) => {
-        setSeedValue(value);
+        setSeedValue(value)
     }
 
     const handleNumberStars = (value: number) => {
@@ -106,28 +101,28 @@ const Settings = () => {
     }
 
     const handleThemeChange = (selectedTheme: Theme) => {
-        setTheme(selectedTheme);
+        setTheme(selectedTheme)
     }
 
     const handleNumberOfElementChange = (value: number) => {
-        setNumberOfElementDisplayed(value);
+        setNumberOfElementDisplayed(value)
     }
 
     const handleModeChange = (selectedMode: Mode) => {
-        setMode(selectedMode);
+        setMode(selectedMode)
     }
 
     const handleCancel = () => {
-        navigation.navigate('homeScreen' as never);
+        navigation.navigate('homeScreen' as never)
     }
 
     const handleAppToggle = (selectedApp: App) => {
-        const isSelected = selectedApps.some((app) => app.id === selectedApp.id);
+        const isSelected = selectedApps.some((app) => app.id === selectedApp.id)
         setSelectedApps((prevSelectedApps) =>
             isSelected
                 ? prevSelectedApps.filter((app) => app.id !== selectedApp.id)
                 : [...prevSelectedApps, selectedApp],
-        );
+        )
     }
 
     return (
@@ -189,21 +184,26 @@ const Settings = () => {
                             <CheckBox
                                 key={appName.id}
                                 title={appName.name}
-                                checked={appName.name !== 'camera' && selectedApps.some((app) => app.id === appName.id)}
-                                onPress={() => appName.name !== 'camera' && handleAppToggle(appName)}
+                                checked={
+                                    appName.name !== 'camera' &&
+                                    selectedApps.some((app) => app.id === appName.id)
+                                }
+                                onPress={() =>
+                                    appName.name !== 'camera' && handleAppToggle(appName)
+                                }
                                 containerStyle={
                                     appName.name === 'camera'
                                         ? [styles.checkBoxContainer, styles.greyedOutCheckbox]
                                         : styles.checkBoxContainer
                                 }
-                                textStyle={appName.name === 'camera' ? styles.greyedOutText : undefined}
+                                textStyle={
+                                    appName.name === 'camera' ? styles.greyedOutText : undefined
+                                }
                                 disabled={appName.name === 'camera'}
                             />
                         ))}
                     </ScrollView>
                 </View>
-
-
             </ScrollView>
 
             <View style={styles.buttonsContainer}>
@@ -215,7 +215,7 @@ const Settings = () => {
                 </PaperButton>
             </View>
         </View>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -289,6 +289,6 @@ const styles = StyleSheet.create({
     checkBoxContainer: {
         marginRight: 8,
     },
-});
+})
 
-export default Settings;
+export default Settings

@@ -29,8 +29,6 @@ import PlaylistComponent from './components/Music/PlaylistComponent'
 import MusicPlayer from './components/Music/MusicPlayer'
 import MemoryPhotoShoot from './components/Memory/MemoryPhotoShootSection'
 
-
-
 const App = () => {
     const Stack = createStackNavigator()
     return (
@@ -97,7 +95,6 @@ const App = () => {
                         options={{ headerShown: false }}
                     />
 
-
                     <Stack.Screen
                         name='VlogContent'
                         component={MemoryVlogContent}
@@ -120,12 +117,13 @@ const App = () => {
                         }}
                     />
                     <Stack.Screen
-                        name="PhotoShoot"
+                        name='PhotoShoot'
                         component={MemoryPhotoShoot}
                         options={{
-                            title: "Photshoot",
-                            headerStyle: { backgroundColor: '#FDF5E6' }
-                        }} />
+                            title: 'Photshoot',
+                            headerStyle: { backgroundColor: '#FDF5E6' },
+                        }}
+                    />
                     <Stack.Screen
                         name='CameraPhoto'
                         component={CameraPhoto}
@@ -139,19 +137,17 @@ const App = () => {
 
                     <Stack.Screen name='BucketList' component={BucketList} />
 
-
                     <Stack.Screen
-                        name="PlaylistPage"
+                        name='PlaylistPage'
                         options={{ title: 'Music', headerShown: false }}
                         component={PlaylistComponent}
                     />
 
                     <Stack.Screen
-                        name="Music player"
+                        name='Music player'
                         component={MusicPlayer}
                         options={{ headerShown: false }}
                     />
-
 
                     <Stack.Screen name='RDV' component={Form} options={{ headerShown: false }} />
 

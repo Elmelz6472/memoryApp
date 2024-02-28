@@ -1,10 +1,9 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Modal, StyleSheet, Animated, Easing } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
-
+import React from 'react'
+import { View, Text, TouchableOpacity, Modal, StyleSheet, Animated, Easing } from 'react-native'
+import { FontAwesome5 } from '@expo/vector-icons'
 
 const PopupScreen = ({ visible, onClose }: any) => {
-    const scaleValue = new Animated.Value(0);
+    const scaleValue = new Animated.Value(0)
 
     React.useEffect(() => {
         Animated.timing(scaleValue, {
@@ -12,23 +11,24 @@ const PopupScreen = ({ visible, onClose }: any) => {
             duration: 300,
             easing: Easing.linear,
             useNativeDriver: true,
-        }).start();
-    }, [visible]);
-
+        }).start()
+    }, [visible])
 
     return (
-        <Modal
-            animationType="fade"
-            transparent={true}
-            visible={visible}
-            onRequestClose={onClose}
-        >
+        <Modal animationType='fade' transparent={true} visible={visible} onRequestClose={onClose}>
             <View style={styles.centeredView}>
                 <Animated.View style={[styles.modalView, { transform: [{ scale: scaleValue }] }]}>
                     <View style={styles.modalContent}>
                         <Text style={styles.modalTitle}>Success</Text>
-                        <Text style={styles.modalText}>Thank you for taking the time to fill out this form!</Text>
-                        <FontAwesome5 name="heart" size={30} color="#FF1493" style={styles.heartIcon} />
+                        <Text style={styles.modalText}>
+                            Thank you for taking the time to fill out this form!
+                        </Text>
+                        <FontAwesome5
+                            name='heart'
+                            size={30}
+                            color='#FF1493'
+                            style={styles.heartIcon}
+                        />
                         <TouchableOpacity onPress={onClose} style={styles.actionButton}>
                             <Text style={styles.textStyle}>Go Back</Text>
                         </TouchableOpacity>
@@ -36,8 +36,8 @@ const PopupScreen = ({ visible, onClose }: any) => {
                 </Animated.View>
             </View>
         </Modal>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     centeredView: {
@@ -89,6 +89,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
-});
+})
 
-export default PopupScreen;
+export default PopupScreen

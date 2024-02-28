@@ -4,73 +4,86 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import AwesomeButton from 'react-native-really-awesome-button'
 import { useNavigation } from '@react-navigation/native'
 import videosFun from '../../videos/videosFun.json'
-import { Video } from 'expo-av';
+import { Video } from 'expo-av'
 import { useAppContext } from '../../AppContext'
 
-
 function shuffleArray(array: any) {
-    let currentIndex = array.length, randomIndex;
+    let currentIndex = array.length,
+        randomIndex
 
     // While there remain elements to shuffle.
     while (currentIndex !== 0) {
-
         // Pick a remaining element.
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
+        randomIndex = Math.floor(Math.random() * currentIndex)
+        currentIndex--
 
         // And swap it with the current element.
-        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        ;[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]
     }
 
-    return array;
+    return array
 }
-
-
 
 // Interface definitions
 interface MediaFile {
-    filename: string;
-    dimensions: number[] | null;
-    created: string;
-    ContentType: string;
-    uri: string;
+    filename: string
+    dimensions: number[] | null
+    created: string
+    ContentType: string
+    uri: string
 }
 
 interface MediaCardProps {
-    item: MediaFile;
+    item: MediaFile
 }
 
-
 function formatDate(dateString: string | number | Date) {
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const monthIndex = date.getMonth();
-    const year = date.getFullYear();
+    const monthNames = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+    ]
+    const date = new Date(dateString)
+    const day = date.getDate()
+    const monthIndex = date.getMonth()
+    const year = date.getFullYear()
 
     // Function to add suffix to date
     function getOrdinalSuffix(day: number) {
-        if (day > 3 && day < 21) return 'th'; // covers 4th to 20th
+        if (day > 3 && day < 21) return 'th' // covers 4th to 20th
         switch (day % 10) {
-            case 1: return "st";
-            case 2: return "nd";
-            case 3: return "rd";
-            default: return "th";
+            case 1:
+                return 'st'
+            case 2:
+                return 'nd'
+            case 3:
+                return 'rd'
+            default:
+                return 'th'
         }
     }
 
-    return `${monthNames[monthIndex]} ${day}${getOrdinalSuffix(day)} ${year}`;
+    return `${monthNames[monthIndex]} ${day}${getOrdinalSuffix(day)} ${year}`
 }
 
-
-
-
 const MediaCard: React.FC<MediaCardProps> = ({ item }) => {
-    const isVideo = item.ContentType.startsWith('video');
+    const isVideo = item.ContentType.startsWith('video')
     const navigation = useNavigation()
 
     return (
-        <TouchableOpacity style={styles.memoryIcon} onPress={() => navigation.navigate('FunContent', { item })}>
+        <TouchableOpacity
+            style={styles.memoryIcon}
+            onPress={() => navigation.navigate('FunContent', { item })}
+        >
             {isVideo ? (
                 <Video
                     source={{ uri: item.uri }}
@@ -83,26 +96,21 @@ const MediaCard: React.FC<MediaCardProps> = ({ item }) => {
                 <Image
                     source={{ uri: item.uri }}
                     style={{ width: '100%', height: '100%' }}
-                    resizeMode="cover"
+                    resizeMode='cover'
                 />
             )}
             <View style={styles.titleDateContainer}>
                 <Text style={styles.title}>{item.ContentType.split('/')[0].toUpperCase()}</Text>
                 <Text style={styles.date}>{formatDate(item.created)}</Text>
-
             </View>
         </TouchableOpacity>
-    );
-};
-
-
-
-
+    )
+}
 
 const MediaList = () => {
     const navigation = useNavigation()
-    const { numberOfElementDisplayed } = useAppContext();
-    const shuffledAndSlicedVideos = shuffleArray([...videosFun]).slice(0, numberOfElementDisplayed);
+    const { numberOfElementDisplayed } = useAppContext()
+    const shuffledAndSlicedVideos = shuffleArray([...videosFun]).slice(0, numberOfElementDisplayed)
     return (
         <View style={styles.container}>
             <FlatList
@@ -117,12 +125,10 @@ const MediaList = () => {
                 contentContainerStyle={styles.memoryShelf}
             />
         </View>
-    );
-};
+    )
+}
 
-export default MediaList;
-
-
+export default MediaList
 
 const styles = StyleSheet.create({
     container: {
@@ -183,5 +189,3 @@ const styles = StyleSheet.create({
         paddingTop: 60, // Increase the paddingTop value
     },
 })
-
-

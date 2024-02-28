@@ -90,7 +90,7 @@ export const AppProvider: React.FC<React.ReactNode> = ({ children }) => {
                 selectedApps,
                 setSelectedApps,
                 numberOfStars,
-                setNumberOfStars
+                setNumberOfStars,
             }}
         >
             {children}
