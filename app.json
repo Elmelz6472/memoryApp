@@ -43,18 +43,6 @@
         "projectId": "93ef82db-d26c-45ee-9eed-c61f3f40302d"
       }
     },
-    "owner": "seif_melz",
-    "plugins": [
-      "@react-native-firebase/app",
-      "@react-native-firebase/auth",
-      [
-        "expo-build-properties",
-        {
-          "ios": {
-            "useFrameworks": "static"
-          }
-        }
-      ]
-    ]
+    "owner": "seif_melz"
   }
 }

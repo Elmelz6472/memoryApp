@@ -15,7 +15,6 @@ import {
     DimensionValue,
 } from 'react-native'
 import AwesomeButton from 'react-native-really-awesome-button'
-import app from '../../firebase-config'
 import PopupScreen from './Popup'
 import { v4 as uuidv4 } from 'uuid';
 import { createClient } from '@supabase/supabase-js';
