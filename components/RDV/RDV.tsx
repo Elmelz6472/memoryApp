@@ -1,3 +1,6 @@
+import 'react-native-url-polyfill/auto'
+
+
 import { useNavigation } from '@react-navigation/native'
 import React, { useState, useEffect } from 'react'
 import {
@@ -14,7 +17,14 @@ import {
 import AwesomeButton from 'react-native-really-awesome-button'
 import app from '../../firebase-config'
 import PopupScreen from './Popup'
-import { getDatabase, ref, push, serverTimestamp } from 'firebase/database'
+import { v4 as uuidv4 } from 'uuid';
+import { createClient } from '@supabase/supabase-js';
+
+
+const supabaseUrl = 'https://sirlqwdaqozkyiibvzkt.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpcmxxd2RhcW96a3lpaWJ2emt0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDkxODE1NTcsImV4cCI6MjAyNDc1NzU1N30.jdliASH5XhqUnWej0VpD09ku-VyL7TwOQoFa0Ldhn2w';
+const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
+
 
 const { width } = Dimensions.get('window')
 const FORM_WIDTH = width * 0.8 // Adjust the width as desired
@@ -30,7 +40,6 @@ const AppointmentForm = () => {
     const [date, setDate] = useState('')
     const [time, setTime] = useState('')
 
-    const database = getDatabase(app)
 
     const inputFields = [
         {
@@ -58,28 +67,41 @@ const AppointmentForm = () => {
 
     const [activeIndex, setActiveIndex] = useState(0)
 
-    const handleSubmit = () => {
-        const rdvRef = ref(database, 'RDV')
+    const handleSubmit = async () => {
+        // Generate a unique ID for the appointment
+        const id = uuidv4();
 
-        push(rdvRef, {
-            clothes: clothes,
-            food: food,
-            grooming: grooming,
-            specialRequest: specialRequest,
-            date: date,
-            time: time,
-            timestamp: serverTimestamp(), // Add server timestamp
-        })
-            .then(() => {
-                console.log('Data added to Firebase Realtime Database successfully.')
-            })
-            .catch((error) => {
-                console.error('Error adding data to Firebase Realtime Database:', error)
-            })
-            .finally(() => {
-                setPopupVisible(true)
-            })
-    }
+        // Insert the form data into the "RDV" table
+        const { data, error } = await supabaseClient
+            .from('RDV')
+            .insert([
+                {
+                    id,
+                    clothes,
+                    food,
+                    grooming,
+                    specialRequest,
+                    date,
+                    time,
+                }
+            ]);
+
+        if (error) {
+            console.error('Error submitting form:', error.message);
+        } else {
+            console.log('Form submitted successfully!');
+            // Clear form fields after submission
+            setClothes('');
+            setFood('');
+            setGrooming('');
+            setSpecialRequest('');
+            setDate('');
+            setTime('');
+            setPopupVisible(true)
+        }
+    };
+
+    // setPopupVisible(true)
 
     // Heart animation
     const animatedValue = new Animated.Value(0)

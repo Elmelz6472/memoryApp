@@ -12,8 +12,6 @@ import {
     useTheme,
     TextInput as PaperTextInput,
 } from 'react-native-paper'
-import { getDatabase, ref, onValue, push, update, remove } from 'firebase/database'
-import app from '../../firebase-config'
 
 import { createClient } from '@supabase/supabase-js';
 
@@ -36,7 +34,6 @@ const BucketList: React.FC = () => {
     const [editingItem, setEditingItem] = useState<BucketListItem | null>(null)
     const [editModalVisible, setEditModalVisible] = useState<boolean>(false)
 
-    const database = getDatabase(app)
     const theme = useTheme()
 
 
