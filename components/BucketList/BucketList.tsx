@@ -1,5 +1,9 @@
+import 'react-native-url-polyfill/auto'
+
 import React, { useState, useEffect } from 'react'
 import { View, TextInput, FlatList, Modal } from 'react-native'
+import { v4 as uuidv4 } from 'uuid';
+
 import {
     Button,
     IconButton,
@@ -10,6 +14,14 @@ import {
 } from 'react-native-paper'
 import { getDatabase, ref, onValue, push, update, remove } from 'firebase/database'
 import app from '../../firebase-config'
+
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://sirlqwdaqozkyiibvzkt.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpcmxxd2RhcW96a3lpaWJ2emt0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDkxODE1NTcsImV4cCI6MjAyNDc1NzU1N30.jdliASH5XhqUnWej0VpD09ku-VyL7TwOQoFa0Ldhn2w';
+const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
+
+
 
 interface BucketListItem {
     id: string
@@ -27,67 +39,155 @@ const BucketList: React.FC = () => {
     const database = getDatabase(app)
     const theme = useTheme()
 
-    useEffect(() => {
-        const itemsRef = ref(database, 'bucketListItems')
-        onValue(itemsRef, (snapshot) => {
-            const data = snapshot.val()
-            if (data) {
-                const itemsArray = Object.entries(data).map(([key, value]) => ({
-                    id: key,
-                    text: value.text,
-                    createdAt: value.createdAt,
-                    completed: value.completed || false,
-                }))
-                setItems(itemsArray)
-            }
-        })
-    }, [])
 
-    const handleAddItem = () => {
+
+    useEffect(() => {
+        const fetchItems = async () => {
+            try {
+                const { data: initialItems, error } = await supabaseClient
+                    .from('bucketListItems')
+                    .select('*');
+
+                if (error) {
+                    console.error('Error fetching initial items:', error);
+                } else {
+                    if (initialItems) {
+                        setItems(initialItems);
+                    }
+                }
+            } catch (error: any) {
+                console.error('Error fetching initial items:', error.message);
+            }
+        };
+
+        fetchItems();
+
+        // Set up real-time subscription using Supabase channels
+        const insertSubscription = supabaseClient
+            .channel('custom-all-channel')
+            .on(
+                'postgres_changes',
+                { event: 'INSERT', schema: 'public', table: 'bucketListItems' },
+                (payload) => {
+                    // console.log('New item:', payload.new);
+
+                    const newItem: BucketListItem = {
+                        id: payload.new.id,
+                        text: payload.new.text,
+                        createdAt: payload.new.createdAt,
+                        completed: payload.new.completed
+                    };
+
+                    // Add the new item to the state immediately
+                    setItems(prevItems => [...prevItems, newItem]);
+                }
+            )
+            .subscribe();
+
+
+
+        const deleteSubscription = supabaseClient
+            .channel('custom-all-channel')
+            .on(
+                'postgres_changes',
+                { event: 'DELETE', schema: 'public', table: 'bucketListItems' },
+                (payload) => {
+                    // console.log('Change received!', payload);
+                    setItems(prevItems => prevItems.filter(item => item.id !== payload.old.id));
+                }
+            )
+            .subscribe();
+
+
+        const updateSubscription = supabaseClient
+            .channel('custom-all-channel')
+            .on(
+                'postgres_changes',
+                { event: 'UPDATE', schema: 'public', table: 'bucketListItems' },
+                (payload) => {
+                    // console.log('Change received!', payload);
+                    if ('new' in payload && payload.new && 'id' in payload.new) {
+                        setItems(prevItems => prevItems.map(item => {
+                            if (item.id === payload.new.id) {
+                                return payload.new as BucketListItem; // Type assertion
+                            }
+                            return item;
+                        }));
+                    }
+                }
+            ).subscribe();
+
+        // Clean up subscription
+        return () => {
+            insertSubscription.unsubscribe();
+            deleteSubscription.unsubscribe();
+            updateSubscription.unsubscribe();
+
+        };
+    }, []);
+
+
+
+
+    const handleAddItem = async () => {
         if (newItemText.trim() !== '') {
-            const newItemRef = push(ref(database, 'bucketListItems'), {
-                text: newItemText,
-                createdAt: Date.now(),
-                completed: false,
-            })
-            setNewItemText('')
+            const createdAt = new Date().toISOString(); // Format current date/time to ISO 8601
+            const newItemId = uuidv4(); // Generate a unique ID
+            const { data, error } = await supabaseClient
+                .from('bucketListItems')
+                .insert({ id: newItemId, text: newItemText, createdAt, completed: false });
+
+            if (error) {
+                console.error('Error adding item:', error);
+            } else {
+                // Add the new item to the state immediately
+
+                // @ts-ignore
+                setItems(prevItems => [...prevItems, { id: newItemId, text: newItemText, createdAt, completed: false }]);
+                setNewItemText('');
+            }
         }
     }
 
-    const handleUpdateItem = () => {
+    const handleUpdateItem = async () => {
         if (editingItem && !editingItem.completed) {
-            update(ref(database, `bucketListItems/${editingItem.id}`), {
-                text: newItemText,
-            })
+            const { data, error } = await supabaseClient
+                .from('bucketListItems')
+                .update({ text: newItemText })
+                .match({ id: editingItem.id });
+
+
             setEditModalVisible(false)
             setEditingItem(null)
             setNewItemText('')
         }
     }
 
-    const handleDeleteItem = (id: string) => {
-        const itemRef = ref(database, `bucketListItems/${id}`)
+    const handleDeleteItem = async (id: string) => {
+        try {
+            const { data, error } = await supabaseClient
+                .from('bucketListItems')
+                .delete()
+                .match({ id: id });
 
-        // Remove the item from Firebase
-        remove(itemRef)
-            .then(() => {
-                // Check if it was the last item
-                if (items.length === 1) {
-                    setItems([])
-                } else {
-                    // Update the state excluding the deleted item
-                    setItems((prevItems) => prevItems.filter((item) => item.id !== id))
-                }
-            })
-            .catch((error) => {
-                console.error('Error removing item: ', error)
-            })
+            if (error) {
+                console.error('Error deleting item:', error);
+            } else {
+                // Remove the deleted item from the state
+                setItems(prevItems => prevItems.filter(item => item.id !== id));
+            }
+        } catch (error: any) {
+            console.error('Error deleting item:', error.message);
+        }
     }
 
-    const handleToggleComplete = (id: string) => {
-        update(ref(database, `bucketListItems/${id}`), {
-            completed: true,
-        })
+
+
+    const handleToggleComplete = async (id: string) => {
+        const { data, error } = await supabaseClient
+            .from('bucketListItems')
+            .update({ completed: true })
+            .match({ id: id });
     }
 
     const openEditModal = (item: BucketListItem) => {
