@@ -15,6 +15,7 @@ import letter_11 from '../../letter/letter_11';
 import letter_12 from '../../letter/letter_12';
 import letter_13 from '../../letter/letter_13';
 import letter_14 from '../../letter/letter_14';
+import letter_special from '../../letter/letter_special';
 
 
 const BookIcon = ({ date, content, note }: { date: string; content: string; note: string }) => {
@@ -39,7 +40,7 @@ const BookIcon = ({ date, content, note }: { date: string; content: string; note
 const LetterSections: React.FC = () => {
     const navigation = useNavigation();
 
-    const books = [letter_3, letter_4, letter_1, letter_2, letter_5, letter_6, letter_10, letter_11, letter_12, letter_13, letter_14];
+    const books = [letter_3, letter_4, letter_1, letter_2, letter_5, letter_6, letter_10, letter_11, letter_12, letter_13, letter_14, letter_special];
 
     return (
         <View style={styles.container}>

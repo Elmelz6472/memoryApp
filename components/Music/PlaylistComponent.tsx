@@ -15,11 +15,23 @@ import { Audio } from 'expo-av'
 import audioFiles, { AudioFile } from '../../assets/sound/AudioFileType'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
+import { StudieesAudioObjects } from '../../assets/sound/Studiess/Studiees_AudioObject'
 
 interface Playlist {
     id: number
     name: string
     songs: AudioFile[]
+}
+const playlistsStudiess = {
+    id: 99,
+    name: 'Studiess📕',
+    songs: StudieesAudioObjects,
+}
+
+const playlistsVibees = {
+    id: 99,
+    name: 'Studiess📕',
+    songs: StudieesAudioObjects,
 }
 
 const Player: React.FC = () => {

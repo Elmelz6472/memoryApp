@@ -13,10 +13,15 @@ import { KanyeWestAudioFiles } from './Kanye_West/Kanye_West_AudioObject'
 import { JorjaSmithAudioFiles } from './Jorja_Smith/Jorja_Smith_AudioObjects'
 import { NickiMinajAudioObjects } from './Nicki_Minaj/NickiMinajAudioObjects'
 import { LordeAudioObjects } from './Lorde/Lorde_AudioObject'
+import { StudieesAudioObjects } from './Studiess/Studiees_AudioObject'
+import { VibesAudioObjects } from './Vibees/Vibees_AudioObject'
+
 import shuffleArray from '../../utils/shuffleArray'
 import shuffleArrayId from '../../utils/shuffleArray'
 
 const allAudioFiles: AudioFile[] = [
+    ...StudieesAudioObjects,
+    ...VibesAudioObjects,
     ...LordeAudioObjects,
     ...TaylorSwiftAudioFiles,
     ...KanyeWestAudioFiles,

@@ -1,48 +1,41 @@
 {
-  "expo": {
-    "name": "memoryApp",
-    "slug": "memoryapp",
-    "version": "1.1.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/soul-sync-high-resolution-logo-transparent.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "icon": "./assets/appIcon.png",
-      "supportsTablet": true,
-      "googleServicesFile": "./GoogleService-Info_1.plist",
-      "bundleIdentifier": "com.malik.memoryApp",
-      "infoPlist": {
-        "UIBackgroundModes": [
-          "audio"
-        ]
-      }
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/appIcon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "permissions": [
-        "android.permission.CAMERA",
-        "android.permission.RECORD_AUDIO"
-      ]
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "93ef82db-d26c-45ee-9eed-c61f3f40302d"
-      }
-    },
-    "owner": "seif_melz"
-  }
+    "expo": {
+        "name": "memoryApp",
+        "slug": "memoryapp",
+        "version": "1.1.0",
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "userInterfaceStyle": "light",
+        "splash": {
+            "image": "./assets/soul-sync-high-resolution-logo-transparent.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "icon": "./assets/appIcon.png",
+            "supportsTablet": true,
+            "googleServicesFile": "./GoogleService-Info_1.plist",
+            "bundleIdentifier": "com.malik.memoryApp",
+            "infoPlist": {
+                "UIBackgroundModes": ["audio"]
+            }
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/appIcon.png",
+                "backgroundColor": "#ffffff"
+            },
+            "permissions": ["android.permission.CAMERA", "android.permission.RECORD_AUDIO"]
+        },
+        "web": {
+            "favicon": "./assets/favicon.png"
+        },
+        "extra": {
+            "eas": {
+                "projectId": "93ef82db-d26c-45ee-9eed-c61f3f40302d"
+            }
+        },
+        "owner": "seif_melz"
+    }
 }

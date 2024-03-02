@@ -16,11 +16,24 @@ import { useNavigation } from '@react-navigation/native'
 import { Audio, InterruptionModeIOS } from 'expo-av'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import audioFiles, { AudioFile } from '../../assets/sound/AudioFileType'
-
+import { StudieesAudioObjects } from '../../assets/sound/Studiess/Studiees_AudioObject'
+import { VibesAudioObjects } from '../../assets/sound/Vibees/Vibees_AudioObject'
 interface Playlist {
     id: number
     name: string
     songs: AudioFile[]
+}
+
+const playlistsStudiess = {
+    id: 1000,
+    name: 'Studiess📕',
+    songs: StudieesAudioObjects,
+}
+
+const playlistsVibees = {
+    id: 1001,
+    name: 'Vibees🎶',
+    songs: VibesAudioObjects,
 }
 
 const MusicPlayer: React.FC = () => {
@@ -37,11 +50,17 @@ const MusicPlayer: React.FC = () => {
 
     useEffect(() => {
         const fetchPlaylists = async () => {
+            // Combine existing playlists with fetched playlists
             const storedPlaylists = await AsyncStorage.getItem('playlists')
             if (storedPlaylists) {
-                setPlaylists(JSON.parse(storedPlaylists))
+                const fetchedPlaylists: Playlist[] = JSON.parse(storedPlaylists)
+                setPlaylists([...fetchedPlaylists, playlistsStudiess, playlistsVibees])
+            } else {
+                // If no playlists are stored, set only the default playlists
+                setPlaylists([playlistsStudiess, playlistsVibees])
             }
         }
+
         fetchPlaylists()
     }, [])
 

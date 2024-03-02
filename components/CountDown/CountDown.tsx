@@ -4,21 +4,19 @@ import React, { useState, useEffect, useRef } from 'react'
 import { View, Text, StyleSheet, Animated, Easing } from 'react-native'
 import AwesomeButton from 'react-native-really-awesome-button'
 import { useNavigation } from '@react-navigation/native'
-import { createClient } from '@supabase/supabase-js';
-import { parseISO } from 'date-fns';
+import { createClient } from '@supabase/supabase-js'
+import { parseISO } from 'date-fns'
 
-
-const supabaseUrl = 'https://sirlqwdaqozkyiibvzkt.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpcmxxd2RhcW96a3lpaWJ2emt0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDkxODE1NTcsImV4cCI6MjAyNDc1NzU1N30.jdliASH5XhqUnWej0VpD09ku-VyL7TwOQoFa0Ldhn2w';
-const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
-
+const supabaseUrl = 'https://sirlqwdaqozkyiibvzkt.supabase.co'
+const supabaseAnonKey =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpcmxxd2RhcW96a3lpaWJ2emt0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDkxODE1NTcsImV4cCI6MjAyNDc1NzU1N30.jdliASH5XhqUnWej0VpD09ku-VyL7TwOQoFa0Ldhn2w'
+const supabaseClient = createClient(supabaseUrl, supabaseAnonKey)
 
 const CountDown: React.FC = () => {
     const navigation = useNavigation()
 
     const [countdownDate, setCountdownDate] = useState<Date | null>(null)
     const [timeLeft, setTimeLeft] = useState<number | null>(null)
-
 
     const animatedValue = useRef(new Animated.Value(0)).current
 
@@ -36,15 +34,15 @@ const CountDown: React.FC = () => {
             }
 
             if (!countdownDateData || !countdownDateData.createdAt) {
-                console.error('No countdown date found.');
-                return;
+                console.error('No countdown date found.')
+                return
             }
 
             if (countdownDateData && countdownDateData.createdAt) {
-                const parsedDate = new Date(countdownDateData.createdAt); // Parse the ISO string
-                setCountdownDate(parsedDate);
-                const timeDifference = parsedDate.getTime() - new Date().getTime();
-                setTimeLeft(timeDifference);
+                const parsedDate = new Date(countdownDateData.createdAt) // Parse the ISO string
+                setCountdownDate(parsedDate)
+                const timeDifference = parsedDate.getTime() - new Date().getTime()
+                setTimeLeft(timeDifference)
             }
         }
 
@@ -65,12 +63,10 @@ const CountDown: React.FC = () => {
         return () => clearInterval(interval)
     }, [countdownDate])
 
-
     const days = Math.floor((timeLeft ?? 0) / (1000 * 60 * 60 * 24))
     const hours = Math.floor(((timeLeft ?? 0) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
     const minutes = Math.floor(((timeLeft ?? 0) % (1000 * 60 * 60)) / (1000 * 60))
     const seconds = Math.floor(((timeLeft ?? 0) % (1000 * 60)) / 1000)
-
 
     const startAnimation = () => {
         Animated.loop(

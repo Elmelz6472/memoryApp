@@ -79,6 +79,6 @@ album = input("Enter album: ")
 covertArt = input("Enter coverArt link: ")
 
 
-upload_directory_to_do_spaces('/Users/malikmacbook/Downloads/Melodrama', 'Songs',
-                              'Lorde/Melodrama', start_id=1000)
+upload_directory_to_do_spaces('/Users/malikmacbook/Downloads/[SPOTIFY-DOWNLOADER.COM] Vibess🎶', 'Songs',
+                              'Playlists/Vibees', start_id=289190)
 
